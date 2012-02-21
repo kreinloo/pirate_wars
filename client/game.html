@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>game view</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="text/javascript" src="js/jquery-1.7.1.js"></script>
+  <script type="text/javascript">  
+    $(document).ready(function(){  
+      $("#ingameChatlog").append("player1: hello<br />player2: hello<br />player1: how do U do?<br />player2: I do how how");
+      $("#info1").append("another place for useful info");
+      $("#info2").append("need to show some game info somewhere");
+      drawGrid("left", 10);
+      drawGrid("right", 10);
+      $(".cell").click(function() {
+        var currentId = $(this).attr('id');
+        alert("Handler for " + currentId + " called.");
+      });
+    });
+    
+    function drawGrid(side, size) {
+      for (var y = 0; y < size; y++) {
+        var row = '<div class="row">';
+        for (var x = 0; x < size; x++) {
+          var id = side + "_" + x + "x" + y;
+          row += '<div class="cell" id="' + id + '"></div>';
+        }
+        row += '</div>';
+        var fieldId;
+        if (side == "left") fieldId = "#leftField";
+        else fieldId = "#rightField";
+        $(fieldId).append(row);
+      }
+    }
+  </script>
+</head>
+ 
+<body>
+  <div id="wrapper">
+    <div id="header">
+      <div id="banner"></div>
+    </div>
+    <div id="menubar">
+      <ul id="menuLeft">
+        <li>Button</li>
+        <li>Button</li>
+      </ul>
+      <div id="info1"></div>
+      <ul id="menuRight">
+        <li>Button</li>
+        <li>Button</li>
+      </ul>
+    </div>
+    <div id="content">
+      <div id="fields">
+        <div id="leftField" class="field"></div>
+        <div id="rightField" class="field"></div>
+        <div id="info2"></div>
+      </div>
+      <div id="chatbox">
+        <div id="ingameChatlog"></div>
+        <div id="ingameChatinput">
+          <input name="inputbox" type="text" id="inputbox" />  
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
