@@ -3,10 +3,10 @@
 	<title>lobby view</title>
 
 	<link rel="stylesheet" type="text/css" href="css/style.css"/>
-	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,400italic,700'        rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,400italic,700'
+		rel='stylesheet' type='text/css'>
 	<script type="text/javascript" src="js/jquery-1.7.1.js"></script>
 	<script type="text/javascript" src="js/script.js"/></script>
-
 </head>
 
 <body>
@@ -20,23 +20,23 @@
 		<div id="menu-avatar"><img src="gfx/avatar.png"/></div>
 	
 		<div class="menu-items">
-			<div class="menu-item">game</div>
-			<div class="menu-item">invite</div>
-			<div class="menu-item">replay</div>
-			<div class="menu-item">log out</div>
+			<div id="menu-item-lobby" class="menu-item">lobby</div>
+			<div id="menu-item-invite" class="menu-item">invite</div>
+			<div id="menu-item-replay" class="menu-item">replay</div>
+			<div id="menu-item-logout" class="menu-item">log out</div>
 		</div>
 
-	</div> <!-- menubar -->
+	</div><!-- menubar -->
 
 	<div id="content">
 
-		<div class="lobby-chat">
-			<div class="lobby-chat-log chat-scroll"></div>
-			<div class="lobby-chat-userlist chat-scroll"></div>
+		<div id="lobby-chat">
+			<div id="lobby-chat-log" class="chat-scroll"></div>
+			<div id="lobby-chat-userlist" class="chat-scroll"></div>
 
-			<div class="lobby-chat-input">
-                <input type="text" class="chat-input-text"/>
-            </div>
+			<div id="lobby-chat-input">
+				<input id="lobby-chat-input-text" type="text" class="chat-input-text"/>
+			</div>
 
 		</div><!-- lobby-chat -->
 
@@ -46,4 +46,3 @@
 </div><!-- wrapper -->
 </body>
 </html>
-
