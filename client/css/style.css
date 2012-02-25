@@ -31,13 +31,14 @@ text-align:left;
 }
 
 #content {
-overflow:hidden;
-width:760px;
+    overflow:hidden;
+    width:760px;
+
 }
 
 #fields {
-height:312px;
-margin-bottom:20px;
+    height:320px;
+    border: 1px solid red;
 }
 
 #header {
@@ -69,7 +70,7 @@ width:80px;
 }
 
 #ingameChatinput {
-width:100%;
+    position: absolute;
 }
 
 #ingameChatlog {
@@ -126,6 +127,9 @@ margin:0 auto;
 padding:0;
 text-align:left;
 width:760px;
+
+border: 1px solid red;
+margin-top: 40px;
 }
 
 .cell {
