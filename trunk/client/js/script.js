@@ -35,4 +35,12 @@ $(document).ready(function () {
 		}; 
 	});
 
+	$(".menu-item").hover(
+		function () {
+			$(this).css("border", "2px solid white");
+		},
+		function () {
+			$(this).css("border", "none");
+		}
+	);
 });
