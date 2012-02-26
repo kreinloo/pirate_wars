@@ -10,23 +10,26 @@ $(document).ready(function () {
 	$("#game-chat-log").append("<div><b>user2:</b> hello</div>");	
 	$("#game-chat-log").append("<div><b>user1:</b> let's play</div>");	
 	$("#game-chat-log").append("<div><b>user2:</b> ok ...</div>");	
-	$("#game-chat-log").append("<div><b>user1:</b> hello</div>");	
-	$("#game-chat-log").append("<div><b>user2:</b> hello</div>");	
-	$("#game-chat-log").append("<div><b>user2:</b> ok ...</div>");	
-	$("#game-chat-log").append("<div><b>user1:</b> move !!!</div>");	
-	$("#game-chat-log").append("<div><b>user2:</b> wut !?</div>");
-	$("#game-chat-log").append("<div><b>user2:</b> wut !?</div>");
-	$("#game-chat-log").append("<div><b>user2:</b> wut !?</div>");
 	$("#game-chat-log").scrollTop($(".game-chat-log").prop("scrollHeight"));
 
-	for (var i = 0; i < 40; i++) {
-		$("#lobby-chat-log").append("<div><b>user1:</b> hello world!</div>");
-	};
+	$("#lobby-chat-log").append("<div class='chat-message'>21:01:32 " +
+		"<b>John 'Hannibal' Smith:</b> I love it when a plan comes together!</div>");
+
+	$("#lobby-chat-log").append("<div class='chat-message'>21:02:01 " +
+		"<b>B.A. Baracus:</b> I ain't flying Hannibal!</div>");
+
 	$("#lobby-chat-log").scrollTop($("#lobby-chat-log").prop("scrollHeight"));
 
-	$("#lobby-chat-userlist").append("<div><b>Super Man</b></div>");
-	$("#lobby-chat-userlist").append("<div><b>John Smith</b></div>");
-	$("#lobby-chat-userlist").append("<div><b>Jane Doe</b></div>");
+	$("#lobby-chat-userlist-table").append("<tr><td>B.A. Baracus</td></tr>");
+	$("#lobby-chat-userlist-table").append("<tr><td>H.M. Murdock</td></tr>");
+	$("#lobby-chat-userlist-table").append("<tr><td>John 'Hannibal' Smith</td></tr>");
+	$("#lobby-chat-userlist-table").append("<tr><td>Templeton 'Face' Peck</td></tr>");
+	$("#lobby-chat-userlist-table").append("<tr><td>Tawnia Baker</td></tr>");
+	$("#lobby-chat-userlist-table").append("<tr><td>Amy Amanda Allen</td></tr>");
+
+	$("#lobby-games-running-list-table").append("<tr><td>B.A. Baracus</td><td>vs</td><td>H.M. Murdock</td></tr>");
+	$("#lobby-games-running-list-table").append("<tr><td>John 'Hannibal' Smith</td><td>vs</td><td>Templeton 'Face' Peck</td></tr>");
+	$("#lobby-games-running-list-table").append("<tr><td>Tawnia Baker</td><td>vs</td><td>Amy Amanda Allen</td></tr>");
 
 	$("#lobby-chat-input-text").keypress(function (e) {
 		if (e.keyCode == 13) {
