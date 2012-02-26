@@ -24,6 +24,9 @@ $(document).ready(function () {
 	};
 	$("#lobby-chat-log").scrollTop($("#lobby-chat-log").prop("scrollHeight"));
 
+	$("#lobby-chat-userlist").append("<div><b>Super Man</b></div>");
+	$("#lobby-chat-userlist").append("<div><b>John Smith</b></div>");
+	$("#lobby-chat-userlist").append("<div><b>Jane Doe</b></div>");
 
 	$("#lobby-chat-input-text").keypress(function (e) {
 		if (e.keyCode == 13) {
