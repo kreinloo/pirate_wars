@@ -17,9 +17,16 @@ a {
 	background-image: url("../gfx/ScrollBody2.png");
 }
 
-#header {
+#avatar-div {
 	width: 100%;
 	height: 120px;
+}
+
+#avatar-pic {
+	width: 75px;
+	height: 75px;
+	float: right;
+	margin: 35px 35px auto auto;
 }
 
 #menu {
@@ -27,14 +34,6 @@ a {
 	height: 50px;
 	border-top: none;
 	border-bottom: none;
-}
-
-#menu-avatar {
-	width: 75px;
-	height: 75px;
-	margin-top: -25px;
-	margin-left: 35px;
-	float: left;
 }
 
 .menu-items {
@@ -174,6 +173,10 @@ a {
 	width: 100%;
 	border-bottom: 1px solid black;
 	margin-top: 2px;
+}
+
+#login-header {
+	height: 120px;
 }
 
 #login-head {

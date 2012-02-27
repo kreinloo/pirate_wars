@@ -20,13 +20,16 @@ $(document).ready(function () {
 
 	$("#lobby-chat-log").scrollTop($("#lobby-chat-log").prop("scrollHeight"));
 
+/*
 	$("#lobby-chat-userlist-table").append("<tr><td>B.A. Baracus</td></tr>");
 	$("#lobby-chat-userlist-table").append("<tr><td>H.M. Murdock</td></tr>");
 	$("#lobby-chat-userlist-table").append("<tr><td>John 'Hannibal' Smith</td></tr>");
 	$("#lobby-chat-userlist-table").append("<tr><td>Templeton 'Face' Peck</td></tr>");
 	$("#lobby-chat-userlist-table").append("<tr><td>Tawnia Baker</td></tr>");
 	$("#lobby-chat-userlist-table").append("<tr><td>Amy Amanda Allen</td></tr>");
-
+*/
+	$("#lobby-chat-userlist-table").append("<tr><td>General Hunt Stockwell</td></tr>");
+	$("#lobby-chat-userlist-table").append("<tr><td>Colonel Lynch</td></tr>");
 	$("#lobby-games-running-list-table").append(
 		"<tr><td>B.A. Baracus</td><td>vs</td><td>H.M. Murdock</td></tr>");
 	$("#lobby-games-running-list-table").append(
