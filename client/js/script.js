@@ -56,6 +56,7 @@ $(document).ready(function () {
 
 	fillTables ();
 	drawShips ();
+	fillScoreboard ();
 });
 
 
@@ -86,4 +87,19 @@ function fillTables () {
 function drawShips () {
 
 	$("#user2x3").append($("<img>").attr("src", "gfx/ShipNose.png"));
+}
+
+function fillScoreboard () {
+
+	$("#scoreboard-table").append(
+		$("<tr>").append("<td>1</td><td>B.A. Baracus</td><td>66</td>")
+	);
+
+	$("#scoreboard-table").append(
+		$("<tr>").append("<td>2</td><td>John 'Hannibal' Smith</td><td>32</td>")
+	);
+
+	$("#scoreboard-table").append(
+		$("<tr>").append("<td>3</td><td>H.M. Murdock</td><td>12</td>")
+	);
 }

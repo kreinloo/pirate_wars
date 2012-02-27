@@ -211,3 +211,10 @@ a {
 .lobby-table td {
 	border: 1px solid #CCC2C2;
 }
+
+#scoreboard-div {
+	text-align: center;
+	width: 50%;
+	margin: auto auto auto auto;
+}
+
