@@ -64,6 +64,8 @@ $(document).ready(function () {
 
 	fillTables ();
 	drawShips ();
+	fillScoreboard ();
+	fillReplay ();
 });
 
 
@@ -138,4 +140,33 @@ function drawShipTile (isSelf, row, column, tileToDraw, rotate) {
   if (rotate) {
     cell.addClass("rotate90");
   }
+}
+
+function fillScoreboard () {
+
+	$("#scoreboard-table").append(
+		$("<tr>").append("<td>1</td><td>B.A. Baracus</td><td>66</td>")
+	);
+
+	$("#scoreboard-table").append(
+		$("<tr>").append("<td>2</td><td>John 'Hannibal' Smith</td><td>32</td>")
+	);
+
+	$("#scoreboard-table").append(
+		$("<tr>").append("<td>3</td><td>H.M. Murdock</td><td>12</td>")
+	);
+}
+
+function fillReplay () {
+
+	$("#replay-table").append(
+		$("<tr>").append("<td>1</td><td>Templeton 'Face' Peck</td>" + 
+			"<td>27.02.2012</td><td>WIN</td><td><u><a href='#'>Play</a></u></td>")
+	);
+
+	$("#replay-table").append(
+		$("<tr>").append("<td>2</td><td>Tawnia Baker</td>" + 
+			"<td>27.02.2012</td><td>LOSS</td><td><u><a href='#'>Play</a></u></td>")
+	);
+
 }

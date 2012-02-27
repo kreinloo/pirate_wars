@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>replay view</title>
+
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,400italic,700'
+		rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="js/jquery-1.7.1.js"></script>
+	<script type="text/javascript" src="js/script.js"/></script>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+	<div id="header"></div>
+
+	<div id="menu">
+
+		<div id="menu-avatar"><img src="gfx/avatar.png"/></div>
+	
+		<div class="menu-items">
+			<a href="#"><div id="menu-item-lobby" class="menu-item">new game</div></a>
+			<a href="#"><div id="menu-item-invite" class="menu-item">join game</div></a>
+			<a href="#"><div id="menu-item-invite" class="menu-item">scoreboard</div></a>
+			<a href="#"><div id="menu-item-replay" class="menu-item">replay</div></a>
+			<a href="#"><div id="menu-item-logout" class="menu-item">log out</div></a>
+		</div>
+
+	</div><!-- menubar -->
+
+	<div id="content">
+
+		<div id="replay-div" class="chat-scroll">
+			<h1>Played games</h1>
+			<table id="replay-table" class="lobby-table">
+				<tr><th>Game no.</th><th>Opponent</th><th>Date</th><th>Result</th><th>Replay</th></tr>
+			</table>
+		</div>
+
+	</div><!-- content -->
+
+</div><!-- wrapper -->
+</body>
+</html>
