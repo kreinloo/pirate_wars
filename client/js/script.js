@@ -9,7 +9,9 @@ TILE = {
   SHIP_BASE1: "gfx/ShipBase1.png",
   SHIP_BASE2: "gfx/ShipBase2.png",
   SHIP_BASE3: "gfx/ShipBase3.png",
-  SHIP_TAIL: "gfx/ShipTail.png"
+  SHIP_TAIL: "gfx/ShipTail.png",
+  SHIP_SINGLE1: "gfx/SingleShip1.png",
+  SHIP_SINGLE2: "gfx/SingleShip2.png"
 }
 
 $(document).ready(function () {
@@ -97,13 +99,13 @@ function fillTables () {
 }
 function drawShips () { 
   //4x 1-ships
-  drawShipTile(true, 7, 3, TILE.SHIP_BASE2);
+  drawShipTile(true, 7, 3, TILE.SHIP_SINGLE1);
   
-  drawShipTile(true, 2, 1, TILE.SHIP_BASE2);
+  drawShipTile(true, 2, 1, TILE.SHIP_SINGLE1);
   
-  drawShipTile(true, 5, 8, TILE.SHIP_BASE2);
+  drawShipTile(true, 5, 8, TILE.SHIP_SINGLE1);
   
-  drawShipTile(true, 7, 7, TILE.SHIP_BASE2);
+  drawShipTile(true, 7, 7, TILE.SHIP_SINGLE1);
   
   //3x 2-ships
   drawShipTile(true, 2, 3, TILE.SHIP_NOSE);
