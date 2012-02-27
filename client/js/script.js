@@ -61,10 +61,10 @@ $(document).ready(function () {
 
 	$(".menu-item").hover(
 		function () {
-			$(this).css("border", "2px solid white");
+			$(this).css("color", "white");
 		},
 		function () {
-			$(this).css("border", "none");
+			$(this).css("color", "black");
 		}
 	);
 
