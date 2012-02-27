@@ -27,16 +27,20 @@ $(document).ready(function () {
 	$("#lobby-chat-userlist-table").append("<tr><td>Tawnia Baker</td></tr>");
 	$("#lobby-chat-userlist-table").append("<tr><td>Amy Amanda Allen</td></tr>");
 
-	$("#lobby-games-running-list-table").append("<tr><td>B.A. Baracus</td><td>vs</td><td>H.M. Murdock</td></tr>");
-	$("#lobby-games-running-list-table").append("<tr><td>John 'Hannibal' Smith</td><td>vs</td><td>Templeton 'Face' Peck</td></tr>");
-	$("#lobby-games-running-list-table").append("<tr><td>Tawnia Baker</td><td>vs</td><td>Amy Amanda Allen</td></tr>");
+	$("#lobby-games-running-list-table").append(
+		"<tr><td>B.A. Baracus</td><td>vs</td><td>H.M. Murdock</td></tr>");
+	$("#lobby-games-running-list-table").append(
+		"<tr><td>John 'Hannibal' Smith</td><td>vs</td><td>Templeton 'Face' Peck</td></tr>");
+	$("#lobby-games-running-list-table").append(
+		"<tr><td>Tawnia Baker</td><td>vs</td><td>Amy Amanda Allen</td></tr>");
 
 	$("#lobby-chat-input-text").keypress(function (e) {
 		if (e.keyCode == 13) {
 			e.preventDefault();
 			var message = $("#lobby-chat-input-text").val();
 			$("#lobby-chat-input-text").val("");
-			$("#lobby-chat-log").append("<div class='chat-message'><b>user:</b> " + message + "</div>");
+			$("#lobby-chat-log").append(
+				"<div class='chat-message'><b>user:</b> " + message + "</div>");
 			$("#lobby-chat-log").scrollTop($("#lobby-chat-log").prop("scrollHeight"));
 		}; 
 	});
@@ -49,4 +53,37 @@ $(document).ready(function () {
 			$(this).css("border", "none");
 		}
 	);
+
+	fillTables ();
+	drawShips ();
 });
+
+
+function fillTables () {
+
+	for (var i = 0; i < 10; i++) {
+		var row = $("<div class='game-table-row'>");
+		for (j = 0; j < 10; j++) {
+			row.append(
+				$("<div class='game-table-cell'>").attr(
+					"id", "user" + i + "x" + j));
+		}
+		$("#game-table-user").append(row);
+	}
+
+	for (var i = 0; i < 10; i++) {
+		var row = $("<div class='game-table-row'>");
+		for (j = 0; j < 10; j++) {
+			row.append(
+				$("<div class='game-table-cell'>").attr(
+					"id", "opponent" + i + "x" + j));
+		}
+		$("#game-table-opponent").append(row);
+	}
+
+}
+
+function drawShips () {
+
+	$("#user2x3").append($("<img>").attr("src", "gfx/ShipNose.png"));
+}
