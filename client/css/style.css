@@ -1,184 +1,213 @@
-#banner {
-background-image:url('../gfx/banner.gif');
-background-repeat:no-repeat;
-height:90px;
-left:50%;
-margin-left:-364px;
-position:relative;
-width:728px;
+body {
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 12px;
+	background-color: #FEFFFD;
 }
 
-#chatbox {
-border:1px solid #000;
-padding:5px;
-}
-
-#chatinput {
-width:570px;
-}
-
-#chatlog {
-border:1px solid #000;
-height:420px;
-width:550px;
-}
-
-#chatlog,#ingameChatlog {
-margin-bottom:7px;
-overflow:auto;
-padding:10px;
-text-align:left;
-}
-
-#content {
-    overflow:hidden;
-    width:760px;
-
-}
-
-#fields {
-    height:320px;
-    border: 1px solid red;
-}
-
-#header {
-height:90px;
-position:relative;
-text-align:center;
-width:100%;
-}
-
-#info1 {
-border:1px solid #000;
-height:50%;
-margin-left:auto;
-margin-right:auto;
-padding:3px;
-position:relative;
-top:25%;
-width:250px;
-}
-
-#info2 {
-border:1px solid #000;
-height:100%;
-margin-left:auto;
-margin-right:auto;
-padding:3px;
-position:relative;
-width:80px;
-}
-
-#ingameChatinput {
-    position: absolute;
-}
-
-#ingameChatlog {
-height:75px;
-}
-
-#inputbox {
-border:1px solid #000;
-width:100%;
-}
-
-#leftField {
-float:left;
-overflow:auto;
-}
-
-#menubar {
-height:82px;
-margin-bottom:5px;
-position:relative;
-}
-
-#portrait {
-background-image:url('../gfx/avatar.png');
-background-repeat:no-repeat;
-border:1px solid #000;
-float:left;
-height:80px;
-width:80px;
-}
-
-#rightField {
-float:right;
-overflow:auto;
-}
-
-#title {
-font-size:3em;
-}
-
-#userlist {
-border:1px solid #000;
-float:right;
-height:420px;
-overflow:auto;
-padding:10px;
-text-align:left;
-width:155px;
+a {
+	text-decoration: none;
+	color: black;
 }
 
 #wrapper {
-height:650px;
-margin:0 auto;
-padding:0;
-text-align:left;
-width:760px;
-
-border: 1px solid red;
-margin-top: 40px;
+	width: 760px;
+	margin: 30px auto auto auto;
+	position: relative;
 }
 
-.cell {
-border:1px solid #000;
-display:table-cell;
-float:left;
-height:30px;
-width:30px;
+#header {
+	width: 100%;
+	height: 100px;
+	background-color: #685642;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	-moz-border-top-left-radius: 10px;
+	-moz-border-top-right-radius: 10px;
 }
 
-.row {
-display:table-row;
+#menu {
+	width: 100%;
+	height: 50px;
+	border-top: none;
+	border-bottom: none;
+	background-color: #DED29E;
 }
 
-body {
-font-family:'trebuchet ms', arial, sans-serif;
-font-size:.80em;
-margin:0;
-padding:0;
-text-align:center;
+#menu-avatar {
+	width: 75px;
+	height: 75px;
+	margin-top: -25px;
+	margin-left: 10px;
+	float: left;
 }
 
-ul#menuLeft {
-left:0;
+.menu-items {
+	float: right;
 }
 
-ul#menuRight {
-right:0;
+.menu-item {
+	width: 100px;
+	height: 25px;
+	float: left;
+	margin-top: 7px;
+	margin-right: 5px;
+	padding-top: 10px;
+	text-align: center;
+	background-color: #B3A580;
+
+	border-radius: 10px 30px 10px 30px;
+	-moz-border-radius: 10px 30px 10px 30px;
 }
 
-ul#menuRight li,ul#menuLeft li {
--moz-border-radius:8px;
--webkit-border-radius:8px;
-background:#e6e6e6;
-border:1px solid #000;
-border-radius:8px;
-float:left;
-height:20px;
-margin:0 5px 5px 0;
-padding:5px;
-position:relative;
-text-align:center;
-width:100px;
+#content {
+	width: 760px;
+	height: 500px; 
+	background-color: #fbfbfb;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 }
 
-ul#menuRight,ul#menuLeft {
-list-style:none;
-margin-top:-15px;
-padding-left:5px;
-position:absolute;
-top:50%;
+#game-tablearea {
+	width: 100%;
+	height: 315px;
+}
+
+.game-table {
+	margin-top: 5px;
+	width: 322px;
+	height: 322px;
+}
+
+.game-table-left {
+	float: left;
+	margin-left: 5px;
+}
+
+.game-table-right {
+	float: right;
+	margin-right: 5px;
+}
+
+.game-table-row {
+	margin: 0;
+	padding: 0;
+}
+
+.game-table-cell {
+	height: 30px;
+	width: 30px;
+	margin: 0;
+	padding: 0;
+	float: left;
+	border: 1px solid #CCC2C2;
+	background-image: url('../gfx/WaterTexture.png');
+}
+
+#game-chat {
+	width: 748px;
+	margin-left: 5px;
+	margin-right: 5px;
+	border: 1px solid #CCC2C2;
+}
+
+#game-chat-log {
+	width: 744px;
+	height: 150px;
+	margin: auto auto auto auto;
+	padding-left: 2px;
+}
+
+#game-chat-input {
+	width: 744px;
+	padding-left: 2px;
+}
+
+#game-chat-input-text {
+	width: 740px;
+	height: 20px;
+}
+
+#lobby {
+	width: 100%;
+	height: 275px;
+}
+
+#lobby-games {
+	width: 240px;
+	height: 225px;
+	border: 1px solid #CCC2C2;
+	float: right;
+	padding: 2px;
+	margin: 5px 5px 5px 0px;
+}
+
+#lobby-chat-log {
+	width: 490px;
+	height: 460px;
+	float: left;
+	border: 1px solid #CCC2C2;
+	padding: 2px;
+	margin: 5px 5px 5px 5px;
+}
+
+#lobby-chat-userlist {
+	width: 240px;
+	height: 225px;
+	float: right;
+	border: 1px solid #CCC2C2;
+	padding: 2px;
+	margin: 0px 5px 5px 0px;
+}
+
+#lobby-chat-input {
+	width: 750px;
+	height: 20px;
+	margin: auto auto auto auto;
+	float:left;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.chat-input-text {
+	width: 100%;
+	font-style: italic;
+}
+
+.chat-scroll {
+	overflow: auto;
+}
+
+.chat-message {
+	width: 100%;
+	border-bottom: 1px solid #CCC2C2;
+	margin-top: 2px;
+}
+
+#login-head {
+	padding-top: 40px;
+	height: 150px;
+	text-align: center;
+	font-size: 16px;
+}
+
+#login-body {
+	width: 300px;
+	height: 50px;
+	margin-right: auto;
+	margin-left: auto;
+	border-radius: 10px;
+	border: 3px solid #808080;
+}
+
+.lobby-table {
+	text-align: center;
+	width: 100%;
+}
+
+.lobby-table th {
+	border-bottom: 1px solid #CCC2C2;
+}
+
+.lobby-table td {
+	border: 1px solid #CCC2C2;
 }

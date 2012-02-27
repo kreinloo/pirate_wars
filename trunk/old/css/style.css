@@ -1,0 +1,184 @@
+#banner {
+background-image:url('../gfx/banner.gif');
+background-repeat:no-repeat;
+height:90px;
+left:50%;
+margin-left:-364px;
+position:relative;
+width:728px;
+}
+
+#chatbox {
+border:1px solid #000;
+padding:5px;
+}
+
+#chatinput {
+width:570px;
+}
+
+#chatlog {
+border:1px solid #000;
+height:420px;
+width:550px;
+}
+
+#chatlog,#ingameChatlog {
+margin-bottom:7px;
+overflow:auto;
+padding:10px;
+text-align:left;
+}
+
+#content {
+    overflow:hidden;
+    width:760px;
+
+}
+
+#fields {
+    height:320px;
+    border: 1px solid red;
+}
+
+#header {
+height:90px;
+position:relative;
+text-align:center;
+width:100%;
+}
+
+#info1 {
+border:1px solid #000;
+height:50%;
+margin-left:auto;
+margin-right:auto;
+padding:3px;
+position:relative;
+top:25%;
+width:250px;
+}
+
+#info2 {
+border:1px solid #000;
+height:100%;
+margin-left:auto;
+margin-right:auto;
+padding:3px;
+position:relative;
+width:80px;
+}
+
+#ingameChatinput {
+    position: absolute;
+}
+
+#ingameChatlog {
+height:75px;
+}
+
+#inputbox {
+border:1px solid #000;
+width:100%;
+}
+
+#leftField {
+float:left;
+overflow:auto;
+}
+
+#menubar {
+height:82px;
+margin-bottom:5px;
+position:relative;
+}
+
+#portrait {
+background-image:url('../gfx/avatar.png');
+background-repeat:no-repeat;
+border:1px solid #000;
+float:left;
+height:80px;
+width:80px;
+}
+
+#rightField {
+float:right;
+overflow:auto;
+}
+
+#title {
+font-size:3em;
+}
+
+#userlist {
+border:1px solid #000;
+float:right;
+height:420px;
+overflow:auto;
+padding:10px;
+text-align:left;
+width:155px;
+}
+
+#wrapper {
+height:650px;
+margin:0 auto;
+padding:0;
+text-align:left;
+width:760px;
+
+border: 1px solid red;
+margin-top: 40px;
+}
+
+.cell {
+border:1px solid #000;
+display:table-cell;
+float:left;
+height:30px;
+width:30px;
+}
+
+.row {
+display:table-row;
+}
+
+body {
+font-family:'trebuchet ms', arial, sans-serif;
+font-size:.80em;
+margin:0;
+padding:0;
+text-align:center;
+}
+
+ul#menuLeft {
+left:0;
+}
+
+ul#menuRight {
+right:0;
+}
+
+ul#menuRight li,ul#menuLeft li {
+-moz-border-radius:8px;
+-webkit-border-radius:8px;
+background:#e6e6e6;
+border:1px solid #000;
+border-radius:8px;
+float:left;
+height:20px;
+margin:0 5px 5px 0;
+padding:5px;
+position:relative;
+text-align:center;
+width:100px;
+}
+
+ul#menuRight,ul#menuLeft {
+list-style:none;
+margin-top:-15px;
+padding-left:5px;
+position:absolute;
+top:50%;
+}
