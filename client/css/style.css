@@ -211,3 +211,9 @@ a {
 .lobby-table td {
 	border: 1px solid #CCC2C2;
 }
+
+.rotate90 img { 
+  transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+}
