@@ -11,7 +11,8 @@ TILE = {
   SHIP_BASE3: "gfx/ShipBase3.png",
   SHIP_TAIL: "gfx/ShipTail.png",
   SHIP_SINGLE1: "gfx/SingleShip1.png",
-  SHIP_SINGLE2: "gfx/SingleShip2.png"
+  SHIP_SINGLE2: "gfx/SingleShip2.png",
+  FOG: "gfx/FogTexture.png"
 }
 
 $(document).ready(function () {
@@ -115,28 +116,35 @@ function drawShips () {
   
   // 1x 4-ships
   drawShip(true, 2, 6, 4);
+  
+  // Generate temporary field of fog over opponent's field 
+  for (var row = 0; row < 10; row++) {
+    for (var column = 0; column < 10; column++) {
+      drawTile(false, row, column, TILE.FOG);
+    }
+  }
 }
 
 function drawShip (isSelf, row, column, size, rotate) {
   // TODO: Colour of the sails, more variations?
   
   if (size == 1) {
-    drawShipTile(true, row, column, TILE.SHIP_SINGLE1);
+    drawTile(true, row, column, TILE.SHIP_SINGLE1);
     return;
   }
   
   for (var i = 0; i < size; i++) {
     switch (i) {
     case 0:
-      if (rotate) drawShipTile(true, row, column, TILE.SHIP_NOSE, rotate);
-      else drawShipTile(true, row, column, TILE.SHIP_TAIL);
+      if (rotate) drawTile(true, row, column, TILE.SHIP_NOSE, rotate);
+      else drawTile(true, row, column, TILE.SHIP_TAIL);
       break;
     case size-1:
-      if (rotate) drawShipTile(true, row, column, TILE.SHIP_TAIL, rotate);
-      else drawShipTile(true, row, column, TILE.SHIP_NOSE);
+      if (rotate) drawTile(true, row, column, TILE.SHIP_TAIL, rotate);
+      else drawTile(true, row, column, TILE.SHIP_NOSE);
       break;
     default:
-      drawShipTile(true, row, column, TILE.SHIP_BASE3, rotate);
+      drawTile(true, row, column, TILE.SHIP_BASE3, rotate);
     }
     if (rotate) column++;
     else row++;
@@ -144,7 +152,7 @@ function drawShip (isSelf, row, column, size, rotate) {
 
 }
 
-function drawShipTile (isSelf, row, column, tileToDraw, rotate) {
+function drawTile (isSelf, row, column, tileToDraw, rotate) {
   if (isSelf) var cellId = "#user";
   else var cellId = "#opponent";
   cellId += row + "x" + column;
