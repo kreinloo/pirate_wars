@@ -98,42 +98,51 @@ function fillTables () {
 
 }
 function drawShips () { 
-  //4x 1-ships
-  drawShipTile(true, 7, 3, TILE.SHIP_SINGLE1);
+  // 4x 1-ships
+  drawShip(true, 7, 3, 1);
+  drawShip(true, 2, 1, 1);
+  drawShip(true, 5, 8, 1);
+  drawShip(true, 7, 7, 1);
   
-  drawShipTile(true, 2, 1, TILE.SHIP_SINGLE1);
+  // 3x 2-ships
+  drawShip(true, 1, 3, 2);
+  drawShip(true, 9, 8, 2, true);
+  drawShip(true, 6, 0, 2, true);
+
+  // 2x 3-ships
+  drawShip(true, 4, 1, 3, true);
+  drawShip(true, 0, 8, 3);
   
-  drawShipTile(true, 5, 8, TILE.SHIP_SINGLE1);
-  
-  drawShipTile(true, 7, 7, TILE.SHIP_SINGLE1);
-  
-  //3x 2-ships
-  drawShipTile(true, 2, 3, TILE.SHIP_NOSE);
-  drawShipTile(true, 1, 3, TILE.SHIP_TAIL);
-  
-  drawShipTile(true, 9, 8, TILE.SHIP_NOSE, true);
-  drawShipTile(true, 9, 9, TILE.SHIP_TAIL, true);
-  
-  drawShipTile(true, 6, 0, TILE.SHIP_NOSE, true);
-  drawShipTile(true, 6, 1, TILE.SHIP_TAIL, true);
-  
-  //2x 3-ships
-  drawShipTile(true, 4, 1, TILE.SHIP_NOSE, true);
-  drawShipTile(true, 4, 2, TILE.SHIP_BASE3, true);
-  drawShipTile(true, 4, 3, TILE.SHIP_TAIL, true);
-  
-  drawShipTile(true, 2, 8, TILE.SHIP_NOSE);
-  drawShipTile(true, 1, 8, TILE.SHIP_BASE3);
-  drawShipTile(true, 0, 8, TILE.SHIP_TAIL);
-  
-  //1x 4-ships
-  drawShipTile(true, 5, 6, TILE.SHIP_NOSE);
-  drawShipTile(true, 3, 6, TILE.SHIP_BASE3);
-  drawShipTile(true, 4, 6, TILE.SHIP_BASE3);
-  drawShipTile(true, 2, 6, TILE.SHIP_TAIL);
+  // 1x 4-ships
+  drawShip(true, 2, 6, 4);
 }
 
-// TODO: drawShip function to automatically draw individual tiles
+function drawShip (isSelf, row, column, size, rotate) {
+  // TODO: Colour of the sails, more variations?
+  
+  if (size == 1) {
+    drawShipTile(true, row, column, TILE.SHIP_SINGLE1);
+    return;
+  }
+  
+  for (var i = 0; i < size; i++) {
+    switch (i) {
+    case 0:
+      if (rotate) drawShipTile(true, row, column, TILE.SHIP_NOSE, rotate);
+      else drawShipTile(true, row, column, TILE.SHIP_TAIL);
+      break;
+    case size-1:
+      if (rotate) drawShipTile(true, row, column, TILE.SHIP_TAIL, rotate);
+      else drawShipTile(true, row, column, TILE.SHIP_NOSE);
+      break;
+    default:
+      drawShipTile(true, row, column, TILE.SHIP_BASE3, rotate);
+    }
+    if (rotate) column++;
+    else row++;
+  }
+
+}
 
 function drawShipTile (isSelf, row, column, tileToDraw, rotate) {
   if (isSelf) var cellId = "#user";
@@ -142,9 +151,8 @@ function drawShipTile (isSelf, row, column, tileToDraw, rotate) {
   
   var cell = $(cellId).append($("<img>").attr("src", tileToDraw));
   
-  if (rotate) {
+  if (rotate)
     cell.addClass("rotate90");
-  }
 }
 
 function fillScoreboard () {
