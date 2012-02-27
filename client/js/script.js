@@ -3,8 +3,16 @@
 	
 
 */
-$(document).ready(function () {
 
+TILE = {
+  SHIP_NOSE: "gfx/ShipNose.png",
+  SHIP_BASE1: "gfx/ShipBase1.png",
+  SHIP_BASE2: "gfx/ShipBase2.png",
+  SHIP_BASE3: "gfx/ShipBase3.png",
+  SHIP_TAIL: "gfx/ShipTail.png"
+}
+
+$(document).ready(function () {
 	/* sample text */
 	$("#game-chat-log").append("<div><b>user1:</b> hello</div>");	
 	$("#game-chat-log").append("<div><b>user2:</b> hello</div>");	
@@ -87,10 +95,54 @@ function fillTables () {
 	}
 
 }
+function drawShips () { 
+  //4x 1-ships
+  drawShipTile(true, 7, 3, TILE.SHIP_BASE2);
+  
+  drawShipTile(true, 2, 1, TILE.SHIP_BASE2);
+  
+  drawShipTile(true, 5, 8, TILE.SHIP_BASE2);
+  
+  drawShipTile(true, 7, 7, TILE.SHIP_BASE2);
+  
+  //3x 2-ships
+  drawShipTile(true, 2, 3, TILE.SHIP_NOSE);
+  drawShipTile(true, 1, 3, TILE.SHIP_TAIL);
+  
+  drawShipTile(true, 9, 8, TILE.SHIP_NOSE, true);
+  drawShipTile(true, 9, 9, TILE.SHIP_TAIL, true);
+  
+  drawShipTile(true, 6, 0, TILE.SHIP_NOSE, true);
+  drawShipTile(true, 6, 1, TILE.SHIP_TAIL, true);
+  
+  //2x 3-ships
+  drawShipTile(true, 4, 1, TILE.SHIP_NOSE, true);
+  drawShipTile(true, 4, 2, TILE.SHIP_BASE3, true);
+  drawShipTile(true, 4, 3, TILE.SHIP_TAIL, true);
+  
+  drawShipTile(true, 2, 8, TILE.SHIP_NOSE);
+  drawShipTile(true, 1, 8, TILE.SHIP_BASE3);
+  drawShipTile(true, 0, 8, TILE.SHIP_TAIL);
+  
+  //1x 4-ships
+  drawShipTile(true, 5, 6, TILE.SHIP_NOSE);
+  drawShipTile(true, 3, 6, TILE.SHIP_BASE3);
+  drawShipTile(true, 4, 6, TILE.SHIP_BASE3);
+  drawShipTile(true, 2, 6, TILE.SHIP_TAIL);
+}
 
-function drawShips () {
+// TODO: drawShip function to automatically draw individual tiles
 
-	$("#user2x3").append($("<img>").attr("src", "gfx/ShipNose.png"));
+function drawShipTile (isSelf, row, column, tileToDraw, rotate) {
+  if (isSelf) var cellId = "#user";
+  else var cellId = "#opponent";
+  cellId += row + "x" + column;
+  
+  var cell = $(cellId).append($("<img>").attr("src", tileToDraw));
+  
+  if (rotate) {
+    cell.addClass("rotate90");
+  }
 }
 
 function fillScoreboard () {

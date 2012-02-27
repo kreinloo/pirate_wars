@@ -223,3 +223,9 @@ a {
 	width: 70%;
 	margin: auto auto auto auto;
 }
+
+.rotate90 img { 
+  transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+}
