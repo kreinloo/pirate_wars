@@ -61,21 +61,29 @@ a {
 
 #game-tablearea {
 	width: 690px;
-	height: 322px;
+	height: 345px;
 	margin: auto 35px auto 35px;
 }
 
-.game-table {
+.game-table-wrapper {
 	margin-top: 5px;
-	width: 322px;
-	height: 322px;
+	width: 340px;
+	height: 340px;
+	background-image: url("../gfx/Border.png");
 }
 
-.game-table-left {
+.game-table {
+	width: 322px;
+	height: 322px;
+	padding-left: 10px;
+	padding-top: 10px;
+}
+
+.game-table-wrapper-left {
 	float: left;
 }
 
-.game-table-right {
+.game-table-wrapper-right {
 	float: right;
 }
 
@@ -95,15 +103,15 @@ a {
 }
 
 #game-chat {
-	width: 687px;
-	margin: 10px 35px auto 35px;
-	height: 170px;
+	width: 688px;
+	margin: 8px 35px auto 35px;
+	height: 155px;
 	border: 1px solid black;
 }
 
 #game-chat-log {
 	width: 100%;
-	height: 140px;
+	height: 125px;
 	margin: auto auto auto auto;
 	padding-left: 2px;
 }
