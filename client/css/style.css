@@ -218,3 +218,8 @@ a {
 	margin: auto auto auto auto;
 }
 
+#replay-div {
+	text-align: center;
+	width: 70%;
+	margin: auto auto auto auto;
+}
