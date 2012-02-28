@@ -89,6 +89,7 @@ a {
 }
 
 .game-table-cell {
+  position: relative;
 	height: 30px;
 	width: 30px;
 	margin: 0;

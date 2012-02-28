@@ -12,7 +12,8 @@ TILE = {
   SHIP_TAIL: "gfx/ShipTail.png",
   SHIP_SINGLE1: "gfx/SingleShip1.png",
   SHIP_SINGLE2: "gfx/SingleShip2.png",
-  FOG: "gfx/FogTexture.png"
+  FOG: "gfx/FogTexture.png",
+  FIRE: "gfx/Fire.gif"
 }
 
 $(document).ready(function () {
@@ -117,6 +118,13 @@ function drawShips () {
   // 1x 4-ships
   drawShip(true, 2, 6, 4);
   
+  var fire = $("<img>").attr("src", TILE.FIRE);
+  //TODO: separate class in css for this
+  fire.css("top", 0);
+  fire.css("left", 0);
+  fire.css("position", "absolute");
+  $("#user4x6").append(fire);
+  
   // Generate temporary field of fog over opponent's field 
   for (var row = 0; row < 10; row++) {
     for (var column = 0; column < 10; column++) {
@@ -157,7 +165,12 @@ function drawTile (isSelf, row, column, tileToDraw, rotate) {
   else var cellId = "#opponent";
   cellId += row + "x" + column;
   
-  var cell = $(cellId).append($("<img>").attr("src", tileToDraw));
+  var tile = $("<img>").attr("src", tileToDraw);
+  //TODO: separate class in css for this
+  tile.css("top", 0);
+  tile.css("left", 0);
+  tile.css("position", "absolute");
+  var cell = $(cellId).append(tile);
   
   if (rotate)
     cell.addClass("rotate90");
