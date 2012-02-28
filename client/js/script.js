@@ -69,6 +69,17 @@ $(document).ready(function () {
 	drawShips ();
 	fillScoreboard ();
 	fillReplay ();
+
+	$("#opponent2x4").children().remove();
+	$("#opponent6x3").children().remove();
+	$("#opponent8x9").children().remove();
+	$("#opponent4x3").children().remove();
+
+	$("#opponent2x4").append($("<img>").attr("src", TILE.FOG_EDGE1));
+	$("#opponent6x3").append($("<img>").attr("src", TILE.FOG_EDGE1));
+	$("#opponent8x9").append($("<img>").attr("src", TILE.FOG_EDGE1));
+	$("#opponent4x3").append($("<img>").attr("src", TILE.FOG_EDGE1));
+
 });
 
 
