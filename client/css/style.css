@@ -99,6 +99,12 @@ a {
 	background-image: url('../gfx/WaterTexture.png');
 }
 
+.game-table-cell img {
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
 #game-chat {
 	width: 688px;
 	margin: 8px 35px auto 35px;
