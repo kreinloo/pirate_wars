@@ -21,7 +21,7 @@ TILE = {
 }
 
 $(document).ready(function () {
-	/* sample text */
+	
 	$("#game-chat-log").append("<div><b>user1:</b> hello</div>");	
 	$("#game-chat-log").append("<div><b>user2:</b> hello</div>");	
 	$("#game-chat-log").append("<div><b>user1:</b> let's play</div>");	
