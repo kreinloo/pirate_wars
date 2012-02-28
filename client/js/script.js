@@ -53,7 +53,7 @@ $(document).ready(function () {
 			$("#lobby-chat-log").append(
 				"<div class='chat-message'><b>user:</b> " + message + "</div>");
 			$("#lobby-chat-log").scrollTop($("#lobby-chat-log").prop("scrollHeight"));
-		}; 
+		}
 	});
 
 	$(".menu-item").hover(
