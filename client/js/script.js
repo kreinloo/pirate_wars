@@ -90,7 +90,7 @@ function fillTables () {
 		for (j = 0; j < 10; j++) {
 			row.append(
 				$("<div class='game-table-cell'>").attr(
-					"id", "user" + i + "x" + j));
+					"id", "user_" + i + "_" + j));
 		}
 		$("#game-table-user").append(row);
 	}
@@ -100,7 +100,7 @@ function fillTables () {
 		for (j = 0; j < 10; j++) {
 			row.append(
 				$("<div class='game-table-cell'>").attr(
-					"id", "opponent" + i + "x" + j));
+					"id", "opponent_" + i + "_" + j));
 		}
 		$("#game-table-opponent").append(row);
 	}
