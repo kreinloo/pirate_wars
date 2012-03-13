@@ -41,148 +41,147 @@ function Client () {
 
 		console.log("row: " + row + " col: " + col + " length: " + length + " direction: " + direction);
 
+		var startRow;
+		var startCol;
+		var endRow;
+		var endCol;
+
+		switch (length) {
+
+			case 1:
+				startRow = row - 1;
+				startCol = col - 1;
+				endRow = row + 1;
+				endCol = col + 1;
+				break;
+
+			case 2:
+				startRow = row - 1;
+				startCol = col - 1;
+
+				if (direction == "horizontal") {
+					endRow = row + 1;
+					endCol = col + 2;
+				} else {
+					endRow = row + 2;
+					endCol = col + 1;
+				}
+				break;
+
+			case 3:
+				if (direction == "horizontal") {
+					startRow = row - 1;
+					startCol = col - 2;
+					endRow = row + 1;
+					endCol = col + 2;
+				} else {
+					startRow = row - 2;
+					startCol = col - 1;
+					endRow = row + 2;
+					endCol = col + 1;
+				}
+				break;
+
+			case 4:
+				if (direction == "horizontal") {
+					startRow = row - 1;
+					startCol = col - 2;
+					endRow = row + 1;
+					endCol = col + 3;
+				} else {
+					startRow = row - 2;
+					startCol = col - 1;
+					endRow = row + 3;
+					endCol = col + 1;
+				}
+				break;
+		}
+
+		if (startRow < 0)
+			startRow = 0;
+		if (startCol < 0)
+			startCol = 0;
+		if (endRow > 9)
+			endRow = 9;
+		if (endCol > 9)
+			endCol = 9;
+
+		for (var i = startRow; i <= endRow; i++) {
+			for (var j = startCol; j <= endCol; j++) {
+				if (gameTable[i][j] != 0)
+					return false;
+			}
+		}
+
 		switch (length) {
 
 		case 1:
-			if (gameTable[row][col] == 0) {
-				gameTable[row][col] = 1;
-				this.printGameTable();
-				ship.cellId = cellId;
-				ship.coords = [ [row, col] ];
-				return true;
-			}
-			else {
-				this.printGameTable();
-				return false;
-			}
+			gameTable[row][col] = 1;
+			ship.cellId = cellId;
+			ship.coords = [ [row, col] ];
 			break;
 
 		case 2:
-
 			if (direction == "horizontal") {
-				if (gameTable[row][col] == 0 && col+1 <= 9 && gameTable[row][col+1] == 0) {
-					gameTable[row][col] = 1;
-					gameTable[row][col+1] = 1;
-					this.printGameTable();
-					ship.cellId = cellId;
-					ship.coords = [ [row, col], [row, col+1] ];
-					return true;
-				}
-				else {
-					this.printGameTable();
-					return false;
-				}
-			}
+				gameTable[row][col] = 1;
+				gameTable[row][col+1] = 1;
 
+				ship.cellId = cellId;
+				ship.coords = [ [row, col], [row, col+1] ];
+			}
 			else {
-				if (gameTable[row][col] == 0 && row+1 <= 9 && gameTable[row+1][col] == 0) {
-					gameTable[row][col] = 1;
-					gameTable[row+1][col] = 1;
-					this.printGameTable();
-					ship.cellId = cellId;
-					ship.coords = [ [row, col], [row+1, col] ];
-					return true;
-				}
-				else {
-					this.printGameTable();
-					return false;
-				}
+				gameTable[row][col] = 1;
+				gameTable[row+1][col] = 1;
+
+				ship.cellId = cellId;
+				ship.coords = [ [row, col], [row+1, col] ];
 			}
 			break;
 
 		case 3:
-
 			if (direction == "horizontal") {
-				if (gameTable[row][col] == 0 && col+1 <= 9 && gameTable[row][col+1] == 0 &&
-					col-1 >= 0 && gameTable[row][col-1] == 0) {
+				gameTable[row][col] = 1;
+				gameTable[row][col+1] = 1;
+				gameTable[row][col-1] = 1;
 
-					gameTable[row][col] = 1;
-					gameTable[row][col+1] = 1;
-					gameTable[row][col-1] = 1;
-
-					this.printGameTable();
-					ship.cellId = cellId;
-					ship.coords = [ [row, col], [row, col+1], [row, col-1] ];
-					return true;
-				}
-				else {
-					this.printGameTable();
-					return false;
-				}
+				ship.cellId = cellId;
+				ship.coords = [ [row, col], [row, col+1], [row, col-1] ];
 			}
 
 			else {
-				if (gameTable[row][col] == 0 && row+1 <= 9 && gameTable[row+1][col] == 0 &&
-					row-1 >= 0 && gameTable[row-1][col] == 0) {
+				gameTable[row][col] = 1;
+				gameTable[row+1][col] = 1;
+				gameTable[row-1][col] = 1;
 
-					gameTable[row][col] = 1;
-					gameTable[row+1][col] = 1;
-					gameTable[row-1][col] = 1;
-
-					this.printGameTable();
-					ship.cellId = cellId;
-					ship.coords = [ [row, col], [row+1, col], [row-1, col] ];
-					return true;
-				}
-				else {
-					this.printGameTable();
-					return false;
-				}
+				ship.cellId = cellId;
+				ship.coords = [ [row, col], [row+1, col], [row-1, col] ];
 			}
-
 			break;
 
 		case 4:
-
 			if (direction == "horizontal") {
-				if (gameTable[row][col] == 0 &&
-					col+1 <= 9 && gameTable[row][col+1] == 0 &&
-					col+2 <= 9 && gameTable[row][col+2] == 0 &&
-					col-1 >= 0 && gameTable[row][col-1] == 0) {
+				gameTable[row][col] = 1;
+				gameTable[row][col+1] = 1;
+				gameTable[row][col+2] = 1;
+				gameTable[row][col-1] = 1;
 
-					gameTable[row][col] = 1;
-					gameTable[row][col+1] = 1;
-					gameTable[row][col+2] = 1;
-					gameTable[row][col-1] = 1;
-
-					this.printGameTable();
-					ship.cellId = cellId;
-					ship.coords = [ [row, col], [row, col+1], [row, col+2], [row, col-1] ];
-					return true;
-				}
-				else {
-					this.printGameTable();
-					return false;
-				}
+				ship.cellId = cellId;
+				ship.coords = [ [row, col], [row, col+1], [row, col+2], [row, col-1] ];
 			}
-
 			else {
-				if (gameTable[row][col] == 0 &&
-					row+1 <= 9 && gameTable[row+1][col] == 0 &&
-					row+2 <= 9 && gameTable[row+2][col] == 0 &&
-					row-1 >= 0 && gameTable[row-1][col] == 0) {
+				gameTable[row][col] = 1;
+				gameTable[row+1][col] = 1;
+				gameTable[row+2][col] = 1;
+				gameTable[row-1][col] = 1;
 
-					gameTable[row][col] = 1;
-					gameTable[row+1][col] = 1;
-					gameTable[row+2][col] = 1;
-					gameTable[row-1][col] = 1;
-
-					this.printGameTable();
-					ship.cellId = cellId;
-					ship.coords = [ [row, col], [row+1, col], [row+2, col], [row-1, col] ];
-					return true;
-				}
-				else {
-					this.printGameTable();
-					return false;
-				}
-
+				ship.cellId = cellId;
+				ship.coords = [ [row, col], [row+1, col], [row+2, col], [row-1, col] ];
 			}
-
 			break;
-
 		}
 
+		this.printGameTable();
+		return true;
 	}
 
 	this.deleteShip = function (coords) {
