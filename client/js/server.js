@@ -8,18 +8,18 @@ function Server() {
   return {
     fireAt : function(row, col) {
       if (localPlayerId != currentGame.getActivePlayerId())
-        return;
+        return false;
       var activePlayer = currentGame.getActivePlayer();
       var opponentPlayer = currentGame.getOpponentPlayer();
       if (!activePlayer.isMoveLegit(row, col))
-        return;
+        return false;
       var opponentsField = opponentPlayer.getGameField();
       opponentsField.shootAt(row, col);
-      currentGame.rotatePlayer();
       activePlayer.pushMove(row, col);
+      currentGame.rotatePlayer();
     },
     
-    waitForOpponent : function(row, col) {
+    waitForOpponent : function() {
       currentGame.rotatePlayer();
     
     },
@@ -33,8 +33,30 @@ function Server() {
 }
 
 function AI() {
+  var movesToDo;
   
-
+  function arrayShuffle(arrayToShuffle) {
+    var arrayLen = arrayToShuffle.length;
+    for (var i = arrayLen-1; i >= 0; i--) {
+      var j = parseInt(Math.random() * arrayLen);
+      var temp = arrayToShuffle[i];
+      arrayToShuffle[i] = arrayToShuffle[j];
+      arrayToShuffle[j] = temp;
+    }
+  }
+  
+  movesToDo = new Array();
+  for (var col = 0; col < 10; col++) {
+    for (var row = 0; row < 10; row++)
+      movesToDo.push(new Array(row, col));
+  }
+  arrayShuffle(movesToDo);
+  
+  return {
+    popNextMove : function() {
+      return movesToDo.pop();
+    }
+  }
 }
 
 function Game() {
