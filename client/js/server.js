@@ -1,39 +1,153 @@
+ERROR = {
+  NONE: 0,
+  INVALID_MOVE: 1,
+  REPEATED_MOVE: 2,
+  WRONG_TURN: 3,
+  INVALID_PHASE: 4
+}
+
+HIT = {
+  WATER: 10,
+  SHIP: 11,
+  WHOLE_SHIP: 12,
+  GAME_OVER: 13
+}
+
+PHASE = {
+  ALIGNMENT: 20,
+  BATTLE: 21,
+  GAME_OVER: 22
+}
+
 function Server() {
   var currentGame;
   var localPlayerId;
+  var brains;
   
   localPlayerId = 0;
   currentGame = new Game();
+  brains = new AI(currentGame.getPlayerById(1));
   
   return {
     fireAt : function(row, col) {
+      if (currentGame.getGamePhase() != PHASE.BATTLE)
+        throw ERROR.INVALID_PHASE;
+      if ((typeof row != "number") || (typeof col != "number"))
+        throw ERROR.INVALID_MOVE;
+      if ((row < 0) || (col < 0))
+        throw ERROR.INVALID_MOVE;
+      if ((row >= 10) || (row >= 10))
+        throw ERROR.INVALID_MOVE;
       if (localPlayerId != currentGame.getActivePlayerId())
-        return false;
+        throw ERROR.WRONG_TURN;
+        
       var activePlayer = currentGame.getActivePlayer();
       var opponentPlayer = currentGame.getOpponentPlayer();
-      if (!activePlayer.isMoveLegit(row, col))
-        return false;
+      if (!activePlayer.isMoveUnique(row, col))
+        throw ERROR.REPEATED_MOVE;
+        
       var opponentsField = opponentPlayer.getGameField();
-      opponentsField.shootAt(row, col);
+      var result = opponentsField.fireAt(row, col);
+      if (result == HIT.GAME_OVER)
+        currentGame.incGamePhase();
       activePlayer.pushMove(row, col);
       currentGame.rotatePlayer();
+      return result;
     },
     
     waitForOpponent : function() {
+      if (currentGame.getGamePhase() != PHASE.BATTLE)
+        throw ERROR.INVALID_PHASE;
+      if (localPlayerId == currentGame.getActivePlayerId())
+        throw ERROR.WRONG_TURN;
+      var activePlayer = currentGame.getActivePlayer();
+      var opponentPlayer = currentGame.getOpponentPlayer();
+      var opponentsField = opponentPlayer.getGameField();
+      
+      var target = brains.popNextMove();
+      var result = opponentsField.fireAt(target[0], target[1]);
+      if (result == HIT.GAME_OVER)
+        currentGame.incGamePhase();
+      activePlayer.pushMove(target[0], target[1]);
       currentGame.rotatePlayer();
+      target.push(result);
+      return target;
+    },
     
+    addVerticalShip : function(row, col, length) {
+      if (currentGame.getGamePhase() != PHASE.ALIGNMENT)
+        throw ERROR.INVALID_PHASE;
+      
+      var gameField = currentGame.getPlayerById(localPlayerId).getGameField();
+      gameField.addVerticalShip(row, col, length);
+    },
+    
+    addHorizontalShip : function(row, col, length) {
+      if (currentGame.getGamePhase() != PHASE.ALIGNMENT)
+        throw ERROR.INVALID_PHASE;
+        
+      var gameField = currentGame.getPlayerById(localPlayerId).getGameField();
+      gameField.addHorizontalShip(row, col, length);
+    },
+    
+    deleteShip : function (row, col) {
+      if (currentGame.getGamePhase() != PHASE.ALIGNMENT)
+        throw ERROR.INVALID_PHASE;
+      
+      var gameField = currentGame.getPlayerById(localPlayerId).getGameField();
+      gameField.deleteShip(row, col);
+    },
+    
+    confirmAlignment : function() {
+      // TODO: Validation for ship alignment?
+      if (currentGame.getGamePhase() != PHASE.ALIGNMENT)
+        throw ERROR.INVALID_PHASE;
+      var localPlayer = currentGame.getPlayerById(localPlayerId);
+      
+      localPlayer.setReady(true);
+      if (currentGame.areBothPlayersReady())
+        currentGame.incGamePhase();
+    },
+    
+    opponentsAlignment : function() {
+      if (currentGame.getGamePhase() != PHASE.ALIGNMENT)
+        throw ERROR.INVALID_PHASE;
+        
+      var aiPlayer = brains.getPlayer();
+      var aiField = aiPlayer.getGameField();
+      
+      // Hardcoded alignment
+      aiField.addHorizontalShip(0,0,4);
+      
+      aiField.addHorizontalShip(2,0,3);
+      aiField.addHorizontalShip(4,0,3);
+      
+      aiField.addHorizontalShip(6,0,2);
+      aiField.addHorizontalShip(8,0,2);
+      aiField.addHorizontalShip(7,5,3);
+      
+      aiField.addHorizontalShip(1,5,1);
+      aiField.addHorizontalShip(3,5,1);
+      aiField.addHorizontalShip(5,5,1);
+      aiField.addHorizontalShip(7,5,1);
+      
+      aiPlayer.setReady(true);
+      if (currentGame.areBothPlayersReady())
+        currentGame.incGamePhase();
+      return true;
     },
     
     getCurrentGame : function() {
       return currentGame;
     }
-    
-    // TODO: methods to manipulate with ship placement
   }
 }
 
-function AI() {
+function AI(playerObj) {
   var movesToDo;
+  var playerObj;
+  
+  this.playerObj = playerObj;
   
   function arrayShuffle(arrayToShuffle) {
     var arrayLen = arrayToShuffle.length;
@@ -55,6 +169,10 @@ function AI() {
   return {
     popNextMove : function() {
       return movesToDo.pop();
+    },
+    
+    getPlayer : function() {
+      return playerObj;
     }
   }
 }
@@ -68,7 +186,7 @@ function Game() {
   players[0] = new Player();
   players[1] = new Player();
   activePlayer = 0;
-  gamePhase = 0;
+  gamePhase = PHASE.ALIGNMENT;
   
   return {
     getActivePlayerId : function () {
@@ -85,6 +203,22 @@ function Game() {
     
     rotatePlayer : function() {
       activePlayer = activePlayer == 1 ? 0 : 1;
+    },
+    
+    getGamePhase : function() {
+      return gamePhase;
+    },
+    
+    incGamePhase : function() {
+      gamePhase++;
+    },
+    
+    getPlayerById : function(playerId) {
+      return players[playerId];
+    },
+    
+    areBothPlayersReady : function() {
+      return (players[0].getReady() && players[1].getReady());
     }
   }
 }
@@ -92,26 +226,36 @@ function Game() {
 function Player() {
   var gameField;
   var movesHistory;
+  var ready;
 
   gameField = new Field();
   movesHistory = [];
+  ready = false;
   
   return {
     getMovesHistory : function() {
       return movesHistory;
     },
     
-    isMoveLegit : function(row, col) {
-      var index = $.inArray(row + "x" + col, movesHistory);
+    isMoveUnique : function(row, col) {
+      var index = $.inArray(row + 'x' + col, movesHistory);
       return (index == -1 ? true : false);
     },
     
     pushMove : function(row, col) {
-      movesHistory.push(row + "x" + col);
+      movesHistory.push(row + 'x' + col);
     },
     
     getGameField : function() {
       return gameField;
+    },
+    
+    setReady : function (isReady) {
+      ready = isReady;
+    },
+    
+    getReady : function() {
+      return ready;
     }
   }
 }
@@ -169,7 +313,7 @@ function Field() {
       return shipsLeft;
     },
     
-    shootAt : function(row, col) {
+    fireAt : function(row, col) {
       function countWholeParts(row, col, move_row, move_col) {
         if ((typeof move_row == 'undefined') && (typeof move_col == 'undefined')) {
           var count;
@@ -190,20 +334,26 @@ function Field() {
         return (matrix[row][col] == 2 ? 1 : 0)
           + countWholeParts(row + move_row, col + move_col, move_row, move_col);
       }
+      
+      if (shipsLeft <= 0) return HIT.GAME_OVER;
 
       switch (matrix[row][col]) {
         case 0:
           matrix[row][col] = 1;
-          break;
+          return HIT.WATER;
         case 1:
-          break;
+          throw ERROR.ILLEGAL_MOVE;
         case 2:
           matrix[row][col] = 3;
-          if (countWholeParts(row, col) == 0)
+          if (countWholeParts(row, col) == 0) {
             shipsLeft--;
-          break;
+            if (shipsLeft <= 0)
+              return HIT.GAME_OVER;
+            return HIT.WHOLE_SHIP;
+          }
+          return HIT.SHIP;
         case 3:
-          break;
+          throw ERROR.ILLEGAL_MOVE;
       }
     
     },
