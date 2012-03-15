@@ -1,24 +1,53 @@
+/*
+  server.js
+  
+  Server interface (and dummy implementation) and all helper classes for it.
+  From UI/API it should be necessary to call only methods of the Server()
+    class.
+  Those methods have also been documented (unlike most of the others).
+*/
+
+// Represents different erroneous situations (used for throwing)
 ERROR = {
+  // Dummy (probably not used)
   NONE: 0,
+  // The move isn't legal (invalid coordinates for example)
   INVALID_MOVE: 1,
+  // Player has already fired on that cell
   REPEATED_MOVE: 2,
+  // It's not player's turn to fire
   WRONG_TURN: 3,
+  // It's not possible to do that in current game phase
   INVALID_PHASE: 4
 }
 
+// Represents result of firing
 HIT = {
+  // Hit the water
   WATER: 10,
+  // Hit tile of enemy ship
   SHIP: 11,
+  // Hit tile of enemy ship that was also last part of it
   WHOLE_SHIP: 12,
+  // Hit last tile of last ship - won
   GAME_OVER: 13
 }
 
+// Represents different phases of game
 PHASE = {
+  // First phase: placing ships on the field
   ALIGNMENT: 20,
+  // Main/battle phase: firing at enemy squares
   BATTLE: 21,
+  // Game over
   GAME_OVER: 22
 }
 
+/*
+  Class: Server()
+  Interface for communicating with server.
+  The only class that should be necessary to call from outside.
+*/
 function Server() {
   var currentGame;
   var localPlayerId;
@@ -29,10 +58,16 @@ function Server() {
   brains = new AI(currentGame.getPlayerById(1));
   
   return {
+    /* 
+      FireAt(row, col)
+      Fires at enemy field.
+      Returns result of the action (look HIT table)
+        or an exception (look ERROR table).
+    */
     fireAt : function(row, col) {
       if (currentGame.getGamePhase() != PHASE.BATTLE)
         throw ERROR.INVALID_PHASE;
-      if ((typeof row != "number") || (typeof col != "number"))
+      if ((typeof row != 'number') || (typeof col != 'number'))
         throw ERROR.INVALID_MOVE;
       if ((row < 0) || (col < 0))
         throw ERROR.INVALID_MOVE;
@@ -55,6 +90,17 @@ function Server() {
       return result;
     },
     
+    /*
+      waitForOpponent()
+      In fake-server implementation should be called after
+        your own turn. In real solution I suppose the call should
+        be timed (returns undefined or something if enemy hasn't made
+        her move yet).
+      Returns array of result (
+        0 - row where enemy fired.
+        1 - column where enemy fired.
+        2 - the result of act (look HIT table).
+    */
     waitForOpponent : function() {
       if (currentGame.getGamePhase() != PHASE.BATTLE)
         throw ERROR.INVALID_PHASE;
@@ -74,6 +120,15 @@ function Server() {
       return target;
     },
     
+    /*
+      addVerticalShip(row, col, length)
+      Adds ship with vertical alignment on your field.
+        The (row, col) specifies the uppermost tile of the ship.
+      Currently does NOT validate the placement (whether it's colliding
+        with other ships etc.), because it's already done in the UI and both
+        are client-side anyway. Of course in the real server implementation it
+        should be also verified on server-side for security reasons.
+    */
     addVerticalShip : function(row, col, length) {
       if (currentGame.getGamePhase() != PHASE.ALIGNMENT)
         throw ERROR.INVALID_PHASE;
@@ -82,6 +137,15 @@ function Server() {
       gameField.addVerticalShip(row, col, length);
     },
     
+    /*
+      addHorizontalShip(row, col, length)
+      Adds ship with horizontal alignment on your field.
+        The (row, col) specifies the leftmost tile of the ship.
+      Currently does NOT validate the placement (whether it's colliding
+        with other ships etc.), because it's already done in the UI and both
+        are client-side anyway. Of course in the real server implementation it
+        should be also verified on server-side for security reasons.
+    */
     addHorizontalShip : function(row, col, length) {
       if (currentGame.getGamePhase() != PHASE.ALIGNMENT)
         throw ERROR.INVALID_PHASE;
@@ -90,6 +154,11 @@ function Server() {
       gameField.addHorizontalShip(row, col, length);
     },
     
+    /*
+      deleteShip(row, col)
+      Removes the ship from specified location. It's not important which
+        tile you give as parameter as the whole boat is deleted anyway.
+    */
     deleteShip : function (row, col) {
       if (currentGame.getGamePhase() != PHASE.ALIGNMENT)
         throw ERROR.INVALID_PHASE;
@@ -98,8 +167,14 @@ function Server() {
       gameField.deleteShip(row, col);
     },
     
+    /*
+      confirmAlignment()
+      Confirms that you're satisfied with the alignment of ships you have done
+        and "locks" it.
+      Currenly does not verify that all ships have added - if it's done in UI
+        then it should be not necessary as both are client-side anyway.
+    */
     confirmAlignment : function() {
-      // TODO: Validation for ship alignment?
       if (currentGame.getGamePhase() != PHASE.ALIGNMENT)
         throw ERROR.INVALID_PHASE;
       var localPlayer = currentGame.getPlayerById(localPlayerId);
@@ -109,6 +184,14 @@ function Server() {
         currentGame.incGamePhase();
     },
     
+    /*
+      opponentsAlignment()
+      Checks whether enemy has made her choice of ships placement. 
+        Returns true if choice has been made.
+      In this dummy-server solution it always does hardcoded placement when
+        the method is called.
+      In real solution I suppose it should timed called.
+    */
     opponentsAlignment : function() {
       if (currentGame.getGamePhase() != PHASE.ALIGNMENT)
         throw ERROR.INVALID_PHASE;
@@ -129,7 +212,7 @@ function Server() {
       aiField.addHorizontalShip(1,5,1);
       aiField.addHorizontalShip(3,5,1);
       aiField.addHorizontalShip(5,5,1);
-      aiField.addHorizontalShip(7,5,1);
+      aiField.addHorizontalShip(9,5,1);
       
       aiPlayer.setReady(true);
       if (currentGame.areBothPlayersReady())
@@ -137,12 +220,36 @@ function Server() {
       return true;
     },
     
+    /*
+      getCurrentGame()
+      Returns the object of current game.
+      For debugging purposes!
+    */
     getCurrentGame : function() {
       return currentGame;
+    },
+    
+    /*
+      printPlayerFieldById(playerId)
+      Prints the matrix of gamefield of player with id 'playerId'.
+        In dummy-server: 
+          0 - human player
+          1 - AI player
+      For debugging purposes!
+    */
+    printPlayerFieldById : function(playerId) {
+      return currentGame.getPlayerById(playerId).getGameField().printMatrix();
     }
   }
 }
 
+/*
+  Class: AI(playerObj) 
+  Creates artificial intelligence (more like artificial idiot)
+    and ties it with player object 'playerObj'.
+  The AI pre-generates the list of moves so it's not necessary to
+    check if they're unique. Moves are pseudo-random.
+*/
 function AI(playerObj) {
   var movesToDo;
   var playerObj;
@@ -177,6 +284,13 @@ function AI(playerObj) {
   }
 }
 
+/*
+  Class: Game()
+  Represents instance of game and manipulates with it. 
+  Holds information about active phase,
+    active player (whose turn it is),
+    references to player-objects,
+*/
 function Game() {
   var players;
   var activePlayer;
@@ -223,6 +337,12 @@ function Game() {
   }
 }
 
+/*
+  Class: Player()
+  Represents player, holds necessary information and references
+    about her: like history of moves, reference to field object,
+    whether player is ready for battle (in alignment phase).
+*/
 function Player() {
   var gameField;
   var movesHistory;
@@ -260,6 +380,12 @@ function Player() {
   }
 }
 
+/*
+  Class: Field()
+  Represents the field of game and provides manipulation with it.
+  Basically has 10x10 matrix that holds information about each cell.
+  Also knows how many ships are left in the field (getShipsLeft() method).
+*/
 function Field() {
   /*
   0 - water (not shot)
@@ -305,9 +431,9 @@ function Field() {
     },
     
     printMatrix : function () {
-			for (var i = 0; i < 10; i++)
-				console.log (matrix[i]);
-		},
+      for (var i = 0; i < 10; i++)
+        console.log (matrix[i]);
+    },
     
     getShipsLeft : function() {
       return shipsLeft;
