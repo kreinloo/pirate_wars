@@ -9,7 +9,7 @@ function Player () {
 	var id;
 	var name;
 	var gameTable;
-	var ships = [];
+	//var ships = [];
 
 	gameTable = new Array(10);
 	for (var i = 0; i < 10; i++) {
@@ -87,8 +87,8 @@ function Player () {
 			}
 
 			ship.setCoords(coords);
-			this.printGameTable();
-			ships.push(ship);
+			//this.printGameTable();
+			//ships.push(ship);
 			return true;
 
 		},
@@ -103,6 +103,7 @@ function Player () {
 				else
 					gameTable[row+i][col] = 0;
 			}
+
 		},
 
 		rotateShip : function (ship) {
@@ -134,7 +135,7 @@ function Player () {
 				for (var j = 0; j < 10; j++)
 					gameTable[i][j] = 0;
 			}
-			ships = [];
+			//ships = [];
 		},
 
 		confirmShipCount : function () {
@@ -144,13 +145,14 @@ function Player () {
 					v += gameTable[i][j];
 				}
 			}
-			if (v == 20 && ships.length == 10)
+			//if (v == 20 && ships.length == 10)
+			if (v == 20)
 				return true;
 			else
 				return false;
 		},
 
-		getShips : function () { return ships; },
+		//getShips : function () { return ships; },
 
 		lockShips : function () { $(".game-table-ship").draggable("disable"); }
 
@@ -298,7 +300,7 @@ function Ship (len, dir, plyr) {
 
 			if (Object.keys( $(this).data("obj").getCoords() ).length > 0) {
 				$(this).data("obj").getPlayer().deleteShip( $(this).data("obj") );
-				$(this).data("obj").clearCoords();
+				//$(this).data("obj").clearCoords();
 			}
 		},
 		stop : function (event, ui) {
@@ -326,7 +328,11 @@ function Ship (len, dir, plyr) {
 			if (!res) {
 				$(this).css("top", $(this).data("top"));
 				$(this).css("left", $(this).data("left"));
+				if ( $(this).data("obj").hasCoords() )
+					$(this).data("obj").getPlayer().addShip($(this).data("obj"),
+						$(this).data("obj").getCoords());
 			}
+			$(this).data("obj").getPlayer().printGameTable();
 		}
 	});
 
@@ -397,6 +403,8 @@ function Ship (len, dir, plyr) {
 		getCoords : function () { return coords; },
 
 		clearCoords : function () { coords = {}; },
+
+		hasCoords : function () { return Object.keys(coords).length > 0;},
 
 		getElement : function () { return element; },
 
