@@ -4,11 +4,12 @@
 
 */
 
-function Client () {
+function Player () {
 
 	var id;
 	var name;
 	var gameTable;
+	var ships = [];
 
 	gameTable = new Array(10);
 	for (var i = 0; i < 10; i++) {
@@ -87,6 +88,7 @@ function Client () {
 
 			ship.setCoords(coords);
 			this.printGameTable();
+			ships.push(ship);
 			return true;
 
 		},
@@ -122,7 +124,35 @@ function Client () {
 				this.addShip(ship, coords);
 				return false;
 			}
-		}
+		},
+
+		clearTable : function () {
+			gameTable = null;
+			gameTable = new Array(10);
+			for (var i = 0; i < 10; i++) {
+				gameTable[i] = new Array(10);
+				for (var j = 0; j < 10; j++)
+					gameTable[i][j] = 0;
+			}
+			ships = [];
+		},
+
+		confirmShipCount : function () {
+			var v = 0;
+			for (var i = 0; i < 10; i++) {
+				for (var j = 0; j < 10; j++) {
+					v += gameTable[i][j];
+				}
+			}
+			if (v == 20 && ships.length == 10)
+				return true;
+			else
+				return false;
+		},
+
+		getShips : function () { return ships; },
+
+		lockShips : function () { $(".game-table-ship").draggable("disable"); }
 
 	}
 
@@ -144,44 +174,85 @@ var SHIPS = {
 
 };
 
-var client = new Client ();
-var ships = [];
+var player = new Player ();
 
 $(document).ready(function () {
 
 	$("#game-table-opponent").css("display", "none");
-
 	$("#game-table-ships").css("display", "inline");
 
-	var shipFactory = new ShipFactory();
+	$("#game-table-ships-confirm").click(function () {
+		console.log("confirm button clicked");
+		if (!player.confirmShipCount()) {
+			console.log("all ships have not been placed to table");
+		} else {
+			console.log("all ships are placed");
+			$("#game-table-ships").remove();
+			$("#game-table-opponent").css("display", "block");
+			player.lockShips();
+		}
 
-	var ship1 = shipFactory.createShip(1, "horizontal", client);
-	ship1.getElement().css("top", 20);
-	ship1.getElement().css("left", 400);
+	});
 
-	var ship2 = shipFactory.createShip(2, "horizontal", client);
-	ship2.getElement().css("top", 60);
-	ship2.getElement().css("left", 400);
+	$("#game-table-ships-reset").click(function () {
+		console.log("reset button clicked");
+		resetShips();
+	});
 
-	var ship3 = shipFactory.createShip(3, "horizontal", client);
-	ship3.getElement().css("top", 100);
-	ship3.getElement().css("left", 400);
+	resetShips();
 
-	var ship4 = shipFactory.createShip(4, "horizontal", client);
-	ship4.getElement().css("top", 140);
-	ship4.getElement().css("left", 400);
-
-	ships.push(ship1);
-	ships.push(ship2);
-	ships.push(ship3);
-	ships.push(ship4);
 });
 
-function Ship (len, dir, clnt) {
+function resetShips () {
+
+	$(".game-table-ship").remove();
+	player.clearTable();
+
+	var shipFactory = new ShipFactory();
+	var left = 360;
+	var top = 10;
+
+	for (var i = 0; i < 4; i++) {
+		var ship = shipFactory.createShip(1, "horizontal", player);
+		ship.getElement().css("top", top);
+		ship.getElement().css("left", left);
+		left += 35;
+	}
+
+	left = 360;
+	top += 40;
+
+	for (var i = 0; i < 3; i++) {
+		var ship = shipFactory.createShip(2, "horizontal", player);
+		ship.getElement().css("top", top);
+		ship.getElement().css("left", left);
+		left += 70;
+	}
+
+	left = 360;
+	top += 40;
+
+	for (var i = 0; i < 2; i++) {
+		var ship = shipFactory.createShip(3, "horizontal", player);
+		ship.getElement().css("top", top);
+		ship.getElement().css("left", left);
+		left += 105;
+	}
+
+	left = 360;
+	top += 40;
+
+	var ship = shipFactory.createShip(4, "horizontal", player)
+	ship.getElement().css("top", top);
+	ship.getElement().css("left", left);
+
+}
+
+function Ship (len, dir, plyr) {
 
 	var length = len;
 	var direction = dir;
-	var client = clnt;
+	var player = plyr;
 	var element = $("<img>");
 	var coords = {};
 
@@ -226,7 +297,7 @@ function Ship (len, dir, clnt) {
 			$(this).data("left", $(this).css("left"));
 
 			if (Object.keys( $(this).data("obj").getCoords() ).length > 0) {
-				$(this).data("obj").getClient().deleteShip( $(this).data("obj") );
+				$(this).data("obj").getPlayer().deleteShip( $(this).data("obj") );
 				$(this).data("obj").clearCoords();
 			}
 		},
@@ -241,12 +312,17 @@ function Ship (len, dir, clnt) {
 				top -= 10;
 				left -= 12;
 			}
-			var res = $(this).data("obj").getClient().addShip(
+			var res;
+			if (top < 0 || left < 0) {
+				res = false;
+			} else {
+				res = $(this).data("obj").getPlayer().addShip(
 						$(this).data("obj"), {
 							row : parseInt(top / 32),
 							col : parseInt(left / 32)
 						}
 					);
+			}
 			if (!res) {
 				$(this).css("top", $(this).data("top"));
 				$(this).css("left", $(this).data("left"));
@@ -261,6 +337,7 @@ function Ship (len, dir, clnt) {
 	});
 
 	element.css("position", "absolute");
+	element.addClass("game-table-ship");
 
 	$("#game-table-user").append(element);
 
@@ -268,7 +345,7 @@ function Ship (len, dir, clnt) {
 
 		rotateShip : function () {
 
-			var res = client.rotateShip(this);
+			var res = player.rotateShip(this);
 
 			if (res) {
 				switch (length) {
@@ -311,7 +388,7 @@ function Ship (len, dir, clnt) {
 				direction = "horizontal";
 		},
 
-		getClient : function () { return client; },
+		getPlayer : function () { return player; },
 
 		getLength : function () { return length; },
 
@@ -325,7 +402,7 @@ function Ship (len, dir, clnt) {
 
 		getElement : function () { return element; },
 
-		setShipPointer : function (ship) { element.data("obj", ship) }
+		setShipPointer : function (ship) { element.data("obj", ship) },
 
 	}
 
@@ -335,9 +412,9 @@ function ShipFactory () {
 
 	return  {
 
-		createShip : function (length, direction, client) {
+		createShip : function (length, direction, player) {
 
-			var ship = new Ship (length, direction, client);
+			var ship = new Ship (length, direction, player);
 			ship.setShipPointer(ship);
 			return ship;
 
