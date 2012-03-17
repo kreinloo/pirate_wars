@@ -37,7 +37,8 @@ function Client () {
 			var length = ship.getLength();
 			var direction = ship.getDirection();
 
-			console.log("row: " + row + " col: " + col + " length: " + length + " direction: " + direction);
+			console.log("row: " + row + " col: " + col + " length: " +
+				length + " direction: " + direction);
 
 			if (direction == "horizontal") {
 				if (col < 0 || col + length > 10 || row < 0 || row > 9)
@@ -152,19 +153,21 @@ $(document).ready(function () {
 
 	$("#game-table-ships").css("display", "inline");
 
-	var ship1 = new Ship (1, "horizontal", client);
+	var shipFactory = new ShipFactory();
+
+	var ship1 = shipFactory.createShip(1, "horizontal", client);
 	ship1.getElement().css("top", 20);
 	ship1.getElement().css("left", 400);
 
-	var ship2 = new Ship (2, "horizontal", client);
+	var ship2 = shipFactory.createShip(2, "horizontal", client);
 	ship2.getElement().css("top", 60);
 	ship2.getElement().css("left", 400);
 
-	var ship3 = new Ship (3, "horizontal", client);
+	var ship3 = shipFactory.createShip(3, "horizontal", client);
 	ship3.getElement().css("top", 100);
 	ship3.getElement().css("left", 400);
 
-	var ship4 = new Ship (4, "horizontal", client);
+	var ship4 = shipFactory.createShip(4, "horizontal", client);
 	ship4.getElement().css("top", 140);
 	ship4.getElement().css("left", 400);
 
@@ -257,64 +260,55 @@ function Ship (len, dir, clnt) {
 		}
 	});
 
-	element.data("obj", this);
 	element.css("position", "absolute");
 
 	$("#game-table-user").append(element);
-
-	//this.getCoords = function () { return coords; };
-
-	//this.getDirection = function () { return direction; };
-
-	//this.getClient = function () { return client; };
-
-	//this.getLength = function () { return length; };
 
 	return {
 
 		rotateShip : function () {
 
-			var res = getClient().rotateShip(this);
+			var res = client.rotateShip(this);
 
 			if (res) {
-				switch (getLength()) {
+				switch (length) {
 
 				case 1:
-					if (getDirection() == "horizontal")
-						getElement().attr("src", SHIPS.SHIP_1_horizontal);
+					if (direction == "horizontal")
+						element.attr("src", SHIPS.SHIP_1_horizontal);
 					else
-						getElement().attr("src", SHIPS.SHIP_1_vertical);
+						element.attr("src", SHIPS.SHIP_1_vertical);
 					break;
 
 				case 2:
-					if (getDirection() == "horizontal")
-						getElement().attr("src", SHIPS.SHIP_2_horizontal);
+					if (direction == "horizontal")
+						element.attr("src", SHIPS.SHIP_2_horizontal);
 					else
-						getElement().attr("src", SHIPS.SHIP_2_vertical);
+						element.attr("src", SHIPS.SHIP_2_vertical);
 					break;
 
 				case 3:
-					if (getDirection() == "horizontal")
-						getElement().attr("src", SHIPS.SHIP_3_horizontal);
+					if (direction == "horizontal")
+						element.attr("src", SHIPS.SHIP_3_horizontal);
 					else
-						getElement().attr("src", SHIPS.SHIP_3_vertical);
+						element.attr("src", SHIPS.SHIP_3_vertical);
 					break;
 
 				case 4:
-					if (getDirection() == "horizontal")
-						getElement().attr("src", SHIPS.SHIP_4_horizontal);
+					if (direction == "horizontal")
+						element.attr("src", SHIPS.SHIP_4_horizontal);
 					else
-						getElement().attr("src", SHIPS.SHIP_4_vertical);
+						element.attr("src", SHIPS.SHIP_4_vertical);
 					break;
 				}
 			}
 		},
 
 		flipDirection : function () {
-			if (this.direction == "horizontal")
-				this.direction = "vertical";
+			if (direction == "horizontal")
+				direction = "vertical";
 			else
-				this.direction = "horizontal";
+				direction = "horizontal";
 		},
 
 		getClient : function () { return client; },
@@ -329,7 +323,25 @@ function Ship (len, dir, clnt) {
 
 		clearCoords : function () { coords = {}; },
 
-		getElement : function () { return element; }
+		getElement : function () { return element; },
+
+		setShipPointer : function (ship) { element.data("obj", ship) }
+
+	}
+
+}
+
+function ShipFactory () {
+
+	return  {
+
+		createShip : function (length, direction, client) {
+
+			var ship = new Ship (length, direction, client);
+			ship.setShipPointer(ship);
+			return ship;
+
+		}
 
 	}
 
