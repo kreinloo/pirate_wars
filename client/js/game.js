@@ -17,8 +17,6 @@ function Client () {
 			gameTable[i][j] = 0;
 	}
 
-
-
 	this.getID = function () { return id; }
 
 	this.getName = function () { return name; }
@@ -30,6 +28,7 @@ function Client () {
 			console.log (gameTable[i]);
 	}
 
+/*
 	this.addShip = function (cellId, ship) {
 
 		var coords = cellId.split("_");
@@ -147,7 +146,6 @@ function Client () {
 				ship.cellId = cellId;
 				ship.coords = [ [row, col], [row, col+1], [row, col-1] ];
 			}
-
 			else {
 				gameTable[row][col] = 1;
 				gameTable[row+1][col] = 1;
@@ -183,14 +181,79 @@ function Client () {
 		this.printGameTable();
 		return true;
 	}
+*/
+	this.addShip = function (ship, coords) {
 
-	this.deleteShip = function (coords) {
-		for (var coord in coords) {
-			var c = coords[coord];
-			gameTable[c[0]][c[1]] = 0;
+		var row = coords["row"];
+		var col = coords["col"];
+		var length = ship.getLength();
+		var direction = ship.getDirection();
+
+		console.log("row: " + row + " col: " + col + " length: " + length + " direction: " + direction);
+
+		if (direction == "horizontal") {
+			if (col < 0 || col + length > 10 || row < 0 || row > 9)
+				return false;
+		} else {
+			if (row < 0 || row + length > 10 || col < 0 || col > 9)
+				return false;
 		}
+
+		var startRow = row - 1;
+		var startCol = col - 1;
+
+		var endRow;
+		var endCol;
+
+		if (direction == "horizontal") {
+			endRow = row + 1;
+			endCol = col + length;
+		} else {
+			endRow = row + length;
+			endCol = col + 1;
+		}
+
+		if (startRow < 0)
+			startRow = 0;
+		if (startCol < 0)
+			startCol = 0;
+		if (endRow > 9)
+			endRow = 9;
+		if (endCol > 9)
+			endCol = 9;
+
+		for (var i = startRow; i <= endRow; i++) {
+			for (var j = startCol; j <= endCol; j++) {
+				if (gameTable[i][j] != 0)
+					return false;
+			}
+		}
+
+		for (var i = 0; i < length; i++) {
+			if (direction == "horizontal")
+				gameTable[row][col+i] = 1;
+			else
+				gameTable[row+i][col] = 1;
+		}
+
+		ship.setCoords(coords);
+		this.printGameTable();
+		return true;
+
 	}
 
+	this.deleteShip = function (ship) {
+		var row = ship.getCoords()["row"];
+		var col = ship.getCoords()["col"];
+
+		for (var i = 0; i < ship.getLength(); i++) {
+			if (ship.getDirection() == "horizontal")
+				gameTable[row][col+i] = 0;
+			else
+				gameTable[row+i][col] = 0;
+		}
+	}
+/*
 	this.rotateShip = function (ship) {
 
 		if ( !$(ship).data("obj").cellId ) {
@@ -240,7 +303,27 @@ function Client () {
 			return false;
 		}
 	}
+*/
+	this.rotateShip = function (ship) {
+		if (Object.keys(ship.getCoords()).length == 0) {
+			ship.flipDirection();
+			return true;
+		}
 
+		var coords = ship.getCoords();
+
+		this.deleteShip(ship);
+		ship.flipDirection();
+		var res = this.addShip(ship, coords);
+
+		if (res) {
+			return true;
+		} else {
+			ship.flipDirection();
+			this.addShip(ship, coords);
+			return false;
+		}
+	}
 
 };
 
@@ -269,6 +352,7 @@ $(document).ready(function () {
 
 	$("#game-table-ships").css("display", "inline");
 
+/*
 	$(".game-table-cell").droppable({
 		drop : function (event, ui) {
 			var result = client.addShip( $(this).attr("id"), ui.draggable.data("obj") );
@@ -276,12 +360,11 @@ $(document).ready(function () {
 				$(ui.draggable).css("top", $(ui.draggable).data("top"));
 				$(ui.draggable).css("left", $(ui.draggable).data("left"));
 			}
-			else {
-			}
 		}
 
 	});
-
+*/
+/*
 	ships.push( new Ship (1, "horizontal", client) );
 	ships.push( new Ship (1, "horizontal", client) );
 	ships.push( new Ship (1, "vertical", client) );
@@ -293,8 +376,11 @@ $(document).ready(function () {
 
 	ships.push( new Ship (3, "horizontal", client) );
 	ships.push( new Ship (3, "vertical", client) );
-
-	ships.push( new Ship (4, "horizontal", client) );
+*/
+	var ship = new Ship (4, "horizontal", client);
+	ship.getElement().css("top", 20);
+	ship.getElement().css("left", 400);
+	ships.push(ship);
 });
 
 
@@ -346,9 +432,32 @@ function Ship (length, direction, client) {
 		start : function (event, ui) {
 			$(this).data("top", $(this).css("top"));
 			$(this).data("left", $(this).css("left"));
-			if ( $(this).data("obj").coords.length > 0 ) {
-				$(this).data("obj").client.deleteShip( $(this).data("obj").coords );
-				$(this).data("obj").deleteCoords();
+
+			if (Object.keys( $(this).data("obj").getCoords() ).length > 0) {
+				$(this).data("obj").getClient().deleteShip( $(this).data("obj") );
+				$(this).data("obj").clearCoords();
+			}
+		},
+		stop : function (event, ui) {
+			var top = parseInt($(this).css("top"));
+			var left = parseInt($(this).css("left"));
+			if ( $(this).data("obj").direction == "horizontal" ) {
+				top -= 12;
+				left -= 10;
+			}
+			else {
+				top -= 10;
+				left -= 12;
+			}
+			var res = $(this).data("obj").getClient().addShip(
+						$(this).data("obj"), {
+							row : parseInt(top / 32),
+							col : parseInt(left / 32)
+						}
+					);
+			if (!res) {
+				$(this).css("top", $(this).data("top"));
+				$(this).css("left", $(this).data("left"));
 			}
 		}
 	});
@@ -362,7 +471,7 @@ function Ship (length, direction, client) {
 	this.element.data("obj", this);
 	this.element.css("position", "absolute");
 
-	$("#game-table-ships").append(this.element);
+	$("#game-table-user").append(this.element);
 
 	this.saveCoordinates = function (coords) { this.coords = coords; };
 
@@ -373,7 +482,7 @@ function Ship (length, direction, client) {
 
 	this.rotateShip = function () {
 
-		var res = this.client.rotateShip(this.element);
+		var res = this.client.rotateShip(this);
 
 		if (res) {
 			switch (this.length) {
@@ -415,6 +524,22 @@ function Ship (length, direction, client) {
 		else
 			this.direction = "horizontal";
 	}
+
+	this.getClient = function () { return this.client; };
+
+	this.getLength = function () { return this.length; };
+
+	this.getDirection = function () { return this.direction; };
+
+	this.crds = {};
+
+	this.setCoords = function (coords) { this.crds = coords; };
+
+	this.getCoords = function () { return this.crds; };
+
+	this.clearCoords = function () { this.crds = {}; };
+
+	this.getElement = function () { return this.element; };
 
 }
 
