@@ -330,10 +330,8 @@ function Ship (len, dir, plyr) {
 		}
 	});
 
-	element.mousedown(function (event) {
-		if (event.which == 2) {
-			$(this).data("obj").rotateShip();
-		}
+	element.dblclick(function () {
+		$(this).data("obj").rotateShip();
 	});
 
 	element.css("position", "absolute");
