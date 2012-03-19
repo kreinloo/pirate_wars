@@ -3,6 +3,7 @@
 	game.js
 
 */
+
 TILE = {
   SHIP_NOSE: "gfx/ShipNose.png",
   SHIP_BASE1: "gfx/ShipBase1.png",
@@ -20,14 +21,16 @@ TILE = {
 
 var server = new Server();
 
+
 function PlayerClient (Server) {
+
 	var server = Server;
 	var id;
 	var name;
 	var gameTable;
 	var opponentTable;
 	//var opponentTable;
-	//var ships = [];
+
 
 	gameTable = new Array(10);
 	for (var i = 0; i < 10; i++) {
@@ -113,8 +116,6 @@ function PlayerClient (Server) {
 			}
 
 			ship.setCoords(coords);
-			//this.printGameTable();
-			//ships.push(ship);
 			
 			if (direction == "horizontal"){
 				server.addHorizontalShip(row,col,length);
@@ -169,7 +170,7 @@ function PlayerClient (Server) {
 				for (var j = 0; j < 10; j++)
 					gameTable[i][j] = 0;
 			}
-			//ships = [];
+			server.resetField();
 		},
 		
 		confirmShipCount : function () {
@@ -179,7 +180,7 @@ function PlayerClient (Server) {
 					v += gameTable[i][j];
 				}
 			}
-			//if (v == 20 && ships.length == 10)
+
 			if (v == 20)
 				return true;
 			else
@@ -206,6 +207,7 @@ function PlayerClient (Server) {
 				case 13 : //reveal fog, add fire, draw ship , congractulate. 
 
 			}
+			console.log("fire AT is OK !! )");
 			OpponentsTurn();
 		},
 		OpponentsTurn : function (){
@@ -220,6 +222,7 @@ function PlayerClient (Server) {
 
 				case 13 :// add fire,
 					//congractulate player on loss . 
+
 
 			}
 
@@ -237,7 +240,7 @@ function PlayerClient (Server) {
 				var row = id[1];
 				var col = id[2];
 				console.log("row: " + row + " col: " + col + " clicked");
-				player.makeMove(row, col);
+				player.makeMove(parseInt(row), parseInt(col));
 			})
 		},
 
@@ -280,7 +283,7 @@ var SHIPS = {
 
 };
 
-var player = new PlayerClient (server);
+var player = new PlayerClient ( new Server() );
 
 $(document).ready(function () {
 
@@ -305,7 +308,6 @@ $(document).ready(function () {
 	$("#game-table-ships-reset").click(function () {
 		console.log("reset button clicked");
 		resetShips();
-		server.resetField();
 	});
 
 	resetShips();
@@ -439,7 +441,7 @@ function Ship (len, dir, plyr) {
 					$(this).data("obj").getPlayerClient().addShip($(this).data("obj"),
 						$(this).data("obj").getCoords());
 			}
-			$(this).data("obj").getPlayerClient().printGameTable();
+			//$(this).data("obj").getPlayerClient().printGameTable();
 		}
 	});
 
@@ -526,16 +528,13 @@ function ShipFactory () {
 	return  {
 
 		createShip : function (length, direction, player) {
-
 			var ship = new Ship (length, direction, player);
 			ship.setShipPointer(ship);
 			return ship;
-
 		}
-
 	}
-
 }
+
 
 
 function drawTile (isSelf, row, column, tileToDraw, rotate) {
