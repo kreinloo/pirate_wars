@@ -66,7 +66,7 @@ function Server() {
     */
     fireAt : function(row, col) {
       if (currentGame.getGamePhase() != PHASE.BATTLE)
-        throw ERROR.INVALID_PHASE;
+        throw ERROR.INVALID_PHASE +" " + currentGame.getGamePhase();
       if ((typeof row != 'number') || (typeof col != 'number'))
         throw ERROR.INVALID_MOVE;
       if ((row < 0) || (col < 0))
@@ -199,7 +199,10 @@ function Server() {
       
       localPlayer.setReady(true);
       if (currentGame.areBothPlayersReady())
+		console.log ("server phase: " + currentGame.getGamePhase );
         currentGame.incGamePhase();
+		console.log ("server phase: " + currentGame.getGamePhase() );
+		
     },
     
     /*
