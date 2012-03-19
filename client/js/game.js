@@ -10,6 +10,7 @@ function PlayerClient (Server) {
 	var id;
 	var name;
 	var gameTable;
+	var opponentTable;
 	//var ships = [];
 
 	gameTable = new Array(10);
@@ -17,6 +18,12 @@ function PlayerClient (Server) {
 		gameTable[i] = new Array(10);
 		for (var j = 0; j < 10; j++)
 			gameTable[i][j] = 0;
+	}
+	opponentTable = new Array(10);
+	for (var i = 0; i < 10; i++) {
+		opponentTable[i] = new Array(10);
+		for (var j = 0; j < 10; j++)
+			opponentTable[i][j] = 0;
 	}
 
 	return {
