@@ -170,7 +170,36 @@ function PlayerClient (Server) {
 
 		//getShips : function () { return ships; },
 
-		lockShips : function () { $(".game-table-ship").draggable("disable"); }
+		lockShips : function () { $(".game-table-ship").draggable("disable"); },
+
+		addListenerToOpponentCells : function () {
+			$(".game-table-opponent-cell").click(function () {
+				var id = $(this).attr("id").split("_");
+				var row = id[1];
+				var col = id[2];
+				console.log("row: " + row + " col: " + col + " clicked");
+				player.fireAt(row, col);
+			})
+		},
+
+		removeListenerFromOpponentCells : function () {
+			$(".game-table-opponent-cell").off("click");
+		},
+
+		fireAt : function (row, col) {
+			try {
+				server.fireAt(row, col);
+			} catch (ex) {
+				console.log("Exception: " + ex);
+			}
+		},
+
+		lockTable : function () {
+			this.lockShips();
+			this.addListenerToOpponentCells();
+			// Signal the server that we are ready to start the game.
+			server.confirmAlignment();
+		}
 
 	}
 
@@ -207,9 +236,8 @@ $(document).ready(function () {
 			console.log("all ships are placed");
 			$("#game-table-ships").remove();
 			$("#game-table-opponent").css("display", "block");
-			player.lockShips();
-			// Signal the server that we are ready to start the game.
-			server.confirmAlignment();
+
+			player.lockTable();
 		}
 
 	});
