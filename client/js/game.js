@@ -3,15 +3,14 @@
 	game.js
 
 */
-var server = new Server();
 
 function PlayerClient (Server) {
+
 	var server = Server;
 	var id;
 	var name;
 	var gameTable;
 	var opponentTable;
-	//var ships = [];
 
 	gameTable = new Array(10);
 	for (var i = 0; i < 10; i++) {
@@ -95,8 +94,6 @@ function PlayerClient (Server) {
 			}
 
 			ship.setCoords(coords);
-			//this.printGameTable();
-			//ships.push(ship);
 			
 			if (direction == "horizontal"){
 				server.addHorizontalShip(row,col,length);
@@ -151,7 +148,7 @@ function PlayerClient (Server) {
 				for (var j = 0; j < 10; j++)
 					gameTable[i][j] = 0;
 			}
-			//ships = [];
+			server.resetField();
 		},
 
 		confirmShipCount : function () {
@@ -161,14 +158,12 @@ function PlayerClient (Server) {
 					v += gameTable[i][j];
 				}
 			}
-			//if (v == 20 && ships.length == 10)
+
 			if (v == 20)
 				return true;
 			else
 				return false;
 		},
-
-		//getShips : function () { return ships; },
 
 		lockShips : function () { $(".game-table-ship").draggable("disable"); },
 
@@ -221,7 +216,7 @@ var SHIPS = {
 
 };
 
-var player = new PlayerClient (server);
+var player = new PlayerClient ( new Server() );
 
 $(document).ready(function () {
 
@@ -245,7 +240,6 @@ $(document).ready(function () {
 	$("#game-table-ships-reset").click(function () {
 		console.log("reset button clicked");
 		resetShips();
-		server.resetField();
 	});
 
 	resetShips();
@@ -379,7 +373,7 @@ function Ship (len, dir, plyr) {
 					$(this).data("obj").getPlayerClient().addShip($(this).data("obj"),
 						$(this).data("obj").getCoords());
 			}
-			$(this).data("obj").getPlayerClient().printGameTable();
+			//$(this).data("obj").getPlayerClient().printGameTable();
 		}
 	});
 
@@ -466,16 +460,10 @@ function ShipFactory () {
 	return  {
 
 		createShip : function (length, direction, player) {
-
 			var ship = new Ship (length, direction, player);
 			ship.setShipPointer(ship);
 			return ship;
-
 		}
-
 	}
-
 }
-$("#game-table-opponent.game-table-cell").click(function(){
- alert("asd");
- });
+
