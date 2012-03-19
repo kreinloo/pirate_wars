@@ -192,9 +192,11 @@ function PlayerClient (Server) {
 			var result = server.waitForOpponent();
 			switch (result[2]) {
 				case 10 :
-					//	add water splash to the tile 
+					drawTile(true,result[0],result[1],TILE.SPLASH,false);
+					break;
 				case 11 :
-					//	add fire effect to the tile.
+					drawTile(true,result[0],result[1],TILE.FIRE,false);
+					break;
 				case 12 : 
 					//	add fire  effect to the tile.
 
@@ -257,24 +259,29 @@ function PlayerClient (Server) {
 				alert("Not your turn sire"); 
 				return;
 			}
+			if (opponentTable[row][col]!= 0){
+				alert("we have already hit there sire!");
+				return 
+			}
 			outcome = server.fireAt(row ,col);
+			opponentTable[row][col] = 1;
 			switch (outcome) {
 				case 10 :// reveal fog on that tile 
-				//add water splash to the tile 
-				//update opponentTable
+					drawTile(false,row,col,TILE.SPLASH,false);
+					break;
 				case 11 : //reveal fog on that tile
-				//add fire effect to the tile.
-				//update OpponentTable
+					drawTile(false,row,col,TILE.FIRE,false);
+					break;
 				case 12 : //reveal fog, 
-				//add fire 
+					drawTile(false,row,col,TILE.FIRE,false);
 				//draw the ship. 
-				//update OpponentTable
+					break;
 				//Find Direction 
 				case 13 : //reveal fog, add fire, draw ship , congractulate. 
 
 			}
-			console.log("fire AT is OK !! )");
-			OpponentsTurn();
+
+			this.OpponentsTurn();
 		},
 			
 		
@@ -317,9 +324,10 @@ function PlayerClient (Server) {
 			this.lockShips();
 			this.addListenerToOpponentCells();
 			// Signal the server that we are ready to start the game.
+			server.opponentsAlignment();
 			server.confirmAlignment();
 			// for the dummy server
-			server.opponentsAlignment()
+			
 		}
 
 	}
