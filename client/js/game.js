@@ -170,8 +170,8 @@ function PlayerClient (Server) {
 		addListenerToOpponentCells : function () {
 			$(".game-table-opponent-cell").click(function () {
 				var id = $(this).attr("id").split("_");
-				var row = id[1];
-				var col = id[2];
+				var row = parseInt(id[1]);
+				var col = parseInt(id[2]);
 				console.log("row: " + row + " col: " + col + " clicked");
 				player.fireAt(row, col);
 			})
@@ -183,10 +183,19 @@ function PlayerClient (Server) {
 
 		fireAt : function (row, col) {
 			try {
-				server.fireAt(row, col);
+				var result = server.fireAt(row, col);
+				console.log("result: " + result);
+				// TODO :
+				// add textures to opponent's table
 			} catch (ex) {
 				console.log("Exception: " + ex);
 			}
+
+			// we get instant response from the dummy server
+			var opponentMove = server.waitForOpponent()
+			// TODO:
+			// add textures to player's table
+
 		},
 
 		lockTable : function () {
@@ -194,6 +203,8 @@ function PlayerClient (Server) {
 			this.addListenerToOpponentCells();
 			// Signal the server that we are ready to start the game.
 			server.confirmAlignment();
+			// for the dummy server
+			server.opponentsAlignment()
 		}
 
 	}
