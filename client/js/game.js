@@ -199,9 +199,11 @@ function PlayerClient (Server) {
 					break;
 				case 12 : 
 					//	add fire  effect to the tile.
+					break;
 
 				case 13 :// add fire,
-					//congractulate player on loss . 
+					alert ("SIRE ! SIRE! We have no ships left . RETREAAAT!!");
+					break;
 
 
 			}
@@ -277,7 +279,9 @@ function PlayerClient (Server) {
 				//draw the ship. 
 					break;
 				//Find Direction 
-				case 13 : //reveal fog, add fire, draw ship , congractulate. 
+				case 13 : 
+					alert ("SIRE ! We have won a glorious battle today! Beer and women for everybody!! ");
+					break;
 
 			}
 
