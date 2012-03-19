@@ -127,7 +127,7 @@ function drawShips () {
   
   // The Roof is on fire!
   $("#user4x6").append($("<img>").attr("src", TILE.FIRE));
-  
+  console.log("wtf");
   // Generate temporary field of fog over opponent's field 
   for (var row = 0; row < 10; row++) {
     for (var column = 0; column < 10; column++) {

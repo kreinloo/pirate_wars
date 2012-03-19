@@ -135,6 +135,8 @@ function Server() {
       
       var gameField = currentGame.getPlayerById(localPlayerId).getGameField();
       gameField.addVerticalShip(row, col, length);
+	  //gameField.printMatrix();
+	  //console.log("###############################");
     },
     
     /*
@@ -152,6 +154,8 @@ function Server() {
         
       var gameField = currentGame.getPlayerById(localPlayerId).getGameField();
       gameField.addHorizontalShip(row, col, length);
+	  gameField.printMatrix();
+	  console.log("###############################");
     },
     
     /*
@@ -165,7 +169,21 @@ function Server() {
       
       var gameField = currentGame.getPlayerById(localPlayerId).getGameField();
       gameField.deleteShip(row, col);
+	  gameField.printMatrix();
+	  console.log("###############################");
     },
+	/*resetField()
+		function that resets the player's matrix once reset button is pushed.
+	*/
+	resetField : function () {
+      if (currentGame.getGamePhase() != PHASE.ALIGNMENT)
+        throw ERROR.INVALID_PHASE;
+      
+      var gameField = currentGame.getPlayerById(localPlayerId).getGameField();
+	  gameField.resetField();
+	  gameField.printMatrix();
+	  console.log("###############################");
+	},
     
     /*
       confirmAlignment()
@@ -297,7 +315,9 @@ function Game() {
   var gamePhase;
   
   players = new Array(2);
+
   players[0] = new Player();
+
   players[1] = new Player();
   activePlayer = 0;
   gamePhase = PHASE.ALIGNMENT;
@@ -351,7 +371,6 @@ function Player() {
   gameField = new Field();
   movesHistory = [];
   ready = false;
-  
   return {
     getMovesHistory : function() {
       return movesHistory;
@@ -393,6 +412,7 @@ function Field() {
   2 - ship  (not shot)
   3 - ship (shot)
   */
+
   var matrix;
   var shipsLeft;
   
@@ -404,6 +424,9 @@ function Field() {
         matrix[i][j] = 0;
     }
   }
+  
+  
+
   
   function addShip(row, col, row_len, col_len) {
     if ((row < 0) || (col < 0))
@@ -426,6 +449,14 @@ function Field() {
   shipsLeft = 0;
   
   return {
+  
+    resetField : function() {
+		  for (var i = 0; i < 10; i++) {
+			for (var j = 0; j < 10; j++)
+				matrix[i][j] = 0;
+		}
+		shipsLeft = 0;
+	},
     getMatrix : function() {
       return matrix;
     },
@@ -485,16 +516,19 @@ function Field() {
     },
     
     addVerticalShip : function(row, col, length) {
+	  console.log("Server: Added ship vertically : row: "+ row + " col: "+col + " Length: "+ length);
       addShip(row, col, length, 0);
       shipsLeft++;
     },
     
     addHorizontalShip : function(row, col, length) {
+	  console.log("Server: Added ship horizontally : row: "+ row + " col: "+col + " Length: " +length);
       addShip(row, col, 0, length);
       shipsLeft++;
     },
     
     deleteShip : function (row, col) {
+	console.log("deleted ship : "+ row +" "  +col );
       function recursiveDelete(row, col, move_row, move_col) {
         if ((row < 0) || (col < 0))
           return;

@@ -3,9 +3,10 @@
 	game.js
 
 */
+var server = new Server();
 
-function Player () {
-
+function PlayerClient (Server) {
+	var server = Server;
 	var id;
 	var name;
 	var gameTable;
@@ -89,6 +90,13 @@ function Player () {
 			ship.setCoords(coords);
 			//this.printGameTable();
 			//ships.push(ship);
+			
+			if (direction == "horizontal"){
+				server.addHorizontalShip(row,col,length);
+			}
+			else if (direction == "vertical"){
+				server.addVerticalShip(row,col,length);
+			}
 			return true;
 
 		},
@@ -103,7 +111,8 @@ function Player () {
 				else
 					gameTable[row+i][col] = 0;
 			}
-
+			// Communicate to Server that we want to delete a ship 
+			server.deleteShip(row,col);
 		},
 
 		rotateShip : function (ship) {
@@ -176,7 +185,7 @@ var SHIPS = {
 
 };
 
-var player = new Player ();
+var player = new PlayerClient (server);
 
 $(document).ready(function () {
 
@@ -192,6 +201,8 @@ $(document).ready(function () {
 			$("#game-table-ships").remove();
 			$("#game-table-opponent").css("display", "block");
 			player.lockShips();
+			// Signal the server that we are ready to start the game.
+			server.confirmAlignment();
 		}
 
 	});
@@ -199,6 +210,7 @@ $(document).ready(function () {
 	$("#game-table-ships-reset").click(function () {
 		console.log("reset button clicked");
 		resetShips();
+		server.resetField();
 	});
 
 	resetShips();
@@ -299,7 +311,7 @@ function Ship (len, dir, plyr) {
 			$(this).data("left", $(this).css("left"));
 
 			if (Object.keys( $(this).data("obj").getCoords() ).length > 0) {
-				$(this).data("obj").getPlayer().deleteShip( $(this).data("obj") );
+				$(this).data("obj").getPlayerClient().deleteShip( $(this).data("obj") );
 				//$(this).data("obj").clearCoords();
 			}
 		},
@@ -318,7 +330,7 @@ function Ship (len, dir, plyr) {
 			if (top < 0 || left < 0) {
 				res = false;
 			} else {
-				res = $(this).data("obj").getPlayer().addShip(
+				res = $(this).data("obj").getPlayerClient().addShip(
 						$(this).data("obj"), {
 							row : parseInt(top / 32),
 							col : parseInt(left / 32)
@@ -329,10 +341,10 @@ function Ship (len, dir, plyr) {
 				$(this).css("top", $(this).data("top"));
 				$(this).css("left", $(this).data("left"));
 				if ( $(this).data("obj").hasCoords() )
-					$(this).data("obj").getPlayer().addShip($(this).data("obj"),
+					$(this).data("obj").getPlayerClient().addShip($(this).data("obj"),
 						$(this).data("obj").getCoords());
 			}
-			$(this).data("obj").getPlayer().printGameTable();
+			$(this).data("obj").getPlayerClient().printGameTable();
 		}
 	});
 
@@ -392,7 +404,7 @@ function Ship (len, dir, plyr) {
 				direction = "horizontal";
 		},
 
-		getPlayer : function () { return player; },
+		getPlayerClient : function () { return player; },
 
 		getLength : function () { return length; },
 
@@ -429,4 +441,6 @@ function ShipFactory () {
 	}
 
 }
-
+$("#game-table-opponent.game-table-cell").click(function(){
+ alert("asd");
+ });
