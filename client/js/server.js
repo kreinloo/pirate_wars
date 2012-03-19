@@ -249,6 +249,9 @@ function Server() {
     getCurrentGame : function() {
       return currentGame;
     },
+	isGameOver : function(){
+		return currentGame.getGamePhase()==22 ? true :false;
+	},
     getActivePlayerId : function() {
 		return currentGame.getActivePlayerId();
 	},
