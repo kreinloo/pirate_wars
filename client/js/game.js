@@ -186,6 +186,72 @@ function PlayerClient (Server) {
 			else
 				return false;
 		},
+
+			
+		OpponentsTurn : function (){
+			var result = server.waitForOpponent();
+			switch (result[2]) {
+				case 10 :
+					//	add water splash to the tile 
+				case 11 :
+					//	add fire effect to the tile.
+				case 12 : 
+					//	add fire  effect to the tile.
+
+				case 13 :// add fire,
+					//congractulate player on loss . 
+
+
+			}
+
+		},
+		FindDirectionAndLength : function(row, col){
+			// lets find the direction in which enemy ship is placed.
+			var direction = 0;
+			if (row != 9){
+				if (OpponentTable[row+1][col]==1)
+					direction = 1;
+			}
+			else if (row != 0){
+				if (OpponentTable[row-1][col] == 1)
+					direction = 2;
+			}
+			else if (col != 9){
+				if (OpponentTable[row][col+1]==1)
+					direction = 3;
+			}
+			else if (col != 0){
+				if (OpponentTable[row][col-1] == 1)
+					direction = 4;
+			}
+			// lest find the direction in which enemy ship is placed 
+			var length = 1 ;
+			for (var i = 1; i<10; i++){
+				if (direction == 1){
+					if (OpponentTable[row+i][col]==1)
+						length ++;
+					else break
+				}
+				else if (direction == 2){
+					if (OpponentTable[row-i][col]==1)
+						length ++;
+					else break
+				}
+				else if (direction == 3){
+					if (OpponentTable[row][col + i]==1)
+						length ++;
+					else break
+				}
+				else if (direction == 4){
+					if (OpponentTable[row][col - i]==1)
+						length ++;
+					else break
+				}
+				else break;
+			}
+			//once we have the direction and length of enemy ship, we can draw it.  
+			
+		},
 		makeMove : function (row, col){
 			if (server.getActivePlayerId() != 0){
 				alert("Not your turn sire"); 
@@ -210,24 +276,6 @@ function PlayerClient (Server) {
 			console.log("fire AT is OK !! )");
 			OpponentsTurn();
 		},
-		OpponentsTurn : function (){
-			var result = server.waitForOpponent();
-			switch (result[2]) {
-				case 10 :
-					//	add water splash to the tile 
-				case 11 :
-					//	add fire effect to the tile.
-				case 12 : 
-					//	add fire  effect to the tile.
-
-				case 13 :// add fire,
-					//congractulate player on loss . 
-
-
-			}
-
-		},
-		
 			
 		
 		//getShips : function () { return ships; },
