@@ -3,6 +3,21 @@
 	game.js
 
 */
+TILE = {
+  SHIP_NOSE: "gfx/ShipNose.png",
+  SHIP_BASE1: "gfx/ShipBase1.png",
+  SHIP_BASE2: "gfx/ShipBase2.png",
+  SHIP_BASE3: "gfx/ShipBase3.png",
+  SHIP_TAIL: "gfx/ShipTail.png",
+  SHIP_SINGLE1: "gfx/SingleShip1.png",
+  SHIP_SINGLE2: "gfx/SingleShip2.png",
+  FOG1: "gfx/FogTexture.png",
+  FOG_EDGE1: "gfx/FogEdgeTexture.png",
+  FIRE: "gfx/Fire.gif",
+  SPLASH: "gfx/WaterSplash.png"
+  
+}
+
 var server = new Server();
 
 function PlayerClient (Server) {
@@ -11,6 +26,7 @@ function PlayerClient (Server) {
 	var name;
 	var gameTable;
 	var opponentTable;
+	//var opponentTable;
 	//var ships = [];
 
 	gameTable = new Array(10);
@@ -19,13 +35,15 @@ function PlayerClient (Server) {
 		for (var j = 0; j < 10; j++)
 			gameTable[i][j] = 0;
 	}
+	
 	opponentTable = new Array(10);
 	for (var i = 0; i < 10; i++) {
 		opponentTable[i] = new Array(10);
 		for (var j = 0; j < 10; j++)
 			opponentTable[i][j] = 0;
 	}
-
+	
+	
 	return {
 
 		getID : function () { return id; },
@@ -153,7 +171,7 @@ function PlayerClient (Server) {
 			}
 			//ships = [];
 		},
-
+		
 		confirmShipCount : function () {
 			var v = 0;
 			for (var i = 0; i < 10; i++) {
@@ -167,7 +185,49 @@ function PlayerClient (Server) {
 			else
 				return false;
 		},
+		makeMove : function (id){
+			list = id.split("_");
+			if (server.getActivePlayerId() != 0){
+				alert("Not your turn sire"); 
+				return;
+			}
+			outcome = server.FireAt(list[1] ,list[2]);
+			switch (outcome) {
+				case 10 :// reveal fog on that tile 
+				//add water splash to the tile 
+				//update opponentTable
+				case 11 : //reveal fog on that tile
+				//add fire effect to the tile.
+				//update OpponentTable
+				case 12 : //reveal fog, 
+				//add fire 
+				//draw the ship. 
+				//update OpponentTable
+				//Find Direction 
+				case 13 : //reveal fog, add fire, draw ship , congractulate. 
 
+			}
+			OpponentsTurn();
+		},
+		OpponentsTurn : function (){
+			var result = server.waitForOpponent();
+			switch (result[2]) {
+				case 10 :
+					//	add water splash to the tile 
+				case 11 :
+					//	add fire effect to the tile.
+				case 12 : 
+					//	add fire  effect to the tile.
+
+				case 13 :// add fire,
+					//congractulate player on loss . 
+
+			}
+
+		},
+		
+			
+		
 		//getShips : function () { return ships; },
 
 		lockShips : function () { $(".game-table-ship").draggable("disable"); }
@@ -221,7 +281,7 @@ $(document).ready(function () {
 	});
 
 	resetShips();
-
+	$(".game-table-opponent-cell").click(function () {console.log($(this).attr("id")); });
 });
 
 function resetShips () {
@@ -448,6 +508,16 @@ function ShipFactory () {
 	}
 
 }
-$("#game-table-opponent.game-table-cell").click(function(){
- alert("asd");
- });
+
+
+function drawTile (isSelf, row, column, tileToDraw, rotate) {
+  if (isSelf) var cellId = "#user_";
+  else var cellId = "#opponent_";
+  cellId += row + "_" + column;
+  
+  var tile = $("<img>").attr("src", tileToDraw);
+  var cell = $(cellId).append(tile);
+  
+  if (rotate)
+    cell.addClass("rotate90");
+}

@@ -246,7 +246,9 @@ function Server() {
     getCurrentGame : function() {
       return currentGame;
     },
-    
+    getActivePlayerId : function() {
+		return currentGame.getActivePlayerId();
+	},
     /*
       printPlayerFieldById(playerId)
       Prints the matrix of gamefield of player with id 'playerId'.

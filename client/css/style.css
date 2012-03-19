@@ -106,6 +106,24 @@ a {
   position: absolute;
 }
 
+.game-table-opponent-cell {
+  position: relative;
+	height: 30px;
+	width: 30px;
+	margin: 0;
+	padding: 0;
+	float: left;
+	border: 1px solid #CCC2C2;
+	background-image: url('../gfx/WaterTexture.png');
+}
+
+.game-table-opponent-cell img {
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+
 #game-chat {
 	width: 688px;
 	margin: 8px 35px auto 35px;

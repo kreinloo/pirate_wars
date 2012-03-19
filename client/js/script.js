@@ -16,7 +16,8 @@ TILE = {
   SHIP_SINGLE2: "gfx/SingleShip2.png",
   FOG1: "gfx/FogTexture.png",
   FOG_EDGE1: "gfx/FogEdgeTexture.png",
-  FIRE: "gfx/Fire.gif"
+  FIRE: "gfx/Fire.gif",
+  SPLASH: "gfx/WaterSplash.png"
   
 }
 
@@ -66,9 +67,10 @@ $(document).ready(function () {
 	);
 
 	fillTables ();
-	drawShips ();
+	//drawShips ();
 	fillScoreboard ();
 	fillReplay ();
+	//test();
 
 	$("#opponent2x4").children().remove();
 	$("#opponent6x3").children().remove();
@@ -98,14 +100,15 @@ function fillTables () {
 	for (var i = 0; i < 10; i++) {
 		var row = $("<div class='game-table-row'>");
 		for (j = 0; j < 10; j++) {
-			row.append(
-				$("<div class='game-table-cell'>").attr(
-					"id", "opponent_" + i + "_" + j));
+		row.append(
+			$("<div class='game-table-cell'>").attr(
+			"id", "opponent_" + i + "_" + j).addClass("game-table-opponent-cell"));
 		}
 		$("#game-table-opponent").append(row);
 	}
 
 }
+/*
 function drawShips () { 
   // 4x 1-ships
   drawShip(true, 7, 3, 1);
@@ -127,7 +130,6 @@ function drawShips () {
   
   // The Roof is on fire!
   $("#user4x6").append($("<img>").attr("src", TILE.FIRE));
-  console.log("wtf");
   // Generate temporary field of fog over opponent's field 
   for (var row = 0; row < 10; row++) {
     for (var column = 0; column < 10; column++) {
@@ -141,7 +143,7 @@ function drawShips () {
     }
   }
 }
-
+*/
 function drawShip (isSelf, row, column, size, rotate) {
   // TODO: Colour of the sails, more variations?
   
@@ -170,9 +172,9 @@ function drawShip (isSelf, row, column, size, rotate) {
 }
 
 function drawTile (isSelf, row, column, tileToDraw, rotate) {
-  if (isSelf) var cellId = "#user";
-  else var cellId = "#opponent";
-  cellId += row + "x" + column;
+  if (isSelf) var cellId = "#user_";
+  else var cellId = "#opponent_";
+  cellId += row + "_" + column;
   
   var tile = $("<img>").attr("src", tileToDraw);
   var cell = $(cellId).append(tile);
@@ -209,3 +211,4 @@ function fillReplay () {
 	);
 
 }
+$(".game-table-opponent-cell").click( function () { console.log("I am: " + $(this).attr("id") ); });
