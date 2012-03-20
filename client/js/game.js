@@ -4,7 +4,7 @@
 
 */
 
-TILE = {
+var TILE = {
   SHIP_NOSE: "gfx/ShipNose.png",
   SHIP_BASE1: "gfx/ShipBase1.png",
   SHIP_BASE2: "gfx/ShipBase2.png",
@@ -18,6 +18,7 @@ TILE = {
   SPLASH: "gfx/WaterSplash.png"
   
 }
+
 var SHIPS = {
 
 	SHIP_1_horizontal : "gfx/SHIP_1_horizontal.png",
@@ -34,9 +35,6 @@ var SHIPS = {
 
 };
 
-var server = new Server();
-
-
 function PlayerClient (Server) {
 
 	var server = Server;
@@ -44,7 +42,6 @@ function PlayerClient (Server) {
 	var name;
 	var gameTable;
 	var opponentTable;
-
 
 	gameTable = new Array(10);
 	for (var i = 0; i < 10; i++) {
@@ -81,7 +78,7 @@ function PlayerClient (Server) {
 			var length = ship.getLength();
 			var direction = ship.getDirection();
 
-			console.log("row: " + row + " col: " + col + " length: " +
+			console.log("addShip: row: " + row + " col: " + col + " length: " +
 				length + " direction: " + direction);
 
 			if (direction == "horizontal") {
@@ -202,7 +199,7 @@ function PlayerClient (Server) {
 		},
 
 			
-		OpponentsTurn : function (){
+		OpponentsTurn : function () {
 			var result = server.waitForOpponent();
 			switch (result[2]) {
 				case 10 :
@@ -221,86 +218,86 @@ function PlayerClient (Server) {
 					alert ("SIRE ! SIRE! We have no ships left . RETREAAAT!!");
 					break;
 
-
 			}
 
 		},
+
 		findDirectionAndLength : function(row, col){
-				var Horizontal;
-				var Vertical;
-				var rowCord= row;
-				var colCord= col;
-				if (row != 0 && row != 9 )
-					Horizontal = opponentTable[row+1][col] != 1 & opponentTable[row-1][col] != 1 ? true:false;
-				else if (row == 0)
-					Horizontal = opponentTable[row+1][col]!=1 ? true:false;
-				
-				else if (row == 9)
-					Horizontal = opponentTable[row-1][col]!=1 ? true:false;
-				if (col != 0 && col != 9 )
-					Vertical = opponentTable[row][col+1] !=1 & opponentTable[row][col-1] !=1 ? true:false;
-				else if (col == 0)
-					Vertical = opponentTable[row][col+1]!=1 ? true:false;
-				
-				else if (row == 9)
-					Vertical = opponentTable[row][col-1]!=1 ? true:false;
-					
-				var length = 1 ;
-				if (Vertical && Horizontal){
-					return [row,col,1,false];
+			var Horizontal;
+			var Vertical;
+			var rowCord = row;
+			var colCord = col;
+			if (row != 0 && row != 9 )
+				Horizontal = opponentTable[row+1][col] != 1 & opponentTable[row-1][col] != 1 ? true:false;
+			else if (row == 0)
+				Horizontal = opponentTable[row+1][col]!=1 ? true:false;
+
+			else if (row == 9)
+				Horizontal = opponentTable[row-1][col]!=1 ? true:false;
+			if (col != 0 && col != 9 )
+				Vertical = opponentTable[row][col+1] !=1 & opponentTable[row][col-1] !=1 ? true:false;
+			else if (col == 0)
+				Vertical = opponentTable[row][col+1]!=1 ? true:false;
+
+			else if (row == 9)
+				Vertical = opponentTable[row][col-1]!=1 ? true:false;
+
+			var length = 1 ;
+			if (Vertical && Horizontal) {
+				return [row,col,1,false];
+			}
+			if (Horizontal) {
+				// check Horizontally to the right
+				for (var i = 1; i<4;i++){
+					if (col+ i <9){
+						if (opponentTable[row][col+i] == 1)
+							length ++ ;
+						else break;
+					}
+					else break;
 				}
-				if (Horizontal){
-					// check Horizontally to the right
-					for (var i = 1; i<4;i++){
-						if (col+ i <9){
-							if (opponentTable[row][col+i] == 1)
-								length ++ ;
-							else break;
+				// check Horizontally to the left
+				for (var i = 1; i<4;i++) {
+					if (col - i >= 0){
+						if (opponentTable[row][col-i] == 1) {
+							length ++ ;
+							colCord-- ;
 						}
 						else break;
 					}
-					// check Horizontally to the left
-					for (var i = 1; i<4;i++){
-						if (col - i >= 0){
-							if (opponentTable[row][col-i] == 1){
-								length ++ ;
-								colCord-- ;
-							}
-							else break;
-						}
-						else break;
-					}
+					else break;
 				}
-				if (Vertical){
-					// check vertivally to the downward
-					for (var i = 1; i<4;i++){
-						if (row+ i <9){
-							if (opponentTable[row+1][col] == 1)
-								length ++ ;
-							else break;
-						}
+			}
+			if (Vertical) {
+				// check vertivally to the downward
+				for (var i = 1; i<4;i++) {
+					if (row+ i <9) {
+						if (opponentTable[row+1][col] == 1)
+							length ++ ;
 						else break;
 					}
-					// check vertically upward
-					for (var i = 1; i<4;i++){
-						if (row - i >= 0){
-							if (opponentTable[row-1][col] == 1){
-								length ++ ;
-								rowCord --;
-							}
-							else break;
-						}
-						else break;
-					}
+					else break;
 				}
-				// By now we know the direction and the length of the ship .. 
-				return [rowCord,colCord,length,Vertical ? 1:0];
-				
+				// check vertically upward
+				for (var i = 1; i<4;i++) {
+					if (row - i >= 0) {
+						if (opponentTable[row-1][col] == 1) {
+							length ++ ;
+							rowCord --;
+						}
+						else break;
+					}
+					else break;
+				}
+			}
+			// By now we know the direction and the length of the ship .. 
+			return [rowCord,colCord,length,Vertical ? 1:0];
 			
-			//once we have the direction and length of enemy ship, we can draw it.  
-			
+		//once we have the direction and length of enemy ship, we can draw it.  
+
 		},
-		makeMove : function (row, col){
+
+		makeMove : function (row, col) {
 			if (server.getActivePlayerId() != 0){
 				alert("Not your turn sire"); 
 				return;
@@ -321,27 +318,30 @@ function PlayerClient (Server) {
 					break;
 				case 12 : //reveal fog, 
 					opponentTable[row][col] = 1;
-					console.log("and im here ");
 					var list = this.findDirectionAndLength(row, col);
 					console.log(list);
 					var Rotation = list[3]==1 ? true : false ;
 					switch (list[2]){
 						case 1: 
 							drawTile(false,row,col,TILE.FIRE,false);
-							drawTile(false,list[0],list[1],SHIPS.SHIP_1_horizontal,Rotation);
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_1_horizontal,Rotation);
 							break;
 						case 2:
 							drawTile(false,row,col,TILE.FIRE,false);
-							drawTile(false,list[0],list[1],SHIPS.SHIP_2_horizontal,Rotation);
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_2_horizontal,Rotation);
 							break;
 						case 3:
 							drawTile(false,row,col,TILE.FIRE,false);
-							drawTile(false,list[0],list[1],SHIPS.SHIP_3_horizontal,Rotation);
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_3_horizontal,Rotation);
 							break;
 						case 4:
 							drawTile(false,row,col,TILE.FIRE,false);
 							//Ship(4,"horizontal",this );
-							drawTile(false,list[0],list[1],SHIPS.SHIP_4_horizontal,Rotation);
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_4_horizontal,Rotation);
 							break;
 					}
 
@@ -349,25 +349,28 @@ function PlayerClient (Server) {
 
 				case 13 :
 					opponentTable[row][col] = 1;
-					console.log("and im here ");
 					var list = this.findDirectionAndLength(row, col);
 					switch (list[2]){
 						case 1: 
 							drawTile(false,row,col,TILE.FIRE,false);
-							drawTile(false,list[0],list[1],SHIPS.SHIP_1_horizontal,Rotation);
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_1_horizontal,Rotation);
 							break;
 						case 2:
 							drawTile(false,row,col,TILE.FIRE,false);
-							drawTile(false,list[0],list[1],SHIPS.SHIP_2_horizontal,Rotation);
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_2_horizontal,Rotation);
 							break;
 						case 3:
 							drawTile(false,row,col,TILE.FIRE,false);
-							drawTile(false,list[0],list[1],SHIPS.SHIP_3_horizontal,Rotation);
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_3_horizontal,Rotation);
 							break;
 						case 4:
 							drawTile(false,row,col,TILE.FIRE,false);
 							//Ship(4,"horizontal",this );
-							drawTile(false,list[0],list[1],SHIPS.SHIP_4_horizontal,Rotation);
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_4_horizontal,Rotation);
 							break;
 					};
 					alert ("SIRE ! We have won a glorious battle today! Beer and women for everybody!! ");
@@ -375,15 +378,10 @@ function PlayerClient (Server) {
 					break;
 
 			}
-			console.log(outcome != 13);
 			if (outcome != 13){
-				console.log ("asd");
 				this.OpponentsTurn();
 			};
 		},
-			
-		
-		//getShips : function () { return ships; },
 
 		lockShips : function () { $(".game-table-ship").draggable("disable"); },
 
@@ -424,15 +422,11 @@ function PlayerClient (Server) {
 			// Signal the server that we are ready to start the game.
 			server.opponentsAlignment();
 			server.confirmAlignment();
-			// for the dummy server
-			
 		}
 
 	}
 
 };
-
-
 
 var player = new PlayerClient ( new Server() );
 
@@ -445,13 +439,12 @@ $(document).ready(function () {
 		console.log("confirm button clicked");
 		if (!player.confirmShipCount()) {
 			console.log("all ships have not been placed to table");
-		} else {
+		}
+		else {
 			console.log("all ships are placed");
 			$("#game-table-ships").remove();
 			$("#game-table-opponent").css("display", "block");
-
 			player.lockTable();
-			console.log("locking allighnment");
 		}
 
 	});
@@ -462,8 +455,7 @@ $(document).ready(function () {
 	});
 
 	resetShips();
-	$(".game-table-opponent-cell").click(function () {console.log($(this).attr("id")); });
-	$("#opponent_2_2").addClass("fire");
+
 });
 
 function resetShips () {
@@ -552,18 +544,23 @@ function Ship (len, dir, plyr) {
 	}
 
 	element.draggable({
+
 		snap : ".game-table-cell",
+
 		snapMode: "inner",
+
 		containment: "#game-tablearea",
+
 		start : function (event, ui) {
 			$(this).data("top", $(this).css("top"));
 			$(this).data("left", $(this).css("left"));
 
 			if (Object.keys( $(this).data("obj").getCoords() ).length > 0) {
-				$(this).data("obj").getPlayerClient().deleteShip( $(this).data("obj") );
-				//$(this).data("obj").clearCoords();
+				$(this).data("obj").
+				getPlayerClient().deleteShip( $(this).data("obj") );
 			}
 		},
+
 		stop : function (event, ui) {
 			var top = parseInt($(this).css("top"));
 			var left = parseInt($(this).css("left"));
@@ -590,17 +587,15 @@ function Ship (len, dir, plyr) {
 				$(this).css("top", $(this).data("top"));
 				$(this).css("left", $(this).data("left"));
 				if ( $(this).data("obj").hasCoords() )
-					$(this).data("obj").getPlayerClient().addShip($(this).data("obj"),
+					$(this).data("obj").getPlayerClient().
+						addShip($(this).data("obj"),
 						$(this).data("obj").getCoords());
 			}
-			//$(this).data("obj").getPlayerClient().printGameTable();
 		}
+		
 	});
 
-	element.dblclick(function () {
-		$(this).data("obj").rotateShip();
-	});
-
+	element.dblclick(function () { $(this).data("obj").rotateShip(); });
 	element.css("position", "absolute");
 	element.addClass("game-table-ship");
 
@@ -687,29 +682,26 @@ function ShipFactory () {
 	}
 }
 
-
-
 function drawTile (isSelf, row, column, tileToDraw, rotate) {
 
-  if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH){
+	if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH){
 		if (isSelf) var cellId = "#user_";
-	  else var cellId = "#opponent_";
-	  cellId += row + "_" + column;
-	  
-	  var tile = $("<img>").attr("src", tileToDraw);
-	  var cell = $(cellId).prepend(tile);
-  }
-  else {
-	  if (isSelf) var cellId = "#user_";
-	  else var cellId = "#opponent_";
-	  cellId += row + "_" + column;
-	  
-	  var tile = $("<img>").attr("src", tileToDraw);
-	  var cell = $(cellId).append(tile);
-  }
-  if (rotate)
-    cell.addClass("rotate90");
-  
-}
+		else var cellId = "#opponent_";
+		cellId += row + "_" + column;
 
+		var tile = $("<img>").attr("src", tileToDraw);
+		var cell = $(cellId).prepend(tile);
+	}
+	else {
+		if (isSelf) var cellId = "#user_";
+		else var cellId = "#opponent_";
+		cellId += row + "_" + column;
+
+		var tile = $("<img>").attr("src", tileToDraw);
+		var cell = $(cellId).append(tile);
+	}
+	if (rotate)
+		cell.addClass("rotate90");
+
+}
 

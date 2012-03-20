@@ -199,7 +199,7 @@ function Server() {
       
       localPlayer.setReady(true);
       if (currentGame.areBothPlayersReady())
-		console.log ("server phase: " + currentGame.getGamePhase );
+		console.log ("server phase: " + currentGame.getGamePhase() );
         currentGame.incGamePhase();
 		console.log ("server phase: " + currentGame.getGamePhase() );
 		
