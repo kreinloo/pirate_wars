@@ -62,7 +62,7 @@ function Server() {
 			Fires at enemy field.
 			Returns result of the action (look HIT table)
 				or an exception (look ERROR table).
-    */
+		*/
 		fireAt: function (row, col) {
 			if (currentGame.getGamePhase() != PHASE.BATTLE) throw ERROR.INVALID_PHASE + " " + currentGame.getGamePhase();
 			if ((typeof row != 'number') || (typeof col != 'number')) throw ERROR.INVALID_MOVE;
@@ -92,7 +92,7 @@ function Server() {
 				0 - row where enemy fired.
 				1 - column where enemy fired.
 				2 - the result of act (look HIT table).
-    */
+		*/
 		waitForOpponent: function () {
 			if (currentGame.getGamePhase() != PHASE.BATTLE) throw ERROR.INVALID_PHASE;
 			if (localPlayerId == currentGame.getActivePlayerId()) throw ERROR.WRONG_TURN;
@@ -117,7 +117,7 @@ function Server() {
 				with other ships etc.), because it's already done in the UI and both
 				are client-side anyway. Of course in the real server implementation it
 				should be also verified on server-side for security reasons.
-    */
+		*/
 		addVerticalShip: function (row, col, length) {
 			if (currentGame.getGamePhase() != PHASE.ALIGNMENT) throw ERROR.INVALID_PHASE;
 
@@ -135,7 +135,7 @@ function Server() {
 				with other ships etc.), because it's already done in the UI and both
 				are client-side anyway. Of course in the real server implementation it
 				should be also verified on server-side for security reasons.
-    */
+		*/
 		addHorizontalShip: function (row, col, length) {
 			if (currentGame.getGamePhase() != PHASE.ALIGNMENT) throw ERROR.INVALID_PHASE;
 
@@ -149,7 +149,7 @@ function Server() {
 			deleteShip(row, col)
 			Removes the ship from specified location. It's not important which
 				tile you give as parameter as the whole boat is deleted anyway.
-    */
+		*/
 		deleteShip: function (row, col) {
 			if (currentGame.getGamePhase() != PHASE.ALIGNMENT) throw ERROR.INVALID_PHASE;
 
@@ -177,7 +177,7 @@ function Server() {
 				and "locks" it.
 			Currenly does not verify that all ships have added - if it's done in UI
 				then it should be not necessary as both are client-side anyway.
-    */
+		*/
 		confirmAlignment: function () {
 			if (currentGame.getGamePhase() != PHASE.ALIGNMENT) throw ERROR.INVALID_PHASE;
 			var localPlayer = currentGame.getPlayerById(localPlayerId);
@@ -196,7 +196,7 @@ function Server() {
 			In this dummy-server solution it always does hardcoded placement when
 				the method is called.
 			In real solution I suppose it should timed called.
-    */
+		*/
 		opponentsAlignment: function () {
 			if (currentGame.getGamePhase() != PHASE.ALIGNMENT) throw ERROR.INVALID_PHASE;
 
@@ -227,7 +227,7 @@ function Server() {
 			getCurrentGame()
 			Returns the object of current game.
 			For debugging purposes!
-    */
+		*/
 		getCurrentGame: function () {
 			return currentGame;
 		},
@@ -244,7 +244,7 @@ function Server() {
 					0 - human player
 					1 - AI player
 			For debugging purposes!
-    */
+		*/
 		printPlayerFieldById: function (playerId) {
 			return currentGame.getPlayerById(playerId).getGameField().printMatrix();
 		}
@@ -401,7 +401,7 @@ function Field() {
 		1 - water (shot)
 		2 - ship  (not shot)
 		3 - ship (shot)
-  */
+	*/
 
 	var matrix;
 	var shipsLeft;
