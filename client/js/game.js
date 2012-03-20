@@ -320,7 +320,6 @@ function PlayerClient (Server) {
 					opponentTable[row][col] = 1;
 					break;
 				case 12 : //reveal fog, 
-					drawTile(false,row,col,TILE.FIRE,false);
 					opponentTable[row][col] = 1;
 					console.log("and im here ");
 					var list = this.findDirectionAndLength(row, col);
@@ -328,17 +327,19 @@ function PlayerClient (Server) {
 					var Rotation = list[3]==1 ? true : false ;
 					switch (list[2]){
 						case 1: 
-							
+							drawTile(false,row,col,TILE.FIRE,false);
 							drawTile(false,list[0],list[1],SHIPS.SHIP_1_horizontal,Rotation);
 							break;
 						case 2:
+							drawTile(false,row,col,TILE.FIRE,false);
 							drawTile(false,list[0],list[1],SHIPS.SHIP_2_horizontal,Rotation);
 							break;
 						case 3:
+							drawTile(false,row,col,TILE.FIRE,false);
 							drawTile(false,list[0],list[1],SHIPS.SHIP_3_horizontal,Rotation);
-							//drawTile(false,list[0],list[1],SHIPS.SHIP_3_horizontal,Rotation);
 							break;
 						case 4:
+							drawTile(false,row,col,TILE.FIRE,false);
 							//Ship(4,"horizontal",this );
 							drawTile(false,list[0],list[1],SHIPS.SHIP_4_horizontal,Rotation);
 							break;
@@ -346,14 +347,39 @@ function PlayerClient (Server) {
 
 					break;
 
-				case 13 : 
+				case 13 :
+					opponentTable[row][col] = 1;
+					console.log("and im here ");
+					var list = this.findDirectionAndLength(row, col);
+					switch (list[2]){
+						case 1: 
+							drawTile(false,row,col,TILE.FIRE,false);
+							drawTile(false,list[0],list[1],SHIPS.SHIP_1_horizontal,Rotation);
+							break;
+						case 2:
+							drawTile(false,row,col,TILE.FIRE,false);
+							drawTile(false,list[0],list[1],SHIPS.SHIP_2_horizontal,Rotation);
+							break;
+						case 3:
+							drawTile(false,row,col,TILE.FIRE,false);
+							drawTile(false,list[0],list[1],SHIPS.SHIP_3_horizontal,Rotation);
+							break;
+						case 4:
+							drawTile(false,row,col,TILE.FIRE,false);
+							//Ship(4,"horizontal",this );
+							drawTile(false,list[0],list[1],SHIPS.SHIP_4_horizontal,Rotation);
+							break;
+					};
 					alert ("SIRE ! We have won a glorious battle today! Beer and women for everybody!! ");
 					this.removeListenerFromOpponentCells()
 					break;
 
 			}
-			if (!server.isGameOver());
+			console.log(outcome != 13);
+			if (outcome != 13){
+				console.log ("asd");
 				this.OpponentsTurn();
+			};
 		},
 			
 		
