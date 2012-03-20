@@ -100,14 +100,12 @@ function fillTables () {
 	for (var i = 0; i < 10; i++) {
 		var row = $("<div class='game-table-row'>");
 		for (j = 0; j < 10; j++) {
-
-		row.append(
-			$("<div class='game-table-cell'>").attr(
-			"id", "opponent_" + i + "_" + j).addClass("game-table-opponent-cell"));
-
-
-		}
-		$("#game-table-opponent").append(row);
+			row.append(
+				$("<div class='game-table-cell'>").attr(
+				"id", "opponent_" + i + "_" + j).
+					addClass("game-table-opponent-cell"));
+			}
+			$("#game-table-opponent").append(row);
 	}
 
 }
