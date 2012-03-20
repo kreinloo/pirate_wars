@@ -26,7 +26,6 @@ function PlayerClient (Server) {
 			opponentTable[i][j] = 0;
 	}
 	
-	
 	return {
 
 		getID : function () { return id; },
@@ -41,7 +40,6 @@ function PlayerClient (Server) {
 		},
 
 		addShip : function (ship, coords) {
-
 			var row = coords["row"];
 			var col = coords["col"];
 			var length = ship.getLength();
@@ -60,7 +58,6 @@ function PlayerClient (Server) {
 
 			var startRow = row - 1;
 			var startCol = col - 1;
-
 			var endRow;
 			var endCol;
 
@@ -104,7 +101,6 @@ function PlayerClient (Server) {
 				server.addVerticalShip(row,col,length);
 			}
 			return true;
-
 		},
 
 		deleteShip : function (ship) {
@@ -152,6 +148,7 @@ function PlayerClient (Server) {
 			}
 			server.resetField();
 			this.log("Game table cleared.");
+			this.log("Double click on a ship rotates is 90 degrees.");
 		},
 		
 		confirmShipCount : function () {
@@ -167,8 +164,7 @@ function PlayerClient (Server) {
 				return false;
 		},
 
-			
-		OpponentsTurn : function () {
+		opponentsTurn : function () {
 			var result = server.waitForOpponent();
 			switch (result[2]) {
 				case 10 :
@@ -180,18 +176,15 @@ function PlayerClient (Server) {
 				case 12 : 
 					drawTile(true,result[0],result[1],TILE.FIRE,false);
 					break;
-
 				case 13 :
 					drawTile(true,result[0],result[1],TILE.FIRE,false);
 					this.removeListenerFromOpponentCells()
 					this.log("SIRE! SIRE! We have no ships left. RETREAAAT!!");
 					break;
-
 			}
-
 		},
 
-		findDirectionAndLength : function(row, col){
+		findDirectionAndLength : function(row, col) {
 			var Horizontal;
 			var Vertical;
 			var rowCord = row;
@@ -347,7 +340,7 @@ function PlayerClient (Server) {
 
 			}
 			if (outcome != 13){
-				this.OpponentsTurn();
+				this.opponentsTurn();
 			};
 		},
 
@@ -393,6 +386,7 @@ function PlayerClient (Server) {
 			server.opponentsAlignment();
 			server.confirmAlignment();
 			this.log("Ships placed and locked.");
+			this.log("Game started...");
 		},
 
 		log : function (message) {

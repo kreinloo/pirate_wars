@@ -5,18 +5,17 @@
 */
 
 var TILE = {
-  SHIP_NOSE: "gfx/ShipNose.png",
-  SHIP_BASE1: "gfx/ShipBase1.png",
-  SHIP_BASE2: "gfx/ShipBase2.png",
-  SHIP_BASE3: "gfx/ShipBase3.png",
-  SHIP_TAIL: "gfx/ShipTail.png",
-  SHIP_SINGLE1: "gfx/SingleShip1.png",
-  SHIP_SINGLE2: "gfx/SingleShip2.png",
-  FOG1: "gfx/FogTexture.png",
-  FOG_EDGE1: "gfx/FogEdgeTexture.png",
-  FIRE: "gfx/Fire.gif",
-  SPLASH: "gfx/WaterSplash.png"
-  
+	SHIP_NOSE: "gfx/ShipNose.png",
+	SHIP_BASE1: "gfx/ShipBase1.png",
+	SHIP_BASE2: "gfx/ShipBase2.png",
+	SHIP_BASE3: "gfx/ShipBase3.png",
+	SHIP_TAIL: "gfx/ShipTail.png",
+	SHIP_SINGLE1: "gfx/SingleShip1.png",
+	SHIP_SINGLE2: "gfx/SingleShip2.png",
+	FOG1: "gfx/FogTexture.png",
+	FOG_EDGE1: "gfx/FogEdgeTexture.png",
+	FIRE: "gfx/Fire.gif",
+	SPLASH: "gfx/WaterSplash.png"
 }
 
 var SHIPS = {
@@ -54,7 +53,6 @@ $(document).ready(function () {
 			$("#game-table-ships").remove();
 			$("#game-table-opponent").css("display", "block");
 			player.lockTable();
-			player.log("Game started...");
 		}
 
 	});
