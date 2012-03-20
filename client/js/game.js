@@ -148,7 +148,7 @@ function PlayerClient (Server) {
 				else
 					gameTable[row+i][col] = 0;
 			}
-			// Communicate to Server that we want to delete a ship 
+			// Communicate to Server that we want to delete a ship
 			server.deleteShip(row,col);
 		},
 
@@ -182,6 +182,7 @@ function PlayerClient (Server) {
 					gameTable[i][j] = 0;
 			}
 			server.resetField();
+			this.log("Game table cleared.");
 		},
 		
 		confirmShipCount : function () {
@@ -191,7 +192,6 @@ function PlayerClient (Server) {
 					v += gameTable[i][j];
 				}
 			}
-
 			if (v == 20)
 				return true;
 			else
@@ -215,7 +215,7 @@ function PlayerClient (Server) {
 				case 13 :
 					drawTile(true,result[0],result[1],TILE.FIRE,false);
 					this.removeListenerFromOpponentCells()
-					alert ("SIRE ! SIRE! We have no ships left . RETREAAAT!!");
+					this.log("SIRE! SIRE! We have no ships left. RETREAAAT!!");
 					break;
 
 			}
@@ -292,18 +292,16 @@ function PlayerClient (Server) {
 			}
 			// By now we know the direction and the length of the ship .. 
 			return [rowCord,colCord,length,Vertical ? 1:0];
-			
-		//once we have the direction and length of enemy ship, we can draw it.  
 
 		},
 
 		makeMove : function (row, col) {
 			if (server.getActivePlayerId() != 0){
-				alert("Not your turn sire"); 
+				this.log("Not your turn sire!");
 				return;
 			}
 			if (opponentTable[row][col]!= 0){
-				alert("we have already hit there sire!");
+				this.log("We have already hit there sire!");
 				return;
 			}
 			outcome = server.fireAt(row ,col);
@@ -373,7 +371,8 @@ function PlayerClient (Server) {
 								SHIPS.SHIP_4_horizontal,Rotation);
 							break;
 					};
-					alert ("SIRE ! We have won a glorious battle today! Beer and women for everybody!! ");
+					this.log("SIRE ! We have won a glorious battle today!" +
+						" Beer and women for everybody!! ");
 					this.removeListenerFromOpponentCells()
 					break;
 
@@ -383,7 +382,9 @@ function PlayerClient (Server) {
 			};
 		},
 
-		lockShips : function () { $(".game-table-ship").draggable("disable"); },
+		lockShips : function () {
+			$(".game-table-ship").draggable("disable");
+		},
 
 		addListenerToOpponentCells : function () {
 			$(".game-table-opponent-cell").click(function () {
@@ -422,6 +423,18 @@ function PlayerClient (Server) {
 			// Signal the server that we are ready to start the game.
 			server.opponentsAlignment();
 			server.confirmAlignment();
+			this.log("Ships placed and locked.");
+		},
+
+		log : function (message) {
+			var date = new Date();
+			var timestamp = date.getHours() + ":" + date.getMinutes() + ":" +
+				date.getSeconds();
+			var div = $("<div>");
+			div.append("<b>" + timestamp + "</b> " + message);
+			$("#game-chat-log").append(div);
+			$("#game-chat-log").
+				scrollTop($(".game-chat-log").prop("scrollHeight"));
 		}
 
 	}
@@ -445,6 +458,7 @@ $(document).ready(function () {
 			$("#game-table-ships").remove();
 			$("#game-table-opponent").css("display", "block");
 			player.lockTable();
+			player.log("Game started...");
 		}
 
 	});
@@ -592,7 +606,7 @@ function Ship (len, dir, plyr) {
 						$(this).data("obj").getCoords());
 			}
 		}
-		
+
 	});
 
 	element.dblclick(function () { $(this).data("obj").rotateShip(); });

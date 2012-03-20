@@ -215,4 +215,3 @@ function fillReplay () {
 	);
 
 }
-$(".game-table-opponent-cell").click( function () { console.log("I am: " + $(this).attr("id") ); });
