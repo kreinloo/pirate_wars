@@ -211,7 +211,7 @@ function Server() {
 
 			aiField.addHorizontalShip(6, 0, 2);
 			aiField.addHorizontalShip(8, 0, 2);
-			aiField.addHorizontalShip(7, 5, 3);
+			aiField.addHorizontalShip(7, 5, 2);
 
 			aiField.addHorizontalShip(1, 5, 1);
 			aiField.addHorizontalShip(3, 5, 1);

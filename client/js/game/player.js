@@ -185,30 +185,30 @@ function PlayerClient (Server) {
 		},
 
 		findDirectionAndLength : function(row, col) {
-			var Horizontal;
-			var Vertical;
+			var horizontal;
+			var vertical;
 			var rowCord = row;
 			var colCord = col;
 			if (row != 0 && row != 9 )
-				Horizontal = opponentTable[row+1][col] != 1 & opponentTable[row-1][col] != 1 ? true:false;
+				horizontal = opponentTable[row+1][col] != 1 && opponentTable[row-1][col] != 1 ? true:false;
 			else if (row == 0)
-				Horizontal = opponentTable[row+1][col]!=1 ? true:false;
+				horizontal = opponentTable[row+1][col]!=1 ? true:false;
 
 			else if (row == 9)
-				Horizontal = opponentTable[row-1][col]!=1 ? true:false;
+				horizontal = opponentTable[row-1][col]!=1 ? true:false;
 			if (col != 0 && col != 9 )
-				Vertical = opponentTable[row][col+1] !=1 & opponentTable[row][col-1] !=1 ? true:false;
+				vertical = opponentTable[row][col+1] !=1 && opponentTable[row][col-1] !=1 ? true:false;
 			else if (col == 0)
-				Vertical = opponentTable[row][col+1]!=1 ? true:false;
+				vertical = opponentTable[row][col+1]!=1 ? true:false;
 
 			else if (row == 9)
-				Vertical = opponentTable[row][col-1]!=1 ? true:false;
+				vertical = opponentTable[row][col-1]!=1 ? true:false;
 
 			var length = 1 ;
-			if (Vertical && Horizontal) {
+			if (vertical && horizontal) {
 				return [row,col,1,false];
 			}
-			if (Horizontal) {
+			if (horizontal) {
 				// check Horizontally to the right
 				for (var i = 1; i<4;i++){
 					if (col+ i <9){
@@ -230,7 +230,7 @@ function PlayerClient (Server) {
 					else break;
 				}
 			}
-			if (Vertical) {
+			if (vertical) {
 				// check vertivally to the downward
 				for (var i = 1; i<4;i++) {
 					if (row+ i <9) {
@@ -253,7 +253,7 @@ function PlayerClient (Server) {
 				}
 			}
 			// By now we know the direction and the length of the ship .. 
-			return [rowCord,colCord,length,Vertical ? 1:0];
+			return [rowCord,colCord,length,vertical ? 1:0];
 
 		},
 
