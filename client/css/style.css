@@ -98,12 +98,14 @@ a {
 	float: left;
 	border: 1px solid #CCC2C2;
 	background-image: url('../gfx/WaterTexture.png');
+
 }
 
 .game-table-cell img {
   top: 0;
   left: 0;
   position: absolute;
+  z-index: 3;
 }
 
 .game-table-opponent-cell {
@@ -115,12 +117,15 @@ a {
 	float: left;
 	border: 1px solid #CCC2C2;
 	background-image: url('../gfx/WaterTexture.png');
+
 }
 
 .game-table-opponent-cell img {
   top: 0;
   left: 0;
   position: absolute;
+  overflow: visible;
+  z-index:1;
 }
 
 

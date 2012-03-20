@@ -44,7 +44,6 @@ function PlayerClient (Server) {
 	var name;
 	var gameTable;
 	var opponentTable;
-	//var opponentTable;
 
 
 	gameTable = new Array(10);
@@ -329,6 +328,7 @@ function PlayerClient (Server) {
 					var Rotation = list[3]==1 ? true : false ;
 					switch (list[2]){
 						case 1: 
+							
 							drawTile(false,list[0],list[1],SHIPS.SHIP_1_horizontal,Rotation);
 							break;
 						case 2:
@@ -336,9 +336,11 @@ function PlayerClient (Server) {
 							break;
 						case 3:
 							drawTile(false,list[0],list[1],SHIPS.SHIP_3_horizontal,Rotation);
+							//drawTile(false,list[0],list[1],SHIPS.SHIP_3_horizontal,Rotation);
 							break;
 						case 4:
-							drawTile(false,list[0],list[1],SHIPS.SHIP_3_horizontal,Rotation);
+							//Ship(4,"horizontal",this );
+							drawTile(false,list[0],list[1],SHIPS.SHIP_4_horizontal,Rotation);
 							break;
 					}
 
@@ -435,6 +437,7 @@ $(document).ready(function () {
 
 	resetShips();
 	$(".game-table-opponent-cell").click(function () {console.log($(this).attr("id")); });
+	$("#opponent_2_2").addClass("fire");
 });
 
 function resetShips () {
@@ -661,13 +664,26 @@ function ShipFactory () {
 
 
 function drawTile (isSelf, row, column, tileToDraw, rotate) {
-  if (isSelf) var cellId = "#user_";
-  else var cellId = "#opponent_";
-  cellId += row + "_" + column;
-  
-  var tile = $("<img>").attr("src", tileToDraw);
-  var cell = $(cellId).append(tile);
-  
+
+  if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH){
+		if (isSelf) var cellId = "#user_";
+	  else var cellId = "#opponent_";
+	  cellId += row + "_" + column;
+	  
+	  var tile = $("<img>").attr("src", tileToDraw);
+	  var cell = $(cellId).prepend(tile);
+  }
+  else {
+	  if (isSelf) var cellId = "#user_";
+	  else var cellId = "#opponent_";
+	  cellId += row + "_" + column;
+	  
+	  var tile = $("<img>").attr("src", tileToDraw);
+	  var cell = $(cellId).append(tile);
+  }
   if (rotate)
     cell.addClass("rotate90");
+  
 }
+
+

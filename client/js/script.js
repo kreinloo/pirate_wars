@@ -111,7 +111,7 @@ function fillTables () {
 	}
 
 }
-/*
+
 function drawShips () { 
   // 4x 1-ships
   drawShip(true, 7, 3, 1);
@@ -146,7 +146,7 @@ function drawShips () {
     }
   }
 }
-*/
+
 function drawShip (isSelf, row, column, size, rotate) {
   // TODO: Colour of the sails, more variations?
   
@@ -175,15 +175,16 @@ function drawShip (isSelf, row, column, size, rotate) {
 }
 
 function drawTile (isSelf, row, column, tileToDraw, rotate) {
-  if (isSelf) var cellId = "#user_";
-  else var cellId = "#opponent_";
-  cellId += row + "_" + column;
-  
-  var tile = $("<img>").attr("src", tileToDraw);
-  var cell = $(cellId).append(tile);
-  
-  if (rotate)
-    cell.addClass("rotate90");
+	if (isSelf) var cellId = "#user_";
+	  else var cellId = "#opponent_";
+	  cellId += row + "_" + column;
+	  
+	  var tile = $("<img>").attr("src", tileToDraw);
+	  //$(cellId).css("overflow","visible");
+	  var cell = $(cellId).append(tile);
+	  
+	  if (rotate)
+		cell.addClass("rotate90");
 }
 
 function fillScoreboard () {
