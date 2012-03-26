@@ -5,6 +5,9 @@
 */
 
 var io = require("socket.io").listen(8001);
+var node_static = require("node-static");
+var http = require("http");
+
 var serverClient = require("./serverclient");
 var events = require("../client/js/events");
 
@@ -59,3 +62,13 @@ io.sockets.on("connection", function (socket) {
 	});
 
 });
+
+// static file server
+var file = new (node_static.Server)("../client");
+http.createServer(function (request, response) {
+	console.log(request);
+	console.log(response);
+	request.addListener("end", function () {
+		file.serve(request, response);
+	})
+}).listen(8000);
