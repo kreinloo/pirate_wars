@@ -3,29 +3,54 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-	<title>login view</title>
+	<title>Pirate Wars</title>
 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+
 	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,400italic,700'
 		rel='stylesheet' type='text/css'/>
 	<link href='http://fonts.googleapis.com/css?family=Kaushan+Script'
 		rel='stylesheet' type='text/css'/>
-	<script type="text/javascript" src="js/jquery-1.7.1.js"></script>
-	<script type="text/javascript" src="js/script.js"></script>
+
+	<script type="text/javascript" src="js/lib/jquery-1.7.1.js"></script>
+	<script type="text/javascript" src="js/lib/socket.io.min.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
+	<script type="text/javascript" src="js/client.js"></script>
+	<script type="text/javascript" src="js/events.js"></script>
+
 </head>
 
 <body>
 
 <div id="wrapper">
 
-	<div id="login-header"></div>
+	<div id="avatar-div">
+		<div id="avatar-pic"><img src="gfx/avatar.png" alt="Users's avatar"/></div>
+	</div>
+
+	<div id="menu">
+
+		<div class="menu-items">
+			<a href="#" id="menu-item-lobby" class="menu-item">new game</a>
+			<a href="#" id="menu-item-invite" class="menu-item">join game</a>
+			<a href="#" id="menu-item-scoreboard" class="menu-item">scoreboard</a>
+			<a href="#" id="menu-item-replay" class="menu-item">replay</a>
+			<a href="#" id="menu-item-logout" class="menu-item">log out</a>
+		</div>
+
+	</div><!-- menubar -->
 
 	<div id="content">
 
-		<div id="login-head">Welcome to ...<br/>Please log in ...</div>
+		<div id="login-head"><!--Welcome to ...<br/>Please log in ...--></div>
 		<div id="login-body">
-			<a href="#"><img src="gfx/login.png" alt="Login with Facebook"/></a>
+			<!--<a href="#"><img src="gfx/login.png" alt="Login with Facebook"/></a>-->
+			<form id="login-form">
+				<label>username:</label><br/>
+				<input type="text" id="login-form-username" /><br/>
+				<input type="submit" id="login-form-button" value="login" />
+			</form>
 		</div>
 
 	</div><!-- content -->

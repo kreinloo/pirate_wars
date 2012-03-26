@@ -1,67 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!--
 
-<head>
-	<title>lobby view</title>
+	This layout goes inside 'content' div.
 
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<link rel="stylesheet" type="text/css" href="css/style.css"/>
-	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,400italic,700'
-		rel='stylesheet' type='text/css'/>
-	<link href='http://fonts.googleapis.com/css?family=Kaushan+Script'
-		rel='stylesheet' type='text/css'/>
-	<script type="text/javascript" src="js/jquery-1.7.1.js"></script>
-	<script type="text/javascript" src="js/script.js"></script>
-</head>
+-->
+<div id="lobby">
+	<div id="lobby-games" class="chat-scroll">
+		<table id="lobby-games-running-list-table" class="lobby-table">
+			<tr><th colspan="3">Currently running games</th></tr>
+		</table>
 
-<body>
+	</div>
+	<div id="lobby-chat-log" class="chat-scroll"></div>
 
-<div id="wrapper">
+	<div id="lobby-chat-userlist" class="chat-scroll">
 
-	<div id="avatar-div">
-		<div id="avatar-pic"><img src="gfx/avatar.png" alt="Users's avatar"/></div>
+		<table id="lobby-chat-userlist-table" class="lobby-table">
+			<tr><th>Available users</th></tr>
+		</table>
+
 	</div>
 
-	<div id="menu">
-
-		<div class="menu-items">
-			<a href="#" id="menu-item-lobby" class="menu-item">new game</a>
-			<a href="#" id="menu-item-invite" class="menu-item">join game</a>
-			<a href="#" id="menu-item-scoreboard" class="menu-item">scoreboard</a>
-			<a href="#" id="menu-item-replay" class="menu-item">replay</a>
-			<a href="#" id="menu-item-logout" class="menu-item">log out</a>
-		</div>
-
-	</div><!-- menubar -->
-
-	<div id="content">
-
-		<div id="lobby">
-			<div id="lobby-games" class="chat-scroll">
-				<table id="lobby-games-running-list-table" class="lobby-table">
-					<tr><th colspan="3">Currently running games</th></tr>
-				</table>
-
-			</div>
-			<div id="lobby-chat-log" class="chat-scroll"></div>
-
-			<div id="lobby-chat-userlist" class="chat-scroll">
-
-				<table id="lobby-chat-userlist-table" class="lobby-table">
-					<tr><th>Available users</th></tr>
-				</table>
-
-			</div>
-
-			<div id="lobby-chat-input">
-				<input id="lobby-chat-input-text" type="text" class="chat-input-text"/>
-			</div>
-
-		</div><!-- lobby -->
-
-	</div><!-- content -->
-
-</div><!-- wrapper -->
-</body>
-</html>
+	<div id="lobby-chat-input">
+		<form id="lobby-chat-input-form">
+			<input id="lobby-chat-input-text" type="text" class="chat-input-text" />
+		</form>
+	</div>
+</div>
