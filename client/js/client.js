@@ -4,7 +4,10 @@
 
 */
 
-var Client = (function () {
+/*
+	Client object should be responsible for communicating with server.
+*/
+Client = (function () {
 
 	var id = null;
 	var name = null;
@@ -41,7 +44,7 @@ var Client = (function () {
 
 	var sendPublicMessage = function (message) {
 		socket.emit(CHAT.PUBLIC_MESSAGE, {
-			name: id,
+			author: name,
 			msg: message
 		});
 	};
@@ -58,23 +61,24 @@ var Client = (function () {
 			if (typeof data === "undefined")
 				return;
 			Lobby.addPublicMessage(data);
-			console.log("received public message: " + JSON.stringify(data));
+			console.log("recv public message: " + JSON.stringify(data));
 		});
 
 		socket.on(CHAT.USER_LIST, function (data) {
 			if (typeof data === "undefined")
 				return;
-
-			console.log("received user list");
-			console.log(data);
+			console.log("recv user list: " + JSON.stringify(data));
+			Lobby.updateUserList(data);
 		});
 
-		socket.on(CHAT.USER_CONNECTED, function (data) {
-			console.log("user connected: " + data.name);
+		socket.on(SERVER.USER_CONNECTED, function (data) {
+			console.log("user connected: " + JSON.stringify(data));
+			Lobby.addConnectedUser(data);
 		});
 
-		socket.on(CHAT.USER_DISCONNECTED, function (data) {
-			console.log("user disconnected: " + data.name);
+		socket.on(SERVER.USER_DISCONNECTED, function (data) {
+			console.log("user disconnected: " + JSON.stringify(data));
+			Lobby.removeDisconnectedUser(data);
 		});
 
 	};

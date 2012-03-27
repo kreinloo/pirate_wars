@@ -4,13 +4,17 @@
 
 */
 
+// required node modules
 var io = require("socket.io").listen(8001);
 var node_static = require("node-static");
 var http = require("http");
 
+// our application modules and variables
 var serverClient = require("./serverclient");
 var events = require("../client/js/events");
 
+// server holds hash of connected users, don't know if necessary
+// values are stored like this: key : 'full name' => value : socket
 var clients = {};
 
 io.sockets.on("connection", function (socket) {
@@ -21,6 +25,7 @@ io.sockets.on("connection", function (socket) {
 
 		if (typeof data === "undefined")
 			return;
+
 		console.log("received public chat message: " +
 			data.author + ": " + data.msg);
 		socket.broadcast.emit(CHAT.PUBLIC_MESSAGE, data);
@@ -28,7 +33,7 @@ io.sockets.on("connection", function (socket) {
 	});
 
 	socket.on(CHAT.USER_LIST, function () {
-		socket.emit(CHAT.USER_LIST, Object.keys(clients));
+		socket.emit(CHAT.USER_LIST, { users: Object.keys(clients) });
 	})
 
 	socket.on(CLIENT.AUTH, function (data) {
@@ -40,22 +45,23 @@ io.sockets.on("connection", function (socket) {
 		console.log("new client: " + data.id);
 
 		socket.get("client", function (err, client) {
-			clientName = client.getName();
-			clients.clientName = socket;
-			socket.broadcast.emit(CHAT.USER_CONNECTED, {
-				name : clientName
+			clients[client.getName()] = socket;
+			socket.broadcast.emit(SERVER.USER_CONNECTED, {
+				name : client.getName()
 			})
 		});
+
+		socket.emit(CHAT.USER_LIST, { users: Object.keys(clients) });
+		console.log(Object.keys(clients));
 
 	});
 
 	socket.on("disconnect", function () {
 
 		socket.get("client", function (err, client) {
-			clientName = client.getName();
-			delete clients.clientName;
-			socket.broadcast.emit(CHAT.USER_DISCONNECTED, {
-				name : clientName
+			delete clients[client.getName()];
+			socket.broadcast.emit(SERVER.USER_DISCONNECTED, {
+				name : client.getName()
 			})
 		});
 
@@ -66,8 +72,6 @@ io.sockets.on("connection", function (socket) {
 // static file server
 var file = new (node_static.Server)("../client");
 http.createServer(function (request, response) {
-	console.log(request);
-	console.log(response);
 	request.addListener("end", function () {
 		file.serve(request, response);
 	})
