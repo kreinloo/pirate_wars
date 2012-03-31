@@ -35,11 +35,10 @@ Lobby = (function () {
 	var updateUserList = function (data) {
 
 		$("#lobby-chat-userlist-table td").remove();
-		var users = data.users;
-		for (i in users) {
+		for (i in data) {
 			$("#lobby-chat-userlist-table").
-				append( "<tr><td userName='" + users[i] + "'>" +
-					users[i] + "</td></tr>" );
+				append( "<tr><td id='" + data[i].id + "'>" +
+					data[i].name + "</td></tr>" );
 		}
 
 	};
@@ -49,10 +48,9 @@ Lobby = (function () {
 	*/
 	var addConnectedUser = function (data) {
 
-		var name = data.name;
 		$("#lobby-chat-userlist-table").
-			append( "<tr><td userName='" + name + "'>" +
-				name + "</td></tr>" );
+			append( "<tr><td id='" + data.id + "'>" +
+				data.name + "</td></tr>" );
 
 	};
 
@@ -61,8 +59,7 @@ Lobby = (function () {
 	*/
 	var removeDisconnectedUser = function (data) {
 
-		var name = data.name;
-		$("td[userName='" + name + "']").parent().remove();
+		$("td[id='" + data.id + "']").parent().remove();
 
 	};
 
@@ -73,9 +70,9 @@ Lobby = (function () {
 	var addNewGame = function (data) {
 
 		var name = data.name;
-		var user = $("td[userName='" + name + "']");
+		var user = $("td[id='" + data.id + "']");
 		var button = $("<a href=''>").append("<u>join</u>").click(function () {
-			Client.joinGame(name);
+			Client.joinGame({ opponentID : data.id, opponentName : data.name });
 			return false;
 		});
 		user.text(name + " | ").append(button);
@@ -88,7 +85,7 @@ Lobby = (function () {
 	var deleteGame = function (data) {
 
 		var name = data.name;
-		var user = $("td[userName='" + name + "']");
+		var user = $("td[id='" + data.id + "']");
 		user.text(name);
 
 	};

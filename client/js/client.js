@@ -118,7 +118,7 @@ Client = (function () {
 	var createGame = function () {
 
 		if (gameStatus === GAME.STATUS.IDLE) {
-			socket.emit(GAME.CREATE_GAME, { name : name });
+			socket.emit(GAME.CREATE_GAME, { name : name, id : id });
 			gameStatus = GAME.STATUS.WAITING;
 			console.log("game created, waiting for opponent ...");
 			return true;
@@ -134,7 +134,7 @@ Client = (function () {
 	var deleteGame = function () {
 
 		if (gameStatus === GAME.STATUS.WAITING) {
-			socket.emit(GAME.DELETE_GAME, { name : name });
+			socket.emit(GAME.DELETE_GAME, { name : name, id : id });
 			gameStatus = GAME.STATUS.IDLE;
 			console.log("game deleted");
 			return true;
@@ -147,13 +147,14 @@ Client = (function () {
 	/*
 		Notifies server that this client wishes to play with 'opponent'.
 	*/
-	var joinGame = function (opponent) {
-		data = {};
-		data.creator = opponent;
-		data.joiner = name
+	var joinGame = function (data) {
+
+		data.joinerID = id;
+		data.joinerName = name;
 		socket.emit(GAME.JOIN_GAME, data);
-		gameStatus = GAME.STATUS.PLAYING;
-		console.log("joining game, opponent: " + opponent);
+		//gameStatus = GAME.STATUS.PLAYING;
+		console.log("joining game, opponent: " + data.opponentName);
+
 	};
 
 	return {
