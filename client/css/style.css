@@ -87,8 +87,8 @@ a {
 	margin: 0px 35px 5px 0px;
 }
 
-#lobby-chat-input {
-	width: 687px;
+#lobby-input {
+	width: 693px;
 	height: 20px;
 	margin: auto auto auto auto;
 	float:left;
@@ -96,8 +96,16 @@ a {
 	margin-right: 35px;
 }
 
+.lobby-chat-form-div {
+	float: left;
+}
+
+.lobby-game-form-div {
+	float: right;
+}
+
 .chat-input-text {
-	width: 100%;
+	width: 462px;
 	font-style: italic;
 }
 

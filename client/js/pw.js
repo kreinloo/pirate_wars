@@ -18,7 +18,7 @@ PirateWars = (function () {
 		}
 		var id = $("#login-form-username").val();
 		loadLobby();
-		loadScripts();
+		loadLobbyScripts();
 		Client.setID(id);
 		Client.connect();
 		return false;
@@ -27,7 +27,7 @@ PirateWars = (function () {
 
 	// this method should load all our scripts once the user
 	// has successfully logged in
-	var loadScripts = function () {
+	var loadLobbyScripts = function () {
 
 		loadScript("js/events.js");
 		loadScript("js/lobby.js");
@@ -64,7 +64,7 @@ PirateWars = (function () {
 	return {
 
 		login : login,
-		loadScripts : loadScripts,
+		loadLobbyScripts : loadLobbyScripts,
 		loadLobby : loadLobby
 
 	}

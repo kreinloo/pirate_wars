@@ -14,12 +14,18 @@ ServerClient = function (ID) {
 	// user's full name taken from facebook
 	var name = ID;
 
+	var gameStatus = GAME.STATUS.IDLE;
+
 	var getID = function () { return id; };
 	var getName = function () { return name; };
+	var getGameStatus = function () { return gameStatus; };
+	var setGameStatus = function (status) { gameStatus = status; };
 
 	return {
 		getID : getID,
-		getName : getName
+		getName : getName,
+		getGameStatus : getGameStatus,
+		setGameStatus : setGameStatus
 	}
 
 }

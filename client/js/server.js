@@ -415,9 +415,6 @@ function Field() {
 		}
 	}
 
-
-
-
 	function addShip(row, col, row_len, col_len) {
 		if ((row < 0) || (col < 0)) return;
 		if ((row >= 10) || (col >= 10)) return;
