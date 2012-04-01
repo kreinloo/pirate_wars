@@ -11,10 +11,10 @@ var http = require("http");
 var util = require("util");
 
 // our gameserver
-var gameServer = require("./gameserver");
+var pw_server = require("pw_server");
 
-gameServer.setIO(io);
-gameServer.bindListeners(io);
+pw_server.setIO(io);
+pw_server.bindListeners(io);
 
 // static file server
 var file = new (node_static.Server)("../client");
