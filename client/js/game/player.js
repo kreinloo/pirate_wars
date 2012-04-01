@@ -4,9 +4,9 @@
 
 */
 
-function PlayerClient (Server) {
+function Player () {
 
-	var server = Server;
+	var server = null;
 	var id;
 	var name;
 	var gameTable;
@@ -191,14 +191,16 @@ function PlayerClient (Server) {
 			var rowCord = row;
 			var colCord = col;
 			if (row !== 0 && row !== 9 )
-				horizontal = opponentTable[row+1][col] != 1 && opponentTable[row-1][col] != 1 ? true:false;
+				horizontal = opponentTable[row+1][col] != 1 &&
+				opponentTable[row-1][col] != 1 ? true : false;
 			else if (row === 0)
 				horizontal = opponentTable[row+1][col]!=1 ? true:false;
 
 			else if (row == 9)
 				horizontal = opponentTable[row-1][col]!=1 ? true:false;
 			if (col !== 0 && col !== 9 )
-				vertical = opponentTable[row][col+1] !=1 && opponentTable[row][col-1] !=1 ? true:false;
+				vertical = opponentTable[row][col+1] !=1 &&
+				opponentTable[row][col-1] !=1 ? true : false;
 			else if (col === 0)
 				vertical = opponentTable[row][col+1]!=1 ? true:false;
 
@@ -362,24 +364,7 @@ function PlayerClient (Server) {
 		removeListenerFromOpponentCells : function () {
 			$(".game-table-opponent-cell").off("click");
 		},
-/*
-		fireAt : function (row, col) {
-			try {
-				var result = server.fireAt(row, col);
-				console.log("result: " + result);
-				// TODO :
-				// add textures to opponent's table
-			} catch (ex) {
-				console.log("Exception: " + ex);
-			}
 
-			// we get instant response from the dummy server
-			var opponentMove = server.waitForOpponent()
-			// TODO:
-			// add textures to player's table
-
-		},
-*/
 		lockTable : function () {
 			this.lockShips();
 			this.addListenerToOpponentCells();

@@ -10,28 +10,22 @@
 */
 PirateWars = (function () {
 
+	var gameScriptsLoaded = false;
+	var lobbyScriptsLoadded = false;
+
+	var lobbyContent = null;
+	var gameContent = null;
+
 	var login = function () {
 
 		if ($("#login-form-username").val().length < 3) {
 			console.log("username must be at least 3 characters long");
-			return false;
+			return;
 		}
 		var id = $("#login-form-username").val();
-		loadLobby();
-		loadLobbyScripts();
+		loadLobbyView();
 		Client.setID(id);
 		Client.connect();
-		return false;
-
-	};
-
-	// this method should load all our scripts once the user
-	// has successfully logged in
-	var loadLobbyScripts = function () {
-
-		loadScript("js/events.js");
-		loadScript("js/lobby.js");
-		loadScript("js/client.js");
 
 	};
 
@@ -48,24 +42,75 @@ PirateWars = (function () {
 
 	};
 
-	var loadLobby = function () {
+	var loadLobbyView = function () {
 
-		$("#content").children().remove();
-		$.ajax({
-			url : "lobby.html",
-			cache : false,
-			async : false
-		}).done(function (html) {
-			$("#content").append(html);
+		$("#content").children().hide(0, function() {
+			if (lobbyContent === null) {
+				$.ajax({
+					url : "lobby.html",
+					cache : false,
+					async : false
+				}).done(function (html) {
+					$("#content").append(html);
+				});
+				lobbyContent = $("#lobby");
+			} else {
+				lobbyContent.show();
+			}
 		});
+		loadLobbyScripts();
 
 	};
+
+	var loadLobbyScripts = function () {
+
+		if (!lobbyScriptsLoadded) {
+			loadScript("js/events.js");
+			loadScript("js/lobby.js");
+			loadScript("js/client.js");
+			lobbyScriptsLoadded = true;
+		}
+
+	};
+
+	var loadGameView = function () {
+
+		$("#content").children().hide(0, function () {
+			if (gameContent === null) {
+				$.ajax ({
+					url : "game.html",
+					cache : false,
+					async : false
+				}).done(function (html) {
+					$("#content").append(html);
+				});
+				gameContent = $("#game");
+			} else {
+				gameContent.show();
+			}
+		});
+		loadGameViewScripts();
+
+	};
+
+	var loadGameViewScripts = function () {
+
+		if (!gameScriptsLoaded) {
+			loadScript("js/lib/jquery-ui-1.8.18.custom.min.js");
+			loadScript("js/game/game.js");
+			loadScript("js/game/ship.js");
+			loadScript("js/game/player.js");
+			gameScriptsLoaded = true;
+		}
+
+	}
 
 	return {
 
 		login : login,
 		loadLobbyScripts : loadLobbyScripts,
-		loadLobby : loadLobby
+		loadLobbyView : loadLobbyView,
+		loadGameView : loadGameView
 
 	};
 

@@ -1,82 +1,30 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<div id="game">
+	<div id="game-tablearea">
 
-<head>
-	<title>game view</title>
-
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<link rel="stylesheet" type="text/css" href="css/style.css"/>
-	<link rel="stylesheet" type="text/css" href="css/game.css"/>
-
-	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,400italic,700' 
-		rel='stylesheet' type='text/css'/>
-	<link href='http://fonts.googleapis.com/css?family=Kaushan+Script'
-		rel='stylesheet' type='text/css'/>
-
-	<script type="text/javascript" src="js/lib/jquery-1.7.1.js"></script>
-	<script type="text/javascript" src="js/lib/jquery-ui-1.8.18.custom.min.js"></script>
-	<script type="text/javascript" src="js/server.js"></script>
-	<script type="text/javascript" src="js/game/game.js"></script>
-	<script type="text/javascript" src="js/game/ship.js"></script>
-	<script type="text/javascript" src="js/game/player.js"></script>
-
-</head>
-
-<body>
-
-<div id="wrapper">
-
-	<div id="avatar-div">
-		<div id="avatar-pic"><img src="gfx/avatar.png" alt="Users's avatar"/></div>
-	</div>
-
-	<div id="menu">
-
-		<div class="menu-items">
-			<a href="#" id="menu-item-lobby" class="menu-item">lobby</a>
-			<a href="#" id="menu-item-invite" class="menu-item">invite</a>
-			<a href="#" id="menu-item-scoreboard" class="menu-item">scoreboard</a>
-			<a href="#" id="menu-item-replay" class="menu-item">replay</a>
-			<a href="#" id="menu-item-logout" class="menu-item">log out</a>
+		<div class="game-table-wrapper game-table-wrapper-left">
+			<div id="game-table-user" class="game-table"></div>
 		</div>
 
-	</div><!-- menubar -->
-
-	<div id="content">
-	
-		<div id="game-tablearea">
-
-			<div class="game-table-wrapper game-table-wrapper-left">
-				<div id="game-table-user" class="game-table"></div>
-			</div>
-
-			<div class="game-table-wrapper game-table-wrapper-right">
-				<div id="game-table-opponent" class="game-table"></div>
-				<div id="game-table-ships" class="game-table">
-					<div class="game-table-ships-buttons">
-						<input type="button" id="game-table-ships-confirm" value="Confirm"
-							class="game-table-ships-button"/>
-						<input type="button" id="game-table-ships-reset" value="Reset"
-							class="game-table-ships-button"/>
-					</div>
+		<div class="game-table-wrapper game-table-wrapper-right">
+			<div id="game-table-opponent" class="game-table"></div>
+			<div id="game-table-ships" class="game-table">
+				<div class="game-table-ships-buttons">
+					<input type="button" id="game-table-ships-confirm" value="Confirm"
+						class="game-table-ships-button"/>
+					<input type="button" id="game-table-ships-reset" value="Reset"
+						class="game-table-ships-button"/>
 				</div>
 			</div>
+		</div>
 
-		</div><!-- game-tablearea -->
+	</div><!-- game-tablearea -->
 
-		<div id="game-chat">
-			<div id="game-chat-log" class="chat-scroll"></div>
+	<div id="game-chat">
+		<div id="game-chat-log" class="chat-scroll"></div>
 
-			<div id="game-chat-input">
-				<input id="game-chat-input-text" type="text" class="chat-input-text"/>
-			</div>
+		<div id="game-chat-input">
+			<input id="game-chat-input-text" type="text" class="chat-input-text"/>
+		</div>
 
-		</div><!-- game-chat -->
-	
-	</div><!-- content -->
-
-</div><!-- wrapper -->
-</body>
-</html>
-
+	</div><!-- game-chat -->
+</div>
