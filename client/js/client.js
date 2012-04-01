@@ -29,7 +29,7 @@ Client = (function () {
 		socket = io.connect("http://" + params.host + ":" + params.port);
 		socket.emit(CLIENT.AUTH, { id : id, name : name });
 		addSocketListeners();
-		console.log("client: connected!");
+		console.log(CLIENT.AUTH + " " + JSON.stringify({ id : id, name : name }));
 
 	};
 
@@ -75,23 +75,23 @@ Client = (function () {
 			if (typeof data === "undefined")
 				return;
 			Lobby.addPublicMessage(data);
-			console.log("recv public message: " + JSON.stringify(data));
+			console.log(CHAT.PUBLIC_MESSAGE + " " + JSON.stringify(data));
 		});
 
 		socket.on(CHAT.USER_LIST, function (data) {
 			if (typeof data === "undefined")
 				return;
-			console.log("recv user list: " + JSON.stringify(data));
+			console.log(CHAT.USER_LIST + " " + JSON.stringify(data));
 			Lobby.updateUserList(data);
 		});
 
 		socket.on(SERVER.USER_CONNECTED, function (data) {
-			console.log("user connected: " + JSON.stringify(data));
+			console.log(CHAT.USER_CONNECTED + " " + JSON.stringify(data));
 			Lobby.addConnectedUser(data);
 		});
 
 		socket.on(SERVER.USER_DISCONNECTED, function (data) {
-			console.log("user disconnected: " + JSON.stringify(data));
+			console.log(CHAT.USER_DISCONNECTED + " " + JSON.stringify(data));
 			Lobby.removeDisconnectedUser(data);
 		});
 
@@ -103,6 +103,10 @@ Client = (function () {
 		socket.on(GAME.DELETE_GAME, function (data) {
 			console.log(GAME.DELETE_GAME + " " + JSON.stringify(data));
 			Lobby.deleteGame(data);
+		});
+
+		socket.on(GAME.JOIN_GAME, function (data) {
+			console.log(GAME.JOIN_GAME + " " + JSON.stringify(data));
 		});
 
 		socket.on(GAME.START, function (data) {
@@ -120,7 +124,7 @@ Client = (function () {
 		if (gameStatus === GAME.STATUS.IDLE) {
 			socket.emit(GAME.CREATE_GAME, { name : name, id : id });
 			gameStatus = GAME.STATUS.WAITING;
-			console.log("game created, waiting for opponent ...");
+			console.log(GAME.CREATE_GAME + " " + JSON.stringify({ name : name, id : id }));
 			return true;
 		} else {
 			return false;
@@ -136,7 +140,7 @@ Client = (function () {
 		if (gameStatus === GAME.STATUS.WAITING) {
 			socket.emit(GAME.DELETE_GAME, { name : name, id : id });
 			gameStatus = GAME.STATUS.IDLE;
-			console.log("game deleted");
+			console.log(GAME.DELETE_GAME + " " + JSON.stringify({ name : name, id : id }));
 			return true;
 		} else {
 			return false;
@@ -153,7 +157,7 @@ Client = (function () {
 		data.joinerName = name;
 		socket.emit(GAME.JOIN_GAME, data);
 		//gameStatus = GAME.STATUS.PLAYING;
-		console.log("joining game, opponent: " + data.opponentName);
+		console.log(GAME.JOIN_GAME + " " + JSON.stringify(data));
 
 	};
 
@@ -166,6 +170,6 @@ Client = (function () {
 		createGame : createGame,
 		deleteGame : deleteGame,
 		joinGame : joinGame
-	}
+	};
 
 })();

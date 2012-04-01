@@ -30,8 +30,8 @@ ServerClient = function (data) {
 		getGameStatus : getGameStatus,
 		setGameStatus : setGameStatus,
 		getSocket : getSocket
-	}
+	};
 
-}
+};
 
 module.exports.ServerClient = ServerClient;

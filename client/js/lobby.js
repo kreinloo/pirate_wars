@@ -35,7 +35,7 @@ Lobby = (function () {
 	var updateUserList = function (data) {
 
 		$("#lobby-chat-userlist-table td").remove();
-		for (i in data) {
+		for (var i in data) {
 			$("#lobby-chat-userlist-table").
 				append( "<tr><td id='" + data[i].id + "'>" +
 					data[i].name + "</td></tr>" );
@@ -123,7 +123,7 @@ Lobby = (function () {
 					click(function () { Lobby.createGameButtonClicked(); })
 			);
 		}
-	}
+	};
 
 	return {
 
@@ -137,7 +137,7 @@ Lobby = (function () {
 		createGameButtonClicked : createGameButtonClicked,
 		deleteGameButtonClicked : deleteGameButtonClicked
 
-	}
+	};
 
 })();
 

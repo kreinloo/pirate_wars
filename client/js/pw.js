@@ -46,7 +46,7 @@ PirateWars = (function () {
 			async : false
 		});
 
-	}
+	};
 
 	var loadLobby = function () {
 
@@ -67,7 +67,7 @@ PirateWars = (function () {
 		loadLobbyScripts : loadLobbyScripts,
 		loadLobby : loadLobby
 
-	}
+	};
 
 })();
 
@@ -76,6 +76,6 @@ $(document).ready( function () {
 	$("#login-form").submit(function () {
 		PirateWars.login();
 		return false;
-	})
+	});
 
-})
+});

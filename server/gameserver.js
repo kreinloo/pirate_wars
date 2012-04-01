@@ -41,7 +41,7 @@ var GameServer = function () {
 			socket.broadcast.emit(SERVER.USER_DISCONNECTED, {
 				name : client.getName(),
 				id : client.getID()
-			})
+			});
 		});
 
 	};
@@ -57,7 +57,7 @@ var GameServer = function () {
 	var userListHandler = function (data, socket) {
 
 		var list = [];
-		for (c in clients) {
+		for (var c in clients) {
 			client = clients[c];
 			list.push({ name : client.getName(), id : client.getID() });
 		}
@@ -134,7 +134,7 @@ var GameServer = function () {
 	return {
 		setIO : setIO,
 		bindListeners : bindListeners
-	}
+	};
 
 };
 

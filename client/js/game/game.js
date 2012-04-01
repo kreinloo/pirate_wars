@@ -16,7 +16,7 @@ var TILE = {
 	FOG_EDGE1: "gfx/FogEdgeTexture.png",
 	FIRE: "gfx/Fire.gif",
 	SPLASH: "gfx/WaterSplash.png"
-}
+};
 
 var SHIPS = {
 
@@ -75,9 +75,9 @@ function resetShips () {
 	var shipFactory = new ShipFactory();
 	var left = 360;
 	var top = 10;
-
+	var ship = null;
 	for (var i = 0; i < 4; i++) {
-		var ship = shipFactory.createShip(1, "horizontal", player);
+		ship = shipFactory.createShip(1, "horizontal", player);
 		ship.getElement().css("top", top);
 		ship.getElement().css("left", left);
 		left += 35;
@@ -86,8 +86,8 @@ function resetShips () {
 	left = 360;
 	top += 40;
 
-	for (var i = 0; i < 3; i++) {
-		var ship = shipFactory.createShip(2, "horizontal", player);
+	for (i = 0; i < 3; i++) {
+		ship = shipFactory.createShip(2, "horizontal", player);
 		ship.getElement().css("top", top);
 		ship.getElement().css("left", left);
 		left += 70;
@@ -96,8 +96,8 @@ function resetShips () {
 	left = 360;
 	top += 40;
 
-	for (var i = 0; i < 2; i++) {
-		var ship = shipFactory.createShip(3, "horizontal", player);
+	for (i = 0; i < 2; i++) {
+		ship = shipFactory.createShip(3, "horizontal", player);
 		ship.getElement().css("top", top);
 		ship.getElement().css("left", left);
 		left += 105;
@@ -106,7 +106,7 @@ function resetShips () {
 	left = 360;
 	top += 40;
 
-	var ship = shipFactory.createShip(4, "horizontal", player)
+	ship = shipFactory.createShip(4, "horizontal", player);
 	ship.getElement().css("top", top);
 	ship.getElement().css("left", left);
 
@@ -137,8 +137,9 @@ function drawTile (isSelf, row, column, tileToDraw, rotate) {
 
 function fillTables () {
 
+	var row = null;
 	for (var i = 0; i < 10; i++) {
-		var row = $("<div class='game-table-row'>");
+		row = $("<div class='game-table-row'>");
 		for (j = 0; j < 10; j++) {
 			row.append(
 				$("<div class='game-table-cell'>").attr(
@@ -147,8 +148,8 @@ function fillTables () {
 		$("#game-table-user").append(row);
 	}
 
-	for (var i = 0; i < 10; i++) {
-		var row = $("<div class='game-table-row'>");
+	for (i = 0; i < 10; i++) {
+		row = $("<div class='game-table-row'>");
 		for (j = 0; j < 10; j++) {
 			row.append(
 				$("<div class='game-table-cell'>").attr(

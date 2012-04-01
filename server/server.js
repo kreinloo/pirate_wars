@@ -21,5 +21,5 @@ var file = new (node_static.Server)("../client");
 http.createServer(function (request, response) {
 	request.addListener("end", function () {
 		file.serve(request, response);
-	})
+	});
 }).listen(8000);

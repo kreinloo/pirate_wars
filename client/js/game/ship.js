@@ -15,28 +15,28 @@ function Ship (len, dir, plyr) {
 	switch (length) {
 
 		case 1:
-			if (direction == "horizontal") 
+			if (direction === "horizontal")
 				element.attr("src", SHIPS.SHIP_1_horizontal);
 			else
 				element.attr("src", SHIPS.SHIP_1_vertical);
 			break;
 
 		case 2:
-			if (direction == "horizontal") 
+			if (direction === "horizontal")
 				element.attr("src", SHIPS.SHIP_2_horizontal);
 			else
 				element.attr("src", SHIPS.SHIP_2_vertical);
 			break;
 
 		case 3:
-			if (direction == "horizontal")
+			if (direction === "horizontal")
 				element.attr("src", SHIPS.SHIP_3_horizontal);
 			else
 				element.attr("src", SHIPS.SHIP_3_vertical);
 			break;
 
 		case 4:
-			if (direction == "horizontal")
+			if (direction === "horizontal")
 				element.attr("src", SHIPS.SHIP_4_horizontal);
 			else
 				element.attr("src", SHIPS.SHIP_4_vertical);
@@ -63,9 +63,9 @@ function Ship (len, dir, plyr) {
 		},
 
 		stop : function (event, ui) {
-			var top = parseInt($(this).css("top"));
-			var left = parseInt($(this).css("left"));
-			if ( $(this).data("obj").getDirection() == "horizontal" ) {
+			var top = parseInt($(this).css("top"), 10);
+			var left = parseInt($(this).css("left"), 10);
+			if ( $(this).data("obj").getDirection() === "horizontal" ) {
 				top -= 12;
 				left -= 10;
 			}
@@ -79,8 +79,8 @@ function Ship (len, dir, plyr) {
 			} else {
 				res = $(this).data("obj").getPlayerClient().addShip(
 						$(this).data("obj"), {
-							row : parseInt(top / 32),
-							col : parseInt(left / 32)
+							row : parseInt(top / 32, 10),
+							col : parseInt(left / 32, 10)
 						}
 					);
 			}
@@ -112,28 +112,28 @@ function Ship (len, dir, plyr) {
 				switch (length) {
 
 				case 1:
-					if (direction == "horizontal")
+					if (direction === "horizontal")
 						element.attr("src", SHIPS.SHIP_1_horizontal);
 					else
 						element.attr("src", SHIPS.SHIP_1_vertical);
 					break;
 
 				case 2:
-					if (direction == "horizontal")
+					if (direction === "horizontal")
 						element.attr("src", SHIPS.SHIP_2_horizontal);
 					else
 						element.attr("src", SHIPS.SHIP_2_vertical);
 					break;
 
 				case 3:
-					if (direction == "horizontal")
+					if (direction === "horizontal")
 						element.attr("src", SHIPS.SHIP_3_horizontal);
 					else
 						element.attr("src", SHIPS.SHIP_3_vertical);
 					break;
 
 				case 4:
-					if (direction == "horizontal")
+					if (direction === "horizontal")
 						element.attr("src", SHIPS.SHIP_4_horizontal);
 					else
 						element.attr("src", SHIPS.SHIP_4_vertical);
@@ -143,7 +143,7 @@ function Ship (len, dir, plyr) {
 		},
 
 		flipDirection : function () {
-			if (direction == "horizontal")
+			if (direction === "horizontal")
 				direction = "vertical";
 			else
 				direction = "horizontal";
@@ -165,9 +165,9 @@ function Ship (len, dir, plyr) {
 
 		getElement : function () { return element; },
 
-		setShipPointer : function (ship) { element.data("obj", ship) },
+		setShipPointer : function (ship) { element.data("obj", ship); }
 
-	}
+	};
 
 }
 
@@ -180,5 +180,5 @@ function ShipFactory () {
 			ship.setShipPointer(ship);
 			return ship;
 		}
-	}
+	};
 }
