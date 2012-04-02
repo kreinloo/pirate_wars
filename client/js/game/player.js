@@ -9,8 +9,6 @@ var Player = (function (serverInterface) {
 	"use strict";
 
 	var server = serverInterface;
-	var id;
-	var name;
 	var gameTable;
 	var opponentTable;
 
@@ -30,10 +28,6 @@ var Player = (function (serverInterface) {
 	}
 
 	return {
-
-		getID : function () { return id; },
-
-		getName : function () { return name; },
 
 		getGameTable : function () { return gameTable; },
 

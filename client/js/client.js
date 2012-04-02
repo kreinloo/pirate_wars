@@ -9,11 +9,14 @@
 */
 var Client = (function () {
 
+	"use strict";
+
 	var id = null;
 	var name = null;
 	var socket = null;
 	var player = null;
 	var gameStatus = GAME.STATUS.IDLE;
+	var serverInterface = new ServerInterface ();
 
 	var lobby = new Lobby ();
 
@@ -132,15 +135,18 @@ var Client = (function () {
 		// server notifies that this player is starting a new game
 		socket.on(GAME.START, function (data) {
 			console.log(GAME.START + " " + JSON.stringify(data));
+			serverInterface.startGame(data);
+			serverInterface.setPlayer(new Player(serverInterface));
+			serverInterface.setClient(Client);
 		});
 
 		// general info regarding current game
 		socket.on(GAME.INFO, function (data) {
 			if (gameStatus === GAME.STATUS.PLAYING) {
 				console.log(GAME.INFO + " " + JSON.stringify(data));
-				// TODO: pass it to "server"
+				serverInterface.call(data);
 			}
-		})
+		});
 
 	};
 
