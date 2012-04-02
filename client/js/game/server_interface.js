@@ -107,7 +107,9 @@ var ServerInterface = (function() {
 		//getCurrentGame : getCurrentGame,
 		//isGameOver : isGameOver,
 		getActivePlayerId : getActivePlayerId,
-		call : call
+		call : call,
+		startGame : startGame,
+		setClient : setClient
 
 	};
 

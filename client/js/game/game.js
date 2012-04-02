@@ -115,8 +115,7 @@ Game = (function() {
 
 	return {
 
-		initialize : initialize,
-		asd : function () {}
+		initialize : initialize
 
 	};
 

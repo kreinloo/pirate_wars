@@ -64,9 +64,11 @@ var PirateWars = (function () {
 
 	var loadLobbyScripts = function () {
 
+		loadGameViewScripts();
 		if (!lobbyScriptsLoadded) {
 			loadScript("js/events.js");
 			loadScript("js/lobby.js");
+			loadScript("js/game/server_interface.js");
 			loadScript("js/client.js");
 			lobbyScriptsLoadded = true;
 		}
