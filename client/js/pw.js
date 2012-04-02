@@ -8,7 +8,7 @@
 	PirateWars object could be responsible for application-wide modifications,
 	like making AJAX requests and replacing 'content' div.
 */
-PirateWars = (function () {
+var PirateWars = (function () {
 
 	var gameScriptsLoaded = false;
 	var lobbyScriptsLoadded = false;

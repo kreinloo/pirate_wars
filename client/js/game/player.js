@@ -4,9 +4,11 @@
 
 */
 
-function Player () {
+var Player = (function (serverInterface) {
 
-	var server = null;
+	"use strict";
+
+	var server = serverInterface;
 	var id;
 	var name;
 	var gameTable;
@@ -165,8 +167,8 @@ function Player () {
 				return false;
 		},
 
-		opponentsTurn : function () {
-			var result = server.waitForOpponent();
+		opponentsTurn : function (data) {
+			var result = data.result;
 			switch (result[2]) {
 				case 10 :
 					drawTile(true,result[0],result[1],TILE.SPLASH,false);
@@ -342,9 +344,11 @@ function Player () {
 					break;
 
 			}
+			/*
 			if (outcome != 13){
 				this.opponentsTurn();
 			}
+			*/
 		},
 
 		lockShips : function () {
@@ -357,7 +361,7 @@ function Player () {
 				var row = parseInt(id[1]);
 				var col = parseInt(id[2]);
 				console.log("row: " + row + " col: " + col + " clicked");
-				player.makeMove(row, col);
+				this.makeMove(row, col);
 			});
 		},
 
@@ -369,7 +373,7 @@ function Player () {
 			this.lockShips();
 			this.addListenerToOpponentCells();
 			// Signal the server that we are ready to start the game.
-			server.opponentsAlignment();
+			//server.opponentsAlignment();
 			server.confirmAlignment();
 			this.log("Ships placed and locked.");
 			this.log("Game started...");
@@ -388,4 +392,4 @@ function Player () {
 
 	};
 
-}
+});

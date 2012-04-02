@@ -7,13 +7,15 @@
 /*
 	Client object should be responsible for communicating with server.
 */
-Client = (function () {
+var Client = (function () {
 
 	var id = null;
 	var name = null;
 	var socket = null;
 	var player = null;
 	var gameStatus = GAME.STATUS.IDLE;
+
+	var lobby = new Lobby ();
 
 	/*
 		Connects to the server.
@@ -26,7 +28,12 @@ Client = (function () {
 			params.port = 8001;
 		}
 
-		socket = io.connect("http://" + params.host + ":" + params.port);
+		var options = {};
+
+		// for deployment at heroku
+		//options["transports"] = ["xhr-polling"];
+
+		socket = io.connect("http://" + params.host + ":" + params.port, options);
 		socket.emit(CLIENT.AUTH, { id : id, name : name });
 		addSocketListeners();
 		console.log(CLIENT.AUTH + " " + JSON.stringify({ id : id, name : name }));
@@ -45,6 +52,10 @@ Client = (function () {
 		name = nid;
 	};
 
+	var getID = function () {
+		return id;
+	};
+
 	var getName = function () {
 		return name;
 	};
@@ -54,7 +65,8 @@ Client = (function () {
 		game lobby log.
 	*/
 	var sendPublicMessage = function (message) {
-		socket.emit(CHAT.PUBLIC_MESSAGE, {
+		socket.emit(CHAT.PUBLIC_MESSAGE,
+		{
 			author: name,
 			msg: message
 		});
@@ -65,53 +77,70 @@ Client = (function () {
 	*/
 	var addSocketListeners = function () {
 
+		// general info from server
 		socket.on(SERVER.STATUS, function (data) {
 			if (typeof data === "undefined")
 				return;
 			console.log("server msg: " + data.msg);
 		});
 
+		// server sends a public message
 		socket.on(CHAT.PUBLIC_MESSAGE, function (data) {
 			if (typeof data === "undefined")
 				return;
-			Lobby.addPublicMessage(data);
+			lobby.addPublicMessage(data);
 			console.log(CHAT.PUBLIC_MESSAGE + " " + JSON.stringify(data));
 		});
 
+		// server sends a initial userlist on connection
 		socket.on(CHAT.USER_LIST, function (data) {
 			if (typeof data === "undefined")
 				return;
 			console.log(CHAT.USER_LIST + " " + JSON.stringify(data));
-			Lobby.updateUserList(data);
+			lobby.updateUserList(data);
 		});
 
+		// server notifies about new connected user
 		socket.on(SERVER.USER_CONNECTED, function (data) {
-			console.log(CHAT.USER_CONNECTED + " " + JSON.stringify(data));
-			Lobby.addConnectedUser(data);
+			console.log(SERVER.USER_CONNECTED + " " + JSON.stringify(data));
+			lobby.addConnectedUser(data);
 		});
 
+		// server notifies about disconnected user
 		socket.on(SERVER.USER_DISCONNECTED, function (data) {
-			console.log(CHAT.USER_DISCONNECTED + " " + JSON.stringify(data));
-			Lobby.removeDisconnectedUser(data);
+			console.log(SERVER.USER_DISCONNECTED + " " + JSON.stringify(data));
+			lobby.removeDisconnectedUser(data);
 		});
 
-		socket.on(GAME.CREATE_GAME, function (data) {
-			console.log(GAME.CREATE_GAME + " " + JSON.stringify(data));
-			Lobby.addNewGame(data);
+		// server notifies about a new created game by some other player
+		socket.on(GAME.CREATE, function (data) {
+			console.log(GAME.CREATE + " " + JSON.stringify(data));
+			lobby.addNewGame(data);
 		});
 
-		socket.on(GAME.DELETE_GAME, function (data) {
-			console.log(GAME.DELETE_GAME + " " + JSON.stringify(data));
-			Lobby.deleteGame(data);
+		// server notifies about a deleted game from public user list
+		socket.on(GAME.DELETE, function (data) {
+			console.log(GAME.DELETE + " " + JSON.stringify(data));
+			lobby.deleteGame(data);
 		});
 
-		socket.on(GAME.JOIN_GAME, function (data) {
-			console.log(GAME.JOIN_GAME + " " + JSON.stringify(data));
+		// server notifies that somebody whishes to play with this player
+		socket.on(GAME.JOIN_REQUEST, function (data) {
+			console.log(GAME.JOIN_REQUEST + " " + JSON.stringify(data));
 		});
 
+		// server notifies that this player is starting a new game
 		socket.on(GAME.START, function (data) {
 			console.log(GAME.START + " " + JSON.stringify(data));
 		});
+
+		// general info regarding current game
+		socket.on(GAME.INFO, function (data) {
+			if (gameStatus === GAME.STATUS.PLAYING) {
+				console.log(GAME.INFO + " " + JSON.stringify(data));
+				// TODO: pass it to "server"
+			}
+		})
 
 	};
 
@@ -122,9 +151,9 @@ Client = (function () {
 	var createGame = function () {
 
 		if (gameStatus === GAME.STATUS.IDLE) {
-			socket.emit(GAME.CREATE_GAME, { name : name, id : id });
+			socket.emit(GAME.CREATE, { name : name, id : id });
 			gameStatus = GAME.STATUS.WAITING;
-			console.log(GAME.CREATE_GAME + " " + JSON.stringify({ name : name, id : id }));
+			console.log(GAME.CREATE + " " + JSON.stringify({ name : name, id : id }));
 			return true;
 		} else {
 			return false;
@@ -138,9 +167,9 @@ Client = (function () {
 	var deleteGame = function () {
 
 		if (gameStatus === GAME.STATUS.WAITING) {
-			socket.emit(GAME.DELETE_GAME, { name : name, id : id });
+			socket.emit(GAME.DELETE, { name : name, id : id });
 			gameStatus = GAME.STATUS.IDLE;
-			console.log(GAME.DELETE_GAME + " " + JSON.stringify({ name : name, id : id }));
+			console.log(GAME.DELETE + " " + JSON.stringify({ name : name, id : id }));
 			return true;
 		} else {
 			return false;
@@ -155,9 +184,8 @@ Client = (function () {
 
 		data.joinerID = id;
 		data.joinerName = name;
-		socket.emit(GAME.JOIN_GAME, data);
-		//gameStatus = GAME.STATUS.PLAYING;
-		console.log(GAME.JOIN_GAME + " " + JSON.stringify(data));
+		socket.emit(GAME.JOIN_REQUEST, data);
+		console.log(GAME.JOIN_REQUEST + " " + JSON.stringify(data));
 
 	};
 
@@ -165,8 +193,9 @@ Client = (function () {
 		connect : connect,
 		emit : emit,
 		setID : setID,
-		sendPublicMessage : sendPublicMessage,
+		getID : getID,
 		getName : getName,
+		sendPublicMessage : sendPublicMessage,
 		createGame : createGame,
 		deleteGame : deleteGame,
 		joinGame : joinGame

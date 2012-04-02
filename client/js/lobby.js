@@ -5,10 +5,10 @@
 */
 
 /*
-	Lobby object handles all the manipulation with DOM objects, like
-	adding new messages to the chat log and so on.
+	Lobby object handles all the manipulation with DOM objects
+	in the lobby view, like adding new messages to the chat log and so on.
 */
-Lobby = (function () {
+var Lobby = (function () {
 
 	/*
 		Adds new message to lobby log.
@@ -102,7 +102,7 @@ Lobby = (function () {
 					attr("type", "button").
 					attr("id", "lobby-game-form-delete").
 					attr("value", "Delete game").
-					click(function () { Lobby.deleteGameButtonClicked(); })
+					click(function () { deleteGameButtonClicked(); })
 			);
 		}
 
@@ -120,10 +120,32 @@ Lobby = (function () {
 					attr("type", "button").
 					attr("id", "lobby-game-form-create").
 					attr("value", "Create new game").
-					click(function () { Lobby.createGameButtonClicked(); })
+					click(function () { createGameButtonClicked(); })
 			);
 		}
+
 	};
+
+	var addListenersToButtons = function () {
+
+		$("#lobby-chat-input-form").submit(function () {
+
+			Client.sendPublicMessage( $("#lobby-chat-input-text").val() );
+			addPublicMessage({
+				author : Client.getName(),
+				msg : $("#lobby-chat-input-text").val()
+			});
+			$("#lobby-chat-input-text").val("");
+			return false;
+
+		});
+
+		$("#lobby-game-form-create").click(function () {
+			createGameButtonClicked();
+			return false;
+		});
+
+	}();
 
 	return {
 
@@ -135,29 +157,9 @@ Lobby = (function () {
 		deleteGame : deleteGame,
 
 		createGameButtonClicked : createGameButtonClicked,
-		deleteGameButtonClicked : deleteGameButtonClicked
+		deleteGameButtonClicked : deleteGameButtonClicked,
+		addListenersToButtons : addListenersToButtons
 
 	};
-
-})();
-
-$(document).ready(function () {
-
-	$("#lobby-chat-input-form").submit(function () {
-
-		Client.sendPublicMessage( $("#lobby-chat-input-text").val() );
-		Lobby.addPublicMessage({
-			author : Client.getName(),
-			msg : $("#lobby-chat-input-text").val()
-		});
-		$("#lobby-chat-input-text").val("");
-		return false;
-
-	});
-
-	$("#lobby-game-form-create").click(function () {
-		Lobby.createGameButtonClicked();
-		return false;
-	});
 
 });

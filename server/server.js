@@ -15,6 +15,14 @@ var pw_server = require("pw_server");
 pw_server.setIO(io);
 pw_server.bindListeners();
 
+// for deployment at heroku
+/*
+io.configure(function () {
+	io.set("transports", ["xhr-polling"]);
+	io.set("polling duration", 10);
+});
+*/
+
 // static file server
 var file = new (node_static.Server)("../client");
 http.createServer(function (request, response) {

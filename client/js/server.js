@@ -57,14 +57,15 @@ function Server() {
 	brains = new AI(currentGame.getPlayerById(1));
 
 	return {
-		/* 
+		/*
 			FireAt(row, col)
 			Fires at enemy field.
 			Returns result of the action (look HIT table)
 				or an exception (look ERROR table).
 		*/
 		fireAt: function (row, col) {
-			if (currentGame.getGamePhase() != PHASE.BATTLE) throw ERROR.INVALID_PHASE + " " + currentGame.getGamePhase();
+			if (currentGame.getGamePhase() != PHASE.BATTLE)
+				throw ERROR.INVALID_PHASE + " " + currentGame.getGamePhase();
 			if ((typeof row != 'number') || (typeof col != 'number')) throw ERROR.INVALID_MOVE;
 			if ((row < 0) || (col < 0)) throw ERROR.INVALID_MOVE;
 			if ((row >= 10) || (row >= 10)) throw ERROR.INVALID_MOVE;
@@ -183,7 +184,8 @@ function Server() {
 			var localPlayer = currentGame.getPlayerById(localPlayerId);
 
 			localPlayer.setReady(true);
-			if (currentGame.areBothPlayersReady()) console.log("server phase: " + currentGame.getGamePhase());
+			if (currentGame.areBothPlayersReady())
+				console.log("server phase: " + currentGame.getGamePhase());
 			currentGame.incGamePhase();
 			console.log("server phase: " + currentGame.getGamePhase());
 
@@ -191,7 +193,7 @@ function Server() {
 
 		/*
 			opponentsAlignment()
-			Checks whether enemy has made her choice of ships placement. 
+			Checks whether enemy has made her choice of ships placement.
 				Returns true if choice has been made.
 			In this dummy-server solution it always does hardcoded placement when
 				the method is called.
@@ -240,7 +242,7 @@ function Server() {
 		/*
 			printPlayerFieldById(playerId)
 			Prints the matrix of gamefield of player with id 'playerId'.
-				In dummy-server: 
+				In dummy-server:
 					0 - human player
 					1 - AI player
 			For debugging purposes!
@@ -252,7 +254,7 @@ function Server() {
 }
 
 /*
-	Class: AI(playerObj) 
+	Class: AI(playerObj)
 	Creates artificial intelligence (more like artificial idiot)
 		and ties it with player object 'playerObj'.
 	The AI pre-generates the list of moves so it's not necessary to
@@ -294,7 +296,7 @@ function AI(playerObj) {
 
 /*
 	Class: Game()
-	Represents instance of game and manipulates with it. 
+	Represents instance of game and manipulates with it.
 	Holds information about active phase,
 		active player (whose turn it is),
 		references to player-objects,
@@ -423,7 +425,10 @@ function Field() {
 
 		matrix[row][col] = 2;
 		addShip(
-		row_len != 0 ? row + 1 : row, col_len != 0 ? col + 1 : col, row_len != 0 ? row_len - 1 : 0, col_len != 0 ? col_len - 1 : 0);
+			row_len != 0 ? row + 1 : row,
+			col_len != 0 ? col + 1 : col,
+			row_len != 0 ? row_len - 1 : 0,
+			col_len != 0 ? col_len - 1 : 0);
 	}
 
 	initializeMatrix();
@@ -466,7 +471,8 @@ function Field() {
 				if ((row >= 10) || (col >= 10)) return 0;
 				if (matrix[row][col] < 2) return 0;
 
-				return (matrix[row][col] == 2 ? 1 : 0) + countWholeParts(row + move_row, col + move_col, move_row, move_col);
+				return (matrix[row][col] == 2 ? 1 : 0) + countWholeParts(row + move_row,
+					col + move_col, move_row, move_col);
 			}
 
 			if (shipsLeft <= 0) return HIT.GAME_OVER;
@@ -492,13 +498,15 @@ function Field() {
 		},
 
 		addVerticalShip: function (row, col, length) {
-			console.log("Server: Added ship vertically : row: " + row + " col: " + col + " Length: " + length);
+			console.log("Server: Added ship vertically : row: " + row +
+				" col: " + col + " Length: " + length);
 			addShip(row, col, length, 0);
 			shipsLeft++;
 		},
 
 		addHorizontalShip: function (row, col, length) {
-			console.log("Server: Added ship horizontally : row: " + row + " col: " + col + " Length: " + length);
+			console.log("Server: Added ship horizontally : row: " + row +
+				" col: " + col + " Length: " + length);
 			addShip(row, col, 0, length);
 			shipsLeft++;
 		},
