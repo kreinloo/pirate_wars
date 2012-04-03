@@ -16,12 +16,12 @@ pw_server.setIO(io);
 pw_server.bindListeners();
 
 // for deployment at heroku
-/*
 io.configure(function () {
-	io.set("transports", ["xhr-polling"]);
-	io.set("polling duration", 10);
+//	io.set("transports", ["xhr-polling"]);
+//	io.set("polling duration", 10);
+	io.set("log level", 2);
 });
-*/
+
 
 // static file server
 var file = new (node_static.Server)("../client");

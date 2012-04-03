@@ -34,14 +34,14 @@ var ServerInterface = (function() {
 	var addVerticalShip = function (row, col, length) {
 		sendEvent({
 			action : GAME.ACTION.ADD_VERTICAL_SHIP,
-			params : { row : row, col : col, length : length }
+			params : { row : row, col : col, len : length }
 		});
 	};
 
 	var addHorizontalShip = function (row, col, length) {
 		sendEvent({
-			action : GAME.ACTION.ADD_VERTICAL_SHIP,
-			params : { row : row, col : col, length : length }
+			action : GAME.ACTION.ADD_HORIZONTAL_SHIP,
+			params : { row : row, col : col, len : length }
 		});
 	};
 
