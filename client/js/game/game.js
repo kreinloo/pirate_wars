@@ -6,13 +6,11 @@
 
 Game = (function() {
 
-	"use strict";
-
 	var player = null;
 
-	var initialize = function () {
+	"use strict";
 
-		player = new Player ();
+	var initialize = function () {
 
 		$("#game-table-opponent").css("display", "none");
 		$("#game-table-ships").css("display", "inline");
@@ -115,7 +113,8 @@ Game = (function() {
 
 	return {
 
-		initialize : initialize
+		initialize : initialize,
+		setPlayer : function(plyr) { player = plyr; }
 
 	};
 

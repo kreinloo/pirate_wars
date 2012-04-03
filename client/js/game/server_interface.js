@@ -89,10 +89,14 @@ var ServerInterface = (function() {
 		client.emit(GAME.INFO, {
 			gid : gameID,
 			pid : client.getID(),
-			event : data.event,
+			action : data.action,
 			params : data.params
 		});
 	};
+
+	var getPlayer = function () {
+		return player;
+	}
 
 	return {
 
@@ -109,7 +113,8 @@ var ServerInterface = (function() {
 		getActivePlayerId : getActivePlayerId,
 		call : call,
 		startGame : startGame,
-		setClient : setClient
+		setClient : setClient,
+		getPlayer : getPlayer
 
 	};
 

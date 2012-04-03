@@ -32,7 +32,6 @@ var Client = (function () {
 		}
 
 		var options = {};
-
 		// for deployment at heroku
 		//options["transports"] = ["xhr-polling"];
 
@@ -45,6 +44,7 @@ var Client = (function () {
 
 	/*
 		Emits custom event to the server. Can be used for debugging.
+		ServerInterface uses it to send GAME.INFO events.
 	*/
 	var emit = function (event, data) {
 		socket.emit(event, data);
@@ -69,10 +69,10 @@ var Client = (function () {
 	*/
 	var sendPublicMessage = function (message) {
 		socket.emit(CHAT.PUBLIC_MESSAGE,
-		{
-			author: name,
-			msg: message
-		});
+			{
+				author: name,
+				msg: message
+			});
 	};
 
 	/*
@@ -138,6 +138,9 @@ var Client = (function () {
 			serverInterface.startGame(data);
 			serverInterface.setPlayer(new Player(serverInterface));
 			serverInterface.setClient(Client);
+			PirateWars.loadGameView();
+			Game.setPlayer(serverInterface.getPlayer());
+			Game.initialize();
 		});
 
 		// general info regarding current game
@@ -196,6 +199,7 @@ var Client = (function () {
 	};
 
 	return {
+
 		connect : connect,
 		emit : emit,
 		setID : setID,
@@ -205,6 +209,7 @@ var Client = (function () {
 		createGame : createGame,
 		deleteGame : deleteGame,
 		joinGame : joinGame
+
 	};
 
 })();
