@@ -373,15 +373,22 @@ var Player = (function (serverInterface) {
 			this.log("Game started...");
 		},
 
-		log : function (message) {
+		log : function (message, author) {
 			var date = new Date();
 			var timestamp = date.getHours() + ":" + date.getMinutes() + ":" +
 				date.getSeconds();
+			if (author !== undefined) {
+				message = author + ": " + message;
+			}
 			var div = $("<div>");
 			div.append("<b>" + timestamp + "</b> " + message);
 			$("#game-chat-log").append(div);
 			$("#game-chat-log").
 				scrollTop($("#game-chat-log").prop("scrollHeight"));
+		},
+
+		emitPrivateMessage : function (message) {
+			serverInterface.emitPrivateMessage(message);
 		}
 
 	};

@@ -21,6 +21,8 @@ var ServerInterface = (function() {
 
 	var gameID = null;
 
+	var opponentName = null;
+
 	var setPlayer = function (plyr) { player = plyr; };
 
 	var setClient = function (clnt) { client = clnt; };
@@ -78,11 +80,17 @@ var ServerInterface = (function() {
 	};
 
 	var call = function (data) {
+
+		if (data.action === GAME.ACTION.PRIVATE_CHAT) {
+			player.log(data.params.msg, data.params.author);
+			return;
+		}
 		player.opponentsTurn(data);
 	};
 
 	var startGame = function (data) {
 		gameID = data.gid;
+		opponentName = data.opponentName;
 	};
 
 	var sendEvent = function (data) {
@@ -96,6 +104,13 @@ var ServerInterface = (function() {
 
 	var getPlayer = function () {
 		return player;
+	};
+
+	var emitPrivateMessage = function (message) {
+		sendEvent({
+			action : GAME.ACTION.PRIVATE_CHAT,
+			params : { author : client.getName(), msg : message }
+		});
 	}
 
 	return {
@@ -114,7 +129,8 @@ var ServerInterface = (function() {
 		call : call,
 		startGame : startGame,
 		setClient : setClient,
-		getPlayer : getPlayer
+		getPlayer : getPlayer,
+		emitPrivateMessage : emitPrivateMessage
 
 	};
 

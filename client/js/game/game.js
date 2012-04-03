@@ -6,9 +6,9 @@
 
 Game = (function() {
 
-	var player = null;
-
 	"use strict";
+
+	var player = null;
 
 	var initialize = function () {
 
@@ -33,6 +33,12 @@ Game = (function() {
 			console.log("reset button clicked");
 			resetShips();
 		});
+
+		$("#game-chat-form").submit(function () {
+			player.emitPrivateMessage( $("#game-chat-input-text").val() );
+			$("#game-chat-input-text").val("");
+			return false;
+		})
 
 		fillTables();
 		resetShips();

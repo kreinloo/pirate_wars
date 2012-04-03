@@ -145,10 +145,8 @@ var Client = (function () {
 
 		// general info regarding current game
 		socket.on(GAME.INFO, function (data) {
-			if (gameStatus === GAME.STATUS.PLAYING) {
-				console.log(GAME.INFO + " " + JSON.stringify(data));
-				serverInterface.call(data);
-			}
+			console.log(GAME.INFO + " " + JSON.stringify(data));
+			serverInterface.call(data);
 		});
 
 	};
