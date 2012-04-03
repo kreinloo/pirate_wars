@@ -11,6 +11,7 @@ var Player = (function (serverInterface) {
 	var server = serverInterface;
 	var gameTable;
 	var opponentTable;
+	var tableConfirmed = false;
 
 	var i, j;
 	gameTable = new Array(10);
@@ -135,7 +136,13 @@ var Player = (function (serverInterface) {
 			}
 		},
 
-		clearTable : function () {
+		resetField : function () {
+			server.resetField();
+		},
+
+		// server will say if we really can reset
+		// our game table
+		resetFieldConfirmed : function () {
 			gameTable = null;
 			gameTable = new Array(10);
 			for (var i = 0; i < 10; i++) {
@@ -143,8 +150,6 @@ var Player = (function (serverInterface) {
 				for (var j = 0; j < 10; j++)
 					gameTable[i][j] = 0;
 			}
-			server.resetField();
-			this.log("Game table cleared.");
 			this.log("Double click on a ship rotates is 90 degrees.");
 		},
 
@@ -257,15 +262,55 @@ var Player = (function (serverInterface) {
 		},
 
 		makeMove : function (row, col) {
-			if (server.getActivePlayerId() !== 0){
-				this.log("Not your turn sire!");
-				return;
+			server.fireAt(row ,col);
+		},
+
+		lockShips : function () {
+			$(".game-table-ship").draggable("disable");
+			tableConfirmed = true;
+		},
+
+		addListenerToOpponentCells : function () {
+			var player = this;
+			$(".game-table-opponent-cell").click(function () {
+				var id = $(this).attr("id").split("_");
+				var row = parseInt(id[1]);
+				var col = parseInt(id[2]);
+				player.makeMove(row, col);
+			});
+		},
+
+		removeListenerFromOpponentCells : function () {
+			$(".game-table-opponent-cell").off("click");
+		},
+
+		confirmAlignment : function () {
+			// Signal the server that we are ready to start the game.
+			server.confirmAlignment();
+		},
+
+		log : function (message, author) {
+			var date = new Date();
+			var timestamp = date.getHours() + ":" + date.getMinutes() + ":" +
+				date.getSeconds();
+			if (author !== undefined) {
+				message = author + ": " + message;
 			}
-			if (opponentTable[row][col]!== 0) {
-				this.log("We have already hit there sire!");
-				return;
-			}
-			outcome = server.fireAt(row ,col);
+			var div = $("<div>");
+			div.append("<b>" + timestamp + "</b> " + message);
+			$("#game-chat-log").append(div);
+			$("#game-chat-log").
+				scrollTop($("#game-chat-log").prop("scrollHeight"));
+		},
+
+		emitPrivateMessage : function (message) {
+			serverInterface.emitPrivateMessage(message);
+		},
+
+		fireAtResponse : function (data) {
+
+			var outcome = data.result;
+
 			switch (outcome) {
 				case 10 :// reveal fog on that tile
 					drawTile(false,row,col,TILE.SPLASH,false);
@@ -332,63 +377,36 @@ var Player = (function (serverInterface) {
 								SHIPS.SHIP_4_horizontal,Rotation);
 							break;
 					}
-					this.log("SIRE ! We have won a glorious battle today!" +
-						" Beer and women for everybody!! ");
 					this.removeListenerFromOpponentCells();
 					break;
 
 			}
-			/*
-			if (outcome != 13){
-				this.opponentsTurn();
-			}
-			*/
+
 		},
 
-		lockShips : function () {
-			$(".game-table-ship").draggable("disable");
-		},
-
-		addListenerToOpponentCells : function () {
-			$(".game-table-opponent-cell").click(function () {
-				var id = $(this).attr("id").split("_");
-				var row = parseInt(id[1]);
-				var col = parseInt(id[2]);
-				console.log("row: " + row + " col: " + col + " clicked");
-				this.makeMove(row, col);
-			});
-		},
-
-		removeListenerFromOpponentCells : function () {
-			$(".game-table-opponent-cell").off("click");
-		},
-
-		lockTable : function () {
-			this.lockShips();
+		loadBattlePhase : function () {
 			this.addListenerToOpponentCells();
-			// Signal the server that we are ready to start the game.
-			//server.opponentsAlignment();
-			server.confirmAlignment();
-			this.log("Ships placed and locked.");
-			this.log("Game started...");
+			$("#game-table-ships").remove();
+			$("#game-table-opponent").css("display", "block");
 		},
 
-		log : function (message, author) {
-			var date = new Date();
-			var timestamp = date.getHours() + ":" + date.getMinutes() + ":" +
-				date.getSeconds();
-			if (author !== undefined) {
-				message = author + ": " + message;
+		confirmButtonClicked : function () {
+			if (!this.confirmShipCount()) {
+				console.log("all ships have not been placed to table");
+				this.log("Please place all your ships to the table on the left.");
+			} else {
+				console.log(
+					"all ships have been placed, asking confirmation from the server");
+				this.confirmAlignment();
 			}
-			var div = $("<div>");
-			div.append("<b>" + timestamp + "</b> " + message);
-			$("#game-chat-log").append(div);
-			$("#game-chat-log").
-				scrollTop($("#game-chat-log").prop("scrollHeight"));
 		},
 
-		emitPrivateMessage : function (message) {
-			serverInterface.emitPrivateMessage(message);
+		resetButtonClicked : function () {
+			this.resetField();
+		},
+
+		chatFormSubmitted : function (data) {
+			this.emitPrivateMessage(data);
 		}
 
 	};

@@ -16,26 +16,15 @@ Game = (function() {
 		$("#game-table-ships").css("display", "inline");
 
 		$("#game-table-ships-confirm").click(function () {
-			console.log("confirm button clicked");
-			if (!player.confirmShipCount()) {
-				console.log("all ships have not been placed to table");
-			}
-			else {
-				console.log("all ships are placed");
-				$("#game-table-ships").remove();
-				$("#game-table-opponent").css("display", "block");
-				player.lockTable();
-			}
-
+			player.confirmButtonClicked();
 		});
 
 		$("#game-table-ships-reset").click(function () {
-			console.log("reset button clicked");
-			resetShips();
+			player.resetButtonClicked();
 		});
 
 		$("#game-chat-form").submit(function () {
-			player.emitPrivateMessage( $("#game-chat-input-text").val() );
+			player.chatFormSubmitted( $("#game-chat-input-text").val() );
 			$("#game-chat-input-text").val("");
 			return false;
 		})
@@ -75,7 +64,7 @@ Game = (function() {
 	var resetShips = function () {
 
 		$(".game-table-ship").remove();
-		player.clearTable();
+		player.resetField();
 
 		var shipFactory = new ShipFactory();
 		var left = 360;
@@ -120,7 +109,8 @@ Game = (function() {
 	return {
 
 		initialize : initialize,
-		setPlayer : function(plyr) { player = plyr; }
+		setPlayer : function(plyr) { player = plyr; },
+		resetShips : resetShips
 
 	};
 

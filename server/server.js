@@ -19,7 +19,7 @@ pw_server.bindListeners();
 io.configure(function () {
 //	io.set("transports", ["xhr-polling"]);
 //	io.set("polling duration", 10);
-	io.set("log level", 2);
+	io.set("log level", DEBUG.IO);
 });
 
 

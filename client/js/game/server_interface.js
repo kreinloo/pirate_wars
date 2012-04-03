@@ -66,26 +66,28 @@ var ServerInterface = (function() {
 		});
 	};
 
-	//var opponentsAlignment = function () {};
-
-	//var getCurrentGame = function () {};
-
-	//var isGameOver = function () {};
-
-	var getActivePlayerId = function () {
-		sendEvent({
-			action : GAME.ACTION.GET_ACTIVE_PLAYER_ID,
-			params : {}
-		});
-	};
-
 	var call = function (data) {
 
 		if (data.action === GAME.ACTION.PRIVATE_CHAT) {
 			player.log(data.params.msg, data.params.author);
 			return;
 		}
-		player.opponentsTurn(data);
+
+		else if (data.action == GAME.ACTION.FIREAT_RESULT) {
+			player.opponentsTurn(data);
+			return;
+		}
+
+		else if (data.action == GAME.ACTION.LOAD_BATTLE_PHASE) {
+			player.loadBattlePhase();
+			return;
+		}
+
+		else if (data.action == GAME.ACTION.CONFIRM_ALIGNMENT) {
+			player.lockShips();
+			return;
+		}
+
 	};
 
 	var startGame = function (data) {
@@ -122,10 +124,7 @@ var ServerInterface = (function() {
 		deleteShip : deleteShip,
 		resetField : resetField,
 		confirmAlignment : confirmAlignment,
-		//opponentsAlignment : opponentsAlignment,
-		//getCurrentGame : getCurrentGame,
-		//isGameOver : isGameOver,
-		getActivePlayerId : getActivePlayerId,
+		//getActivePlayerId : getActivePlayerId,
 		call : call,
 		startGame : startGame,
 		setClient : setClient,
