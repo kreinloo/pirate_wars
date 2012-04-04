@@ -27,10 +27,9 @@ Game = (function() {
 			player.chatFormSubmitted( $("#game-chat-input-text").val() );
 			$("#game-chat-input-text").val("");
 			return false;
-		})
+		});
 
 		fillTables();
-		resetShips();
 
 	};
 
@@ -61,57 +60,20 @@ Game = (function() {
 
 	};
 
-	var resetShips = function () {
-
-		$(".game-table-ship").remove();
-		player.resetField();
-
-		var shipFactory = new ShipFactory();
-		var left = 360;
-		var top = 10;
-		var ship = null;
-		for (var i = 0; i < 4; i++) {
-			ship = shipFactory.createShip(1, "horizontal", player);
-			ship.getElement().css("top", top);
-			ship.getElement().css("left", left);
-			left += 35;
-		}
-
-		left = 360;
-		top += 40;
-
-		for (i = 0; i < 3; i++) {
-			ship = shipFactory.createShip(2, "horizontal", player);
-			ship.getElement().css("top", top);
-			ship.getElement().css("left", left);
-			left += 70;
-		}
-
-		left = 360;
-		top += 40;
-
-		for (i = 0; i < 2; i++) {
-			ship = shipFactory.createShip(3, "horizontal", player);
-			ship.getElement().css("top", top);
-			ship.getElement().css("left", left);
-			left += 105;
-		}
-
-		left = 360;
-		top += 40;
-
-		ship = shipFactory.createShip(4, "horizontal", player);
-		ship.getElement().css("top", top);
-		ship.getElement().css("left", left);
-
+	var finalize = function () {
+		$("#game-table-user").children().remove();
+		$("#game-table-opponent").children().remove();
+		$("#game-table-opponent").css("display", "inline");
+		$("#game-table-ships").css("display", "none");
+		$("#game-table-ships-confirm").off("click");
+		$("#game-table-ships-reset").off("click");
+		$("#game-chat-form").off("submit");
 	};
 
 	return {
-
 		initialize : initialize,
 		setPlayer : function(plyr) { player = plyr; },
-		resetShips : resetShips
-
+		finalize : finalize
 	};
 
 })();

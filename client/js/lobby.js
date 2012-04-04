@@ -14,7 +14,6 @@ var Lobby = (function () {
 		Adds new message to lobby log.
 	*/
 	var addPublicMessage = function (data) {
-
 		var date = new Date();
 		var timestamp = date.getHours() + ":" + date.getMinutes() + ":" +
 			date.getSeconds();
@@ -26,41 +25,39 @@ var Lobby = (function () {
 		);
 		$("#lobby-chat-log").scrollTop($("#lobby-chat-log").
 			prop("scrollHeight"));
-
 	};
 
 	/*
 		Updates user list on connection to server.
 	*/
 	var updateUserList = function (data) {
-
 		$("#lobby-chat-userlist-table td").remove();
+		var user;
 		for (var i in data) {
-			$("#lobby-chat-userlist-table").
-				append( "<tr><td id='" + data[i].id + "'>" +
-					data[i].name + "</td></tr>" );
+			user = data[i];
+			var row = $("<tr>").
+				append("<td id='" + user.id + "'>" + user.name + "</td>");
+			$("#lobby-chat-userlist-table").append(row);
+			if (user.status === GAME.STATUS.WAITING) {
+				addNewGame(user);
+			}
 		}
-
 	};
 
 	/*
 		Adds new user to the connected user list.
 	*/
 	var addConnectedUser = function (data) {
-
 		$("#lobby-chat-userlist-table").
 			append( "<tr><td id='" + data.id + "'>" +
 				data.name + "</td></tr>" );
-
 	};
 
 	/*
 		Removes user from the connected user list.
 	*/
 	var removeDisconnectedUser = function (data) {
-
 		$("td[id='" + data.id + "']").parent().remove();
-
 	};
 
 	/*
@@ -68,7 +65,6 @@ var Lobby = (function () {
 		and now waits for opponent.
 	*/
 	var addNewGame = function (data) {
-
 		var name = data.name;
 		var user = $("td[id='" + data.id + "']");
 		var button = $("<a href=''>").append("<u>join</u>").click(function () {
@@ -76,25 +72,21 @@ var Lobby = (function () {
 			return false;
 		});
 		user.text(name + " | ").append(button);
-
 	};
 
 	/*
 		Deletes join button from user who has deleted his/her game.
 	*/
 	var deleteGame = function (data) {
-
 		var name = data.name;
 		var user = $("td[id='" + data.id + "']");
 		user.text(name);
-
 	};
 
 	/*
 		Button handler for "Create new game" button.
 	*/
 	var createGameButtonClicked = function () {
-
 		if (Client.createGame()) {
 			$("#lobby-game-form-create").remove();
 			$("#lobby-game-form").append(
@@ -105,14 +97,12 @@ var Lobby = (function () {
 					click(function () { deleteGameButtonClicked(); })
 			);
 		}
-
 	};
 
 	/*
 		Button handler for "Delete game" button.
 	*/
 	var deleteGameButtonClicked = function () {
-
 		if (Client.deleteGame()) {
 			$("#lobby-game-form-delete").remove();
 			$("#lobby-game-form").append(
@@ -123,7 +113,6 @@ var Lobby = (function () {
 					click(function () { createGameButtonClicked(); })
 			);
 		}
-
 	};
 
 	var addListenersToButtons = function () {
@@ -147,6 +136,17 @@ var Lobby = (function () {
 
 	}();
 
+	var addStartedGame = function (data) {
+		var row = $("<tr>").attr("id", data.gid);
+		row.append("<th>" + data.player1 + "</th><th>vs</th><th>" + data.player2 +
+			"</th>");
+		$("#lobby-games-table").append(row);
+	};
+
+	var deleteEndedGame = function (data) {
+		$("tr[id=" + data.gid + "]").remove();
+	};
+
 	return {
 
 		addPublicMessage : addPublicMessage,
@@ -158,7 +158,10 @@ var Lobby = (function () {
 
 		createGameButtonClicked : createGameButtonClicked,
 		deleteGameButtonClicked : deleteGameButtonClicked,
-		addListenersToButtons : addListenersToButtons
+		addListenersToButtons : addListenersToButtons,
+
+		addStartedGame : addStartedGame,
+		deleteEndedGame : deleteEndedGame
 
 	};
 

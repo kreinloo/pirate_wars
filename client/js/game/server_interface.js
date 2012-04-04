@@ -11,62 +11,65 @@
 	who will deliver it to the server. It will also invoke the player
 	if it receives data from the server.
 */
-var ServerInterface = (function() {
+var ServerInterface = (function (_client_, _data_) {
 
 	"use strict";
+	var client = _client_;
+	var gameID = _data_.gid;
+	var opponentName = _data_.opponentName;
+	var player; // initialized in the end of this function
 
-	var client = null;
+	// FUNCTIONS WHICH PLAYER USES //
 
-	var player = null;
-
-	var gameID = null;
-
-	var opponentName = null;
-
-	var setPlayer = function (plyr) { player = plyr; };
-
-	var setClient = function (clnt) { client = clnt; };
-
-	var fireAt = function (row, col) {
-		sendEvent({ action : GAME.ACTION.FIREAT });
+	this.fireAt = function (row, col) {
+		this.sendEvent({ action : GAME.ACTION.FIREAT });
 	};
 
-	var addVerticalShip = function (row, col, length) {
-		sendEvent({
+	this.addVerticalShip = function (row, col, length) {
+		this.sendEvent({
 			action : GAME.ACTION.ADD_VERTICAL_SHIP,
 			params : { row : row, col : col, len : length }
 		});
 	};
 
-	var addHorizontalShip = function (row, col, length) {
-		sendEvent({
+	this.addHorizontalShip = function (row, col, length) {
+		this.sendEvent({
 			action : GAME.ACTION.ADD_HORIZONTAL_SHIP,
 			params : { row : row, col : col, len : length }
 		});
 	};
 
-	var deleteShip = function (row, col) {
-		sendEvent({
+	this.deleteShip = function (row, col) {
+		this.sendEvent({
 			action : GAME.ACTION.DELETE_SHIP,
 			params : { row: row, col : col }
 		});
 	};
 
-	var resetField = function () {
-		sendEvent({
+	this.resetField = function () {
+		this.sendEvent({
 			action : GAME.ACTION.RESET_FIELD,
 			params : {}
 		});
 	};
 
-	var confirmAlignment = function () {
-		sendEvent({
+	this.confirmAlignment = function () {
+		this.sendEvent({
 			action : GAME.ACTION.CONFIRM_ALIGNMENT,
 			params : {}
 		});
 	};
 
-	var call = function (data) {
+	this.emitPrivateMessage = function (message) {
+		this.sendEvent({
+			action : GAME.ACTION.PRIVATE_CHAT,
+			params : { author : client.getName(), msg : message }
+		});
+	};
+
+	// CLIENT CALLS ONLY THIS METHOD //
+
+	this.call = function (data) {
 
 		if (data.action === GAME.ACTION.PRIVATE_CHAT) {
 			player.log(data.params.msg, data.params.author);
@@ -88,14 +91,35 @@ var ServerInterface = (function() {
 			return;
 		}
 
+		else if (data.action == GAME.ACTION.RESET_FIELD) {
+			player.resetFieldConfirmed();
+			return;
+		}
+
+		else if (data.action == GAME.ACTION.GAME_OVER) {
+			$("<div>").
+				append("<p>The game is over!<br/>You lost!</p>").
+				dialog({
+					resizable : false,
+					height : 200,
+					modal : true,
+					buttons : {
+						"Return to lobby" : function () {
+							$(this).dialog("close");
+						}
+					},
+					title : "Game over",
+					close : function (event, ui) {
+						client.gameEndedHandler();
+					}
+				});
+			return;
+		}
+
 	};
 
-	var startGame = function (data) {
-		gameID = data.gid;
-		opponentName = data.opponentName;
-	};
-
-	var sendEvent = function (data) {
+	// SERVERINTERFACE uses its own method to send data to client
+	this.sendEvent = function (data) {
 		client.emit(GAME.INFO, {
 			gid : gameID,
 			pid : client.getID(),
@@ -104,33 +128,10 @@ var ServerInterface = (function() {
 		});
 	};
 
-	var getPlayer = function () {
+	this.getPlayer = function () {
 		return player;
 	};
 
-	var emitPrivateMessage = function (message) {
-		sendEvent({
-			action : GAME.ACTION.PRIVATE_CHAT,
-			params : { author : client.getName(), msg : message }
-		});
-	}
-
-	return {
-
-		setPlayer : setPlayer,
-		fireAt : fireAt,
-		addVerticalShip : addVerticalShip,
-		addHorizontalShip : addHorizontalShip,
-		deleteShip : deleteShip,
-		resetField : resetField,
-		confirmAlignment : confirmAlignment,
-		//getActivePlayerId : getActivePlayerId,
-		call : call,
-		startGame : startGame,
-		setClient : setClient,
-		getPlayer : getPlayer,
-		emitPrivateMessage : emitPrivateMessage
-
-	};
+	player = new Player (this);
 
 });

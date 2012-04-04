@@ -11,7 +11,6 @@ var http = require("http");
 
 // our gameserver
 var pw_server = require("pw_server");
-
 pw_server.setIO(io);
 pw_server.bindListeners();
 

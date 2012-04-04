@@ -14,17 +14,14 @@ var Client = (function () {
 	var id = null;
 	var name = null;
 	var socket = null;
-	var player = null;
+	var serverInterface = null;
 	var gameStatus = GAME.STATUS.IDLE;
-	var serverInterface = new ServerInterface ();
-
 	var lobby = new Lobby ();
 
 	/*
 		Connects to the server.
 	*/
 	var connect = function (params) {
-
 		if (typeof params === "undefined") {
 			params = {};
 			params.host = "localhost";
@@ -39,7 +36,6 @@ var Client = (function () {
 		socket.emit(CLIENT.AUTH, { id : id, name : name });
 		addSocketListeners();
 		console.log(CLIENT.AUTH + " " + JSON.stringify({ id : id, name : name }));
-
 	};
 
 	/*
@@ -133,30 +129,41 @@ var Client = (function () {
 		});
 
 		// server notifies that this player is starting a new game
-		socket.on(GAME.START, function (data) {
-			console.log(GAME.START + " " + JSON.stringify(data));
-			serverInterface.startGame(data);
-			serverInterface.setPlayer(new Player(serverInterface));
-			serverInterface.setClient(Client);
-			PirateWars.loadGameView();
-			Game.setPlayer(serverInterface.getPlayer());
-			Game.initialize();
+		//socket.on(GAME.START, function (data) {
+		//	console.log(GAME.START + " " + JSON.stringify(data));
+		//});
+
+		socket.on(GAME.STARTED_GAME, function (data) {
+			console.log(GAME.STARTED_GAME + " " + JSON.stringify(data));
+			lobby.addStartedGame(data);
+		});
+
+		socket.on(GAME.ENDED_GAME, function (data) {
+			console.log(GAME.ENDED_GAME + " " + JSON.stringify(data));
+			lobby.deleteEndedGame(data);
 		});
 
 		// general info regarding current game
 		socket.on(GAME.INFO, function (data) {
 			console.log(GAME.INFO + " " + JSON.stringify(data));
-			serverInterface.call(data);
+			if (data.action === GAME.START) {
+				serverInterface = new ServerInterface(Client, data);
+				PirateWars.loadGameView();
+				Game.setPlayer(serverInterface.getPlayer());
+				Game.initialize();
+				return;
+			} else {
+				serverInterface.call(data);
+			}
 		});
 
 	};
 
 	/*
 		Notifies server that this client has created new game
-		and not waits for opponent.
+		and now waits for opponent.
 	*/
 	var createGame = function () {
-
 		if (gameStatus === GAME.STATUS.IDLE) {
 			socket.emit(GAME.CREATE, { name : name, id : id });
 			gameStatus = GAME.STATUS.WAITING;
@@ -165,14 +172,12 @@ var Client = (function () {
 		} else {
 			return false;
 		}
-
 	};
 
 	/*
 		Notifies server that this client no more waits for opponent.
 	*/
 	var deleteGame = function () {
-
 		if (gameStatus === GAME.STATUS.WAITING) {
 			socket.emit(GAME.DELETE, { name : name, id : id });
 			gameStatus = GAME.STATUS.IDLE;
@@ -181,23 +186,26 @@ var Client = (function () {
 		} else {
 			return false;
 		}
-
 	};
 
 	/*
 		Notifies server that this client wishes to play with 'opponent'.
 	*/
 	var joinGame = function (data) {
-
 		data.joinerID = id;
 		data.joinerName = name;
 		socket.emit(GAME.JOIN_REQUEST, data);
 		console.log(GAME.JOIN_REQUEST + " " + JSON.stringify(data));
+	};
 
+	var gameEndedHandler = function () {
+		serverInterface = null;
+		gameStatus = GAME.STATUS.IDLE;
+		PirateWars.loadLobbyView();
+		Game.finalize();
 	};
 
 	return {
-
 		connect : connect,
 		emit : emit,
 		setID : setID,
@@ -206,8 +214,8 @@ var Client = (function () {
 		sendPublicMessage : sendPublicMessage,
 		createGame : createGame,
 		deleteGame : deleteGame,
-		joinGame : joinGame
-
+		joinGame : joinGame,
+		gameEndedHandler : gameEndedHandler
 	};
 
 })();

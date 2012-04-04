@@ -143,6 +143,7 @@ var Player = (function (serverInterface) {
 		// server will say if we really can reset
 		// our game table
 		resetFieldConfirmed : function () {
+			// gameTable reset
 			gameTable = null;
 			gameTable = new Array(10);
 			for (var i = 0; i < 10; i++) {
@@ -151,6 +152,44 @@ var Player = (function (serverInterface) {
 					gameTable[i][j] = 0;
 			}
 			this.log("Double click on a ship rotates is 90 degrees.");
+
+			// removing all ships and creating new ones
+			$(".game-table-ship").remove();
+			var shipFactory = new ShipFactory();
+			var left = 360;
+			var top = 10;
+			var ship = null;
+			for (var i = 0; i < 4; i++) {
+				ship = shipFactory.createShip(1, "horizontal", this);
+				ship.getElement().css("top", top);
+				ship.getElement().css("left", left);
+				left += 35;
+			}
+			left = 360;
+			top += 40;
+
+			for (i = 0; i < 3; i++) {
+				ship = shipFactory.createShip(2, "horizontal", this);
+				ship.getElement().css("top", top);
+				ship.getElement().css("left", left);
+				left += 70;
+			}
+			left = 360;
+			top += 40;
+
+			for (i = 0; i < 2; i++) {
+				ship = shipFactory.createShip(3, "horizontal", this);
+				ship.getElement().css("top", top);
+				ship.getElement().css("left", left);
+				left += 105;
+			}
+			left = 360;
+			top += 40;
+
+			ship = shipFactory.createShip(4, "horizontal", this);
+			ship.getElement().css("top", top);
+			ship.getElement().css("left", left);
+
 		},
 
 		confirmShipCount : function () {
@@ -386,7 +425,7 @@ var Player = (function (serverInterface) {
 
 		loadBattlePhase : function () {
 			this.addListenerToOpponentCells();
-			$("#game-table-ships").remove();
+			$("#game-table-ships").css("display", "none");
 			$("#game-table-opponent").css("display", "block");
 		},
 
