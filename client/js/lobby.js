@@ -118,7 +118,6 @@ var Lobby = (function () {
 	var addListenersToButtons = function () {
 
 		$("#lobby-chat-input-form").submit(function () {
-
 			Client.sendPublicMessage( $("#lobby-chat-input-text").val() );
 			addPublicMessage({
 				author : Client.getName(),
@@ -126,7 +125,6 @@ var Lobby = (function () {
 			});
 			$("#lobby-chat-input-text").val("");
 			return false;
-
 		});
 
 		$("#lobby-game-form-create").click(function () {
