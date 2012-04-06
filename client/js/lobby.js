@@ -116,7 +116,6 @@ var Lobby = (function () {
 	};
 
 	var addListenersToButtons = function () {
-
 		$("#lobby-chat-input-form").submit(function () {
 			Client.sendPublicMessage( $("#lobby-chat-input-text").val() );
 			addPublicMessage({
@@ -131,13 +130,12 @@ var Lobby = (function () {
 			createGameButtonClicked();
 			return false;
 		});
-
-	}();
+	};
 
 	var addStartedGame = function (data) {
 		var row = $("<tr>").attr("id", data.gid);
-		row.append("<th>" + data.player1 + "</th><th>vs</th><th>" + data.player2 +
-			"</th>");
+		row.append("<td>" + data.player1 + "</td><td>vs</td><td>" + data.player2 +
+			"</td>");
 		$("#lobby-games-table").append(row);
 	};
 
