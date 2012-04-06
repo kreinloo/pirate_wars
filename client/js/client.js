@@ -151,6 +151,7 @@ var Client = (function () {
 				PirateWars.loadGameView();
 				Game.setPlayer(serverInterface.getPlayer());
 				Game.initialize();
+				this.gameStatus = GAME.STATUS.PLAYING;
 				return;
 			} else {
 				serverInterface.call(data);
