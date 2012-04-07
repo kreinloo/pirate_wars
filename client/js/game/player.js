@@ -394,7 +394,6 @@ var Player = (function (serverInterface) {
 								SHIPS.SHIP_4_horizontal,Rotation);
 							break;
 					}
-
 					break;
 
 				case 13 :
