@@ -73,40 +73,6 @@ var Game = (function() {
 
 });
 
-var TILE = {
-	SHIP_NOSE: "gfx/ShipNose.png",
-	SHIP_BASE1: "gfx/ShipBase1.png",
-	SHIP_BASE2: "gfx/ShipBase2.png",
-	SHIP_BASE3: "gfx/ShipBase3.png",
-	SHIP_TAIL: "gfx/ShipTail.png",
-	SHIP_SINGLE1: "gfx/SingleShip1.png",
-	SHIP_SINGLE2: "gfx/SingleShip2.png",
-	FOG: "gfx/FogTexture3.png",
-	FOG_UP: "gfx/FogUp.png",
-	FOG_BOTTOM: "gfx/FogBottom.png",
-	FOG_LEFT: "gfx/FogLeft.png",
-	FOG_RIGHT: "gfx/FogRight.png",
-	FIRE: "gfx/Fire.gif",
-	SPLASH: "gfx/WaterSplash.png"
-};
-
-
-var SHIPS = {
-
-	SHIP_1_horizontal : "gfx/SHIP_1_horizontal.png",
-	SHIP_1_vertical : "gfx/SHIP_1_vertical.png",
-
-	SHIP_2_horizontal : "gfx/SHIP_2_horizontal.png",
-	SHIP_2_vertical : "gfx/SHIP_2_vertical.png",
-
-	SHIP_3_horizontal : "gfx/SHIP_3_horizontal.png",
-	SHIP_3_vertical : "gfx/SHIP_3_vertical.png",
-
-	SHIP_4_horizontal : "gfx/SHIP_4_horizontal.png",
-	SHIP_4_vertical : "gfx/SHIP_4_vertical.png"
-
-};
-
 function drawTile (isSelf, row, column, tileToDraw, rotate) {
 
 	if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH){

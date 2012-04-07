@@ -206,19 +206,21 @@ var Player = (function (serverInterface) {
 		},
 
 		opponentsTurn : function (data) {
-			var result = data.result;
-			switch (result[2]) {
+			var result = data.params.result;
+			var row = data.params.row;
+			var col = data.params.col
+			switch (result) {
 				case 10 :
-					drawTile(true,result[0],result[1],TILE.SPLASH,false);
+					drawTile(true, row, col, TILE.SPLASH, false);
 					break;
 				case 11 :
-					drawTile(true,result[0],result[1],TILE.FIRE,false);
+					drawTile(true, row, col, TILE.FIRE, false);
 					break;
 				case 12 :
-					drawTile(true,result[0],result[1],TILE.FIRE,false);
+					drawTile(true, row, col, TILE.FIRE, false);
 					break;
 				case 13 :
-					drawTile(true,result[0],result[1],TILE.FIRE,false);
+					drawTile(true, row, col, TILE.FIRE, false);
 					this.removeListenerFromOpponentCells();
 					this.log("SIRE! SIRE! We have no ships left. RETREAAAT!!");
 					break;
@@ -348,7 +350,9 @@ var Player = (function (serverInterface) {
 
 		fireAtResponse : function (data) {
 
-			var outcome = data.result;
+			var outcome = data.params.result;
+			var row = data.params.row;
+			var col = data.params.col;
 
 			switch (outcome) {
 				case 10 :// reveal fog on that tile
@@ -433,6 +437,7 @@ var Player = (function (serverInterface) {
 		},
 
 		confirmButtonClicked : function () {
+			/*
 			if (!this.confirmShipCount()) {
 				console.log("all ships have not been placed to table");
 				this.log("Please place all your ships to the table on the left.");
@@ -441,6 +446,8 @@ var Player = (function (serverInterface) {
 					"all ships have been placed, asking confirmation from the server");
 				this.confirmAlignment();
 			}
+			*/
+			this.confirmAlignment();
 		},
 
 		resetButtonClicked : function () {
