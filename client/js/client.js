@@ -16,13 +16,12 @@ var Client = (function () {
 	var socket = null;
 	var serverInterface = null;
 	var gameStatus = GAME.STATUS.IDLE;
-	var lobby = new Lobby ();
 
 	/*
 		Connects to the server.
 	*/
-	var connect = function (params) {
-		if (typeof params === "undefined") {
+	var connect = function (_id_, params) {
+		if (params === undefined) {
 			params = {};
 			params.host = "localhost";
 			params.port = 8001;
@@ -32,9 +31,11 @@ var Client = (function () {
 		// for deployment at heroku
 		//options["transports"] = ["xhr-polling"];
 
+		id = _id_;
+		name = _id_;
 		socket = io.connect("http://" + params.host + ":" + params.port, options);
-		socket.emit(CLIENT.AUTH, { id : id, name : name });
 		addSocketListeners();
+		socket.emit(CLIENT.AUTH, { id : id, name : name });
 		console.log(CLIENT.AUTH + " " + JSON.stringify({ id : id, name : name }));
 	};
 
@@ -87,7 +88,7 @@ var Client = (function () {
 		socket.on(CHAT.PUBLIC_MESSAGE, function (data) {
 			if (typeof data === "undefined")
 				return;
-			lobby.addPublicMessage(data);
+			ui.lobby.addPublicMessage(data);
 			console.log(CHAT.PUBLIC_MESSAGE + " " + JSON.stringify(data));
 		});
 
@@ -96,31 +97,31 @@ var Client = (function () {
 			if (typeof data === "undefined")
 				return;
 			console.log(CHAT.USER_LIST + " " + JSON.stringify(data));
-			lobby.updateUserList(data);
+			ui.lobby.updateUserList(data);
 		});
 
 		// server notifies about new connected user
 		socket.on(SERVER.USER_CONNECTED, function (data) {
 			console.log(SERVER.USER_CONNECTED + " " + JSON.stringify(data));
-			lobby.addConnectedUser(data);
+			ui.lobby.addConnectedUser(data);
 		});
 
 		// server notifies about disconnected user
 		socket.on(SERVER.USER_DISCONNECTED, function (data) {
 			console.log(SERVER.USER_DISCONNECTED + " " + JSON.stringify(data));
-			lobby.removeDisconnectedUser(data);
+			ui.lobby.removeDisconnectedUser(data);
 		});
 
 		// server notifies about a new created game by some other player
 		socket.on(GAME.CREATE, function (data) {
 			console.log(GAME.CREATE + " " + JSON.stringify(data));
-			lobby.addNewGame(data);
+			ui.lobby.addNewGame(data);
 		});
 
 		// server notifies about a deleted game from public user list
 		socket.on(GAME.DELETE, function (data) {
 			console.log(GAME.DELETE + " " + JSON.stringify(data));
-			lobby.deleteGame(data);
+			ui.lobby.deleteGame(data);
 		});
 
 		// server notifies that somebody whishes to play with this player
@@ -128,19 +129,14 @@ var Client = (function () {
 			console.log(GAME.JOIN_REQUEST + " " + JSON.stringify(data));
 		});
 
-		// server notifies that this player is starting a new game
-		//socket.on(GAME.START, function (data) {
-		//	console.log(GAME.START + " " + JSON.stringify(data));
-		//});
-
 		socket.on(GAME.STARTED_GAME, function (data) {
 			console.log(GAME.STARTED_GAME + " " + JSON.stringify(data));
-			lobby.addStartedGame(data);
+			ui.lobby.addStartedGame(data);
 		});
 
 		socket.on(GAME.ENDED_GAME, function (data) {
 			console.log(GAME.ENDED_GAME + " " + JSON.stringify(data));
-			lobby.deleteEndedGame(data);
+			ui.lobby.deleteEndedGame(data);
 		});
 
 		// general info regarding current game
@@ -148,9 +144,11 @@ var Client = (function () {
 			console.log(GAME.INFO + " " + JSON.stringify(data));
 			if (data.action === GAME.START) {
 				serverInterface = new ServerInterface(Client, data);
-				PirateWars.loadGameView();
-				Game.setPlayer(serverInterface.getPlayer());
-				Game.initialize();
+				//PirateWars.loadGameView();
+				ui.load("game");
+				ui.game.initialize(serverInterface.getPlayer());
+				//Game.setPlayer(serverInterface.getPlayer());
+				//Game.initialize();
 				this.gameStatus = GAME.STATUS.PLAYING;
 				return;
 			} else {
@@ -202,8 +200,8 @@ var Client = (function () {
 	var gameEndedHandler = function () {
 		serverInterface = null;
 		gameStatus = GAME.STATUS.IDLE;
-		PirateWars.loadLobbyView();
-		Game.finalize();
+		ui.load("lobby");
+		ui.game.finalize();
 	};
 
 	return {

@@ -4,13 +4,11 @@
 
 */
 
-Game = (function() {
+var Game = (function() {
 
 	"use strict";
 
-	var player = null;
-
-	var initialize = function () {
+	this.initialize = function (player) {
 
 		$("#game-table-opponent").css("display", "none");
 		$("#game-table-ships").css("display", "inline");
@@ -29,11 +27,11 @@ Game = (function() {
 			return false;
 		});
 
-		fillTables();
+		this.fillTables();
 
 	};
 
-	var fillTables = function () {
+	this.fillTables = function () {
 
 		var row = null;
 		var i, j;
@@ -60,7 +58,7 @@ Game = (function() {
 
 	};
 
-	var finalize = function () {
+	this.finalize = function () {
 		$("#game-table-user").children().remove();
 		$("#game-table-opponent").children().remove();
 		$("#game-table-opponent").css("display", "inline");
@@ -70,13 +68,7 @@ Game = (function() {
 		$("#game-chat-form").off("submit");
 	};
 
-	return {
-		initialize : initialize,
-		setPlayer : function(plyr) { player = plyr; },
-		finalize : finalize
-	};
-
-})();
+});
 
 var TILE = {
 	SHIP_NOSE: "gfx/ShipNose.png",
