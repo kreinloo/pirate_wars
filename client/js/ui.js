@@ -151,4 +151,8 @@ var ui = new UI();
 
 $(document).ready(function () {
 	ui.load("login");
+	$("#menu-item-scoreboard").click(function() {
+		Client.requestScoreboard();
+		ui.load("scoreboard");
+	});
 });

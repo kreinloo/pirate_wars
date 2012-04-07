@@ -55,6 +55,11 @@ CLIENT = {
 	AUTH : "CLIENT_AUTH"
 };
 
+SCOREBOARD = {
+	REQUEST : "SCOREBOARD_REQUEST",
+	DATA : "SCOREBOARD_DATA"
+};
+
 // for the server
 if (typeof module != "undefined") {
 	module.exports.SERVER = SERVER;
