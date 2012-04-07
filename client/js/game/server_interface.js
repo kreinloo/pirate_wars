@@ -2,15 +2,14 @@
 
 	server_interface.js
 
-*/
-
-/*
 	ServerInterface is the magic glue between following components:
 	Player <--> ServerInterface <--> Client <--> Server <--> GameServer <--> Game
 	It wraps the player's data into JSON format and sends it to client
 	who will deliver it to the server. It will also invoke the player
 	if it receives data from the server.
+
 */
+
 var ServerInterface = (function (_client_, _data_) {
 
 	"use strict";

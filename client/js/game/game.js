@@ -2,6 +2,9 @@
 
 	game.js
 
+	Game object handles all the DOM-related tasks in the game view.
+	It should be accessed only through ui.game variable.
+
 */
 
 var Game = (function() {
@@ -126,22 +129,23 @@ function drawTile (isSelf, row, column, tileToDraw, rotate) {
 		cell.addClass("rotate90");
 
 }
-function removeFog(row,col){
-		var cellId= "#opponent_" + row + "_" + col;
-		removeTile(row,col,TILE.FOG);
+
+function removeFog(row,col) {
+		var cellId = "#opponent_" + row + "_" + col;
+		removeTile(row,col, TILE.FOG);
 		$(cellId).removeClass("full-fog-cell");
-		if (row>0){ 
-			removeTile(row-1,col,TILE.FOG_BOTTOM);
+		if (row > 0){
+			removeTile(row - 1, col, TILE.FOG_BOTTOM);
 		}
-		if (row<9){ 
-			removeTile(row+1,col,TILE.FOG_UP);
+		if (row < 9){
+			removeTile(row + 1, col, TILE.FOG_UP);
 		}
-		if (col>0){
-			removeTile(row,col-1,TILE.FOG_RIGHT);
+		if (col > 0){
+			removeTile(row, col - 1, TILE.FOG_RIGHT);
 		}
-		if (col<9){
-			removeTile(row,col+1,TILE.FOG_LEFT);
-		}		
+		if (col < 9){
+			removeTile(row, col + 1, TILE.FOG_LEFT);
+		}
 }
 function removeTile(row, col,tile){
 	$("#opponent_"+ row+"_"+ col).children("img[src='"+ tile +"']").remove();

@@ -2,12 +2,12 @@
 
 	lobby.js
 
-*/
-
-/*
 	Lobby object handles all the manipulation with DOM objects
 	in the lobby view, like adding new messages to the chat log and so on.
+	Lobby object should be accessed through ui.lobby variable.
+
 */
+
 var Lobby = (function () {
 
 	/*

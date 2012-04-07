@@ -144,11 +144,8 @@ var Client = (function () {
 			console.log(GAME.INFO + " " + JSON.stringify(data));
 			if (data.action === GAME.START) {
 				serverInterface = new ServerInterface(Client, data);
-				//PirateWars.loadGameView();
 				ui.load("game");
 				ui.game.initialize(serverInterface.getPlayer());
-				//Game.setPlayer(serverInterface.getPlayer());
-				//Game.initialize();
 				this.gameStatus = GAME.STATUS.PLAYING;
 				return;
 			} else {
