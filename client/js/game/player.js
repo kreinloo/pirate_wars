@@ -241,7 +241,7 @@ var Player = (function (serverInterface) {
 			else if (row == 9)
 				horizontal = opponentTable[row-1][col]!=1 ? true:false;
 				
-			// by this point horizontal can be true anonly if a cell above or below pointed cell
+			// by this point horizontal can be true only if a cell above or below pointed cell
 			// is 1. 
 			if (col !== 0 && col !== 9 )
 				vertical = opponentTable[row][col+1] !=1 &&
