@@ -11,6 +11,8 @@ var UI = (function () {
 	this.lobbyContent = null;
 	this.game = null;
 	this.gameContent = null;
+	this.scoreboard = null;
+	this.scoreboardContent = null;
 	var self = this;
 
 	this.load = function (view) {
@@ -70,6 +72,20 @@ var UI = (function () {
 
 		else if (view === "scoreboard") {
 			console.log("ui: loading scoreboard view");
+			$("#content").children().hide(0, function () {
+				if (self.scoreboardContent === null) {
+					$.ajax ({
+						url : "scoreboard.html",
+						cache : false,
+						async : false
+					}).done(function (html) {
+						$("#content").append(html);
+					});
+					self.scoreboardContent = $("#scoreboard");
+				} else {
+					self.scoreboardContent.show();
+				}
+			});
 		}
 
 	};
@@ -112,9 +128,11 @@ var UI = (function () {
 			this.loadScript("js/game/player.js");
 			this.loadScript("js/game/server_interface.js");
 			this.loadScript("js/client.js");
+			this.loadScript("js/scoreboard.js");
 			this.scriptsLoaded = true;
 			this.lobby = new Lobby();
 			this.game = new Game();
+			this.scoreboard = new Scoreboard();
 	};
 
 	this.loadScript = function (file) {

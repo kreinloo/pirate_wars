@@ -152,7 +152,7 @@ a {
 	border-bottom: 1px solid black;
 }
 
-#scoreboard-div {
+#scoreboard {
 	text-align: center;
 	width: 50%;
 	margin: auto auto auto auto;
@@ -164,7 +164,7 @@ a {
 	margin: auto auto auto auto;
 }
 
-.rotate90 img { 
+.rotate90 img {
   transform: rotate(90deg);
   -moz-transform: rotate(90deg);
   -webkit-transform: rotate(90deg);
