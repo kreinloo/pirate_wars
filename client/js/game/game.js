@@ -78,11 +78,15 @@ var TILE = {
 	SHIP_TAIL: "gfx/ShipTail.png",
 	SHIP_SINGLE1: "gfx/SingleShip1.png",
 	SHIP_SINGLE2: "gfx/SingleShip2.png",
-	FOG1: "gfx/FogTexture.png",
-	FOG_EDGE1: "gfx/FogEdgeTexture.png",
+	FOG: "gfx/FogTexture3.png",
+	FOG_UP: "gfx/FogUp.png",
+	FOG_BOTTOM: "gfx/FogBottom.png",
+	FOG_LEFT: "gfx/FogLeft.png",
+	FOG_RIGHT: "gfx/FogRight.png",
 	FIRE: "gfx/Fire.gif",
 	SPLASH: "gfx/WaterSplash.png"
 };
+
 
 var SHIPS = {
 
@@ -121,4 +125,24 @@ function drawTile (isSelf, row, column, tileToDraw, rotate) {
 	if (rotate)
 		cell.addClass("rotate90");
 
+}
+function removeFog(row,col){
+		var cellId= "#opponent_" + row + "_" + col;
+		removeTile(row,col,TILE.FOG);
+		$(cellId).removeClass("full-fog-cell");
+		if (row>0){ 
+			removeTile(row-1,col,TILE.FOG_BOTTOM);
+		}
+		if (row<9){ 
+			removeTile(row+1,col,TILE.FOG_UP);
+		}
+		if (col>0){
+			removeTile(row,col-1,TILE.FOG_RIGHT);
+		}
+		if (col<9){
+			removeTile(row,col+1,TILE.FOG_LEFT);
+		}		
+}
+function removeTile(row, col,tile){
+	$("#opponent_"+ row+"_"+ col).children("img[src='"+ tile +"']").remove();
 }
