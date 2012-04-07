@@ -56,6 +56,11 @@ CLIENT = {
 	AUTH : "CLIENT_AUTH"
 };
 
+SCOREBOARD = {
+	REQUEST : "SCOREBOARD_REQUEST",
+	DATA : "SCOREBOARD_DATA"
+};
+
 TILE = {
 	SHIP_NOSE: "gfx/ShipNose.png",
 	SHIP_BASE1: "gfx/ShipBase1.png",
@@ -90,4 +95,5 @@ if (typeof module != "undefined") {
 	module.exports.CHAT = CHAT;
 	module.exports.GAME = GAME;
 	module.exports.CLIENT = CLIENT;
+	module.exports.SCOREBOARD = SCOREBOARD;
 }

@@ -416,7 +416,6 @@ var Player = (function (serverInterface) {
 								break;
 							}
 					}
-
 					break;
 
 				case 13 :

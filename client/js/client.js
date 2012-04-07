@@ -155,6 +155,12 @@ var Client = (function () {
 				serverInterface.call(data);
 			}
 		});
+		
+		// Scoreboard data
+		socket.on(SCOREBOARD.DATA, function (data) {
+			console.log(SCOREBOARD.DATA + " " + JSON.stringify(data));
+			ui.scoreboard.refreshData(data);		
+		});
 
 	};
 
@@ -196,6 +202,14 @@ var Client = (function () {
 		socket.emit(GAME.JOIN_REQUEST, data);
 		console.log(GAME.JOIN_REQUEST + " " + JSON.stringify(data));
 	};
+	
+	/*
+		Requests scoreboard data from server.
+	*/
+	var requestScoreboard = function () {
+		socket.emit(SCOREBOARD.REQUEST);
+		console.log(SCOREBOARD.REQUEST);
+	};
 
 	var gameEndedHandler = function () {
 		serverInterface = null;
@@ -214,6 +228,7 @@ var Client = (function () {
 		createGame : createGame,
 		deleteGame : deleteGame,
 		joinGame : joinGame,
+		requestScoreboard : requestScoreboard,
 		gameEndedHandler : gameEndedHandler
 	};
 
