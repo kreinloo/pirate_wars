@@ -228,11 +228,11 @@ var Player = (function (serverInterface) {
 		},
 
 		findDirectionAndLength : function(row, col) {
-			var horizontal;
-			var vertical;
-			var rowCord = row;
-			var colCord = col;
-			if (row !== 0 && row !== 9 )
+			var horizontal; // boolean , true if ship is horizontal
+			var vertical; // boolean, true id ship is vertical
+			var rowCord = row; // row coordinate for start of the drawing 
+			var colCord = col; // column coordinate for start of the drawing 
+			if (row !== 0 && row !== 9 ) // check if we are horizontally on the edge.
 				horizontal = opponentTable[row+1][col] != 1 &&
 				opponentTable[row-1][col] != 1 ? true : false;
 			else if (row === 0)
@@ -240,17 +240,21 @@ var Player = (function (serverInterface) {
 
 			else if (row == 9)
 				horizontal = opponentTable[row-1][col]!=1 ? true:false;
+				
+			// by this point horizontal can be true anonly if a cell above or below pointed cell
+			// is 1. 
 			if (col !== 0 && col !== 9 )
 				vertical = opponentTable[row][col+1] !=1 &&
 				opponentTable[row][col-1] !=1 ? true : false;
 			else if (col === 0)
 				vertical = opponentTable[row][col+1]!=1 ? true:false;
 
-			else if (row == 9)
+			else if (col == 9)
 				vertical = opponentTable[row][col-1]!=1 ? true:false;
-
-			var length = 1 ;
-			if (vertical && horizontal) {
+			// by this point vertical can be true only if a cell to left or cell to right is 1.
+			// now we can start calculating the length of the ship. 
+			var length = 1 ;// minimum length
+			if (vertical && horizontal) { 
 				return [row,col,1,false];
 			}
 			if (horizontal) {
@@ -367,32 +371,50 @@ var Player = (function (serverInterface) {
 					break;
 				case 12 : //reveal fog,
 					removeFog(row,col);
+					drawTile(false,row,col,TILE.FIRE,false);
 					opponentTable[row][col] = 1;
 					var list = this.findDirectionAndLength(row, col);
-					console.log(list);
-					var Rotation = list[3]==1 ? true : false ;
-					switch (list[2]){
+					console.log(list); 
+					var Rotation = list[3]==1 ? false : true ;
+					switch (list[2]){ // case number represents the length of the ship.
 						case 1:
-							drawTile(false,row,col,TILE.FIRE,false);
 							drawTile(false,list[0],list[1],
-								SHIPS.SHIP_1_horizontal,Rotation);
+								SHIPS.SHIP_1_horizontal,false);
 							break;
 						case 2:
-							drawTile(false,row,col,TILE.FIRE,false);
+							if (Rotation){
 							drawTile(false,list[0],list[1],
-								SHIPS.SHIP_2_horizontal,Rotation);
-							break;
+								SHIPS.SHIP_2_horizontal,false);
+								break;
+							}
+							else {
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_2_vertical,false);
+								break;
+							}
 						case 3:
-							drawTile(false,row,col,TILE.FIRE,false);
+							if (Rotation){
 							drawTile(false,list[0],list[1],
-								SHIPS.SHIP_3_horizontal,Rotation);
-							break;
+								SHIPS.SHIP_3_horizontal,false);
+								break;
+							}
+							else {
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_3_vertical,false);
+								break;
+							}
 						case 4:
-							drawTile(false,row,col,TILE.FIRE,false);
-							//Ship(4,"horizontal",this );
+							if (Rotation){
+							console.log (Rotation);
 							drawTile(false,list[0],list[1],
-								SHIPS.SHIP_4_horizontal,Rotation);
-							break;
+								SHIPS.SHIP_4_horizontal,false);
+								break;
+							}
+							else {
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_4_vertical,false);
+								break;
+							}
 					}
 
 					break;
@@ -400,28 +422,46 @@ var Player = (function (serverInterface) {
 				case 13 :
 					opponentTable[row][col] = 1;
 					list = this.findDirectionAndLength(row, col);
-					switch (list[2]){
+					var Rotation = list[3]==1 ? false : true ;
+					switch (list[2]){ // case number represents the length of the ship.
 						case 1:
-							drawTile(false,row,col,TILE.FIRE,false);
 							drawTile(false,list[0],list[1],
-								SHIPS.SHIP_1_horizontal,Rotation);
+								SHIPS.SHIP_1_horizontal,false);
 							break;
 						case 2:
-							drawTile(false,row,col,TILE.FIRE,false);
+							if (Rotation){
 							drawTile(false,list[0],list[1],
-								SHIPS.SHIP_2_horizontal,Rotation);
-							break;
+								SHIPS.SHIP_2_horizontal,false);
+								break;
+							}
+							else {
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_2_vertical,false);
+								break;
+							}
 						case 3:
-							drawTile(false,row,col,TILE.FIRE,false);
+							if (Rotation){
 							drawTile(false,list[0],list[1],
-								SHIPS.SHIP_3_horizontal,Rotation);
-							break;
+								SHIPS.SHIP_3_horizontal,false);
+								break;
+							}
+							else {
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_3_vertical,false);
+								break;
+							}
 						case 4:
-							drawTile(false,row,col,TILE.FIRE,false);
-							//Ship(4,"horizontal",this );
+							if (Rotation){
+							console.log (Rotation);
 							drawTile(false,list[0],list[1],
-								SHIPS.SHIP_4_horizontal,Rotation);
-							break;
+								SHIPS.SHIP_4_horizontal,false);
+								break;
+							}
+							else {
+							drawTile(false,list[0],list[1],
+								SHIPS.SHIP_4_vertical,false);
+								break;
+							}
 					}
 					this.removeListenerFromOpponentCells();
 					break;
@@ -430,6 +470,14 @@ var Player = (function (serverInterface) {
 
 		},
 
+		
+		
+		
+		
+		
+		
+		
+		
 		loadBattlePhase : function () {
 			this.addListenerToOpponentCells();
 			$("#game-table-ships").css("display", "none");
