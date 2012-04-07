@@ -35,8 +35,11 @@ var Client = (function () {
 		name = _id_;
 		socket = io.connect("http://" + params.host + ":" + params.port, options);
 		addSocketListeners();
-		socket.emit(CLIENT.AUTH, { id : id, name : name });
-		console.log(CLIENT.AUTH + " " + JSON.stringify({ id : id, name : name }));
+		
+		socket.emit(CLIENT.AUTH, { id : id, name : name }, function (data) {
+			id = data.id;
+			console.log(CLIENT.AUTH + " " + JSON.stringify({ id : id, name : name }));
+		});
 	};
 
 	/*
