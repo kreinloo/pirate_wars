@@ -17,42 +17,54 @@ var ServerInterface = (function (_client_, _data_) {
 	var gameID = _data_.gid;
 	var opponentName = _data_.opponentName;
 	var player; // initialized in the end of this function
+	var ships = [];
 
 	// FUNCTIONS WHICH PLAYER USES //
 
 	this.fireAt = function (row, col) {
-		this.sendEvent({ action : GAME.ACTION.FIREAT });
+		this.sendEvent({
+			action : GAME.ACTION.FIREAT,
+			params : { row : row, col : col }
+		});
 	};
 
 	this.addVerticalShip = function (row, col, length) {
-		this.sendEvent({
+		ships.push({
 			action : GAME.ACTION.ADD_VERTICAL_SHIP,
 			params : { row : row, col : col, len : length }
 		});
 	};
 
 	this.addHorizontalShip = function (row, col, length) {
-		this.sendEvent({
+		ships.push({
 			action : GAME.ACTION.ADD_HORIZONTAL_SHIP,
 			params : { row : row, col : col, len : length }
 		});
 	};
 
 	this.deleteShip = function (row, col) {
-		this.sendEvent({
-			action : GAME.ACTION.DELETE_SHIP,
-			params : { row: row, col : col }
-		});
+		var ship;
+		for (var i in ships) {
+			ship = ships[i];
+			if (ship.row === row && ship.col === col) {
+				ships.splice(i, 1);
+				break;
+			}
+		}
 	};
 
 	this.resetField = function () {
-		this.sendEvent({
-			action : GAME.ACTION.RESET_FIELD,
-			params : {}
-		});
+		ships = [];
+		player.resetFieldConfirmed();
+		player.log("Your ships have been reset.");
 	};
 
 	this.confirmAlignment = function () {
+		var ship;
+		for (var i in ships) {
+			ship = ships[i];
+			this.sendEvent(ship);
+		}
 		this.sendEvent({
 			action : GAME.ACTION.CONFIRM_ALIGNMENT,
 			params : {}
@@ -75,27 +87,32 @@ var ServerInterface = (function (_client_, _data_) {
 			return;
 		}
 
-		else if (data.action == GAME.ACTION.FIREAT_RESULT) {
+		else if (data.action === GAME.ACTION.FIREAT) {
 			player.opponentsTurn(data);
 			return;
 		}
 
-		else if (data.action == GAME.ACTION.LOAD_BATTLE_PHASE) {
+		else if (data.action === GAME.ACTION.FIREAT_RESPONSE) {
+			player.fireAtResponse(data);
+			return;
+		}
+
+		else if (data.action === GAME.ACTION.LOAD_BATTLE_PHASE) {
 			player.loadBattlePhase();
 			return;
 		}
 
-		else if (data.action == GAME.ACTION.CONFIRM_ALIGNMENT) {
+		else if (data.action === GAME.ACTION.CONFIRM_ALIGNMENT) {
 			player.lockShips();
 			return;
 		}
 
-		else if (data.action == GAME.ACTION.RESET_FIELD) {
+		else if (data.action === GAME.ACTION.RESET_FIELD) {
 			player.resetFieldConfirmed();
 			return;
 		}
 
-		else if (data.action == GAME.ACTION.GAME_OVER) {
+		else if (data.action === GAME.ACTION.GAME_OVER) {
 			$("<div>").
 				append("<p>" + data.msg + "</p>").
 				dialog({
