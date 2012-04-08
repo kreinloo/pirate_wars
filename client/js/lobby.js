@@ -143,6 +143,17 @@ var Lobby = (function () {
 		$("tr[id=" + data.gid + "]").remove();
 	};
 
+	var resetGameButton = function () {
+		$("#lobby-game-form").children().remove();
+		$("#lobby-game-form").append(
+			$("<input>").
+				attr("type", "button").
+				attr("id", "lobby-game-form-create").
+				attr("value", "Create new game").
+				click(function () { createGameButtonClicked(); })
+		);
+	};
+
 	return {
 
 		addPublicMessage : addPublicMessage,
@@ -157,7 +168,8 @@ var Lobby = (function () {
 		addListenersToButtons : addListenersToButtons,
 
 		addStartedGame : addStartedGame,
-		deleteEndedGame : deleteEndedGame
+		deleteEndedGame : deleteEndedGame,
+		resetGameButton : resetGameButton
 
 	};
 

@@ -35,7 +35,7 @@ var Client = (function () {
 		name = _id_;
 		socket = io.connect("http://" + params.host + ":" + params.port, options);
 		addSocketListeners();
-		
+
 		socket.emit(CLIENT.AUTH, { id : id, name : name }, function (data) {
 			id = data.id;
 			console.log(CLIENT.AUTH + " " + JSON.stringify({ id : id, name : name }));
@@ -149,17 +149,21 @@ var Client = (function () {
 				serverInterface = new ServerInterface(Client, data);
 				ui.load("game");
 				ui.game.initialize(serverInterface.getPlayer());
+				ui.lobby.resetGameButton();
+				if (gameStatus == GAME.STATUS.WAITING) {
+					deleteGame();
+				}
 				this.gameStatus = GAME.STATUS.PLAYING;
 				return;
 			} else {
 				serverInterface.call(data);
 			}
 		});
-		
+
 		// Scoreboard data
 		socket.on(SCOREBOARD.DATA, function (data) {
 			console.log(SCOREBOARD.DATA + " " + JSON.stringify(data));
-			ui.scoreboard.refreshData(data);		
+			ui.scoreboard.refreshData(data);
 		});
 
 	};
@@ -202,7 +206,7 @@ var Client = (function () {
 		socket.emit(GAME.JOIN_REQUEST, data);
 		console.log(GAME.JOIN_REQUEST + " " + JSON.stringify(data));
 	};
-	
+
 	/*
 		Requests scoreboard data from server.
 	*/

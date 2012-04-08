@@ -50,6 +50,12 @@ var UI = (function () {
 					self.lobbyContent.show();
 				}
 			});
+			$("#menu-item-scoreboard").off("click");
+			$("#menu-item-scoreboard").text("scoreboard").click(function() {
+				Client.requestScoreboard();
+				self.load("scoreboard");
+				return;
+			});
 		}
 
 		else if (view === "game") {
@@ -85,6 +91,11 @@ var UI = (function () {
 				} else {
 					self.scoreboardContent.show();
 				}
+			});
+			$("#menu-item-scoreboard").off("click");
+			$("#menu-item-scoreboard").text("lobby").click(function() {
+				self.load("lobby");
+				return;
 			});
 		}
 
@@ -151,8 +162,4 @@ var ui = new UI();
 
 $(document).ready(function () {
 	ui.load("login");
-	$("#menu-item-scoreboard").click(function() {
-		Client.requestScoreboard();
-		ui.load("scoreboard");
-	});
 });
