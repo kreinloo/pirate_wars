@@ -358,20 +358,17 @@ var Player = (function (serverInterface) {
 			var outcome = data.params.result;
 			var row = data.params.row;
 			var col = data.params.col;
-
+			removeFog(row,col);
 			switch (outcome) {
 				case HIT.WATER :// reveal fog on that tile
-					//removeFog(row,col);
 					drawTile(false,row,col,TILE.SPLASH,false);
 					opponentTable[row][col] = FIELD.WATER_SHOT;
 					break;
 				case HIT.SHIP : //reveal fog on that tile
-					//removeFog(row,col);
 					drawTile(false,row,col,TILE.FIRE,false);
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					break;
 				case HIT.WHOLE_SHIP : //reveal fog,
-					//removeFog(row,col);
 					drawTile(false,row,col,TILE.FIRE,false);
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					var list = this.findDirectionAndLength(row, col);

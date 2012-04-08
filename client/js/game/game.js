@@ -31,6 +31,15 @@ var Game = (function() {
 		});
 
 		this.fillTables();
+		for (var i =0;i<10;i++){
+			for (var j = 0;j<10;j++){
+				drawTile(false,i,j,TILE.FOG_UP,false);
+				drawTile(false,i,j,TILE.FOG_BOTTOM,false);
+				drawTile(false,i,j,TILE.FOG_LEFT,false);
+				drawTile(false,i,j,TILE.FOG_RIGHT,false);
+				drawTile(false,i,j,TILE.FOG,false);
+			}
+		}
 
 	};
 
