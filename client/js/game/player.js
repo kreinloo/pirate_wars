@@ -283,7 +283,7 @@ var Player = (function (serverInterface) {
 				// check vertivally to the downward
 				for (i = 1; i<4;i++) {
 					if (row + i <= 9) {
-						if (opponentTable[row+1][col] == FIELD.SHIP_SHOT)
+						if (opponentTable[row+i][col] == FIELD.SHIP_SHOT)
 							length ++ ;
 						else break;
 					}
@@ -292,7 +292,7 @@ var Player = (function (serverInterface) {
 				// check vertically upward
 				for (i = 1; i<4;i++) {
 					if (row - i >= 0) {
-						if (opponentTable[row-1][col] == FIELD.SHIP_SHOT) {
+						if (opponentTable[row-i][col] == FIELD.SHIP_SHOT) {
 							length ++ ;
 							rowCord --;
 						}
