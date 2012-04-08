@@ -360,17 +360,17 @@ var Player = (function (serverInterface) {
 
 			switch (outcome) {
 				case 10 :// reveal fog on that tile
-					removeFog(row,col);
+					//removeFog(row,col);
 					drawTile(false,row,col,TILE.SPLASH,false);
 					opponentTable[row][col] = 2;
 					break;
 				case 11 : //reveal fog on that tile
-					removeFog(row,col);
+					//removeFog(row,col);
 					drawTile(false,row,col,TILE.FIRE,false);
 					opponentTable[row][col] = 1;
 					break;
 				case 12 : //reveal fog,
-					removeFog(row,col);
+					//removeFog(row,col);
 					drawTile(false,row,col,TILE.FIRE,false);
 					opponentTable[row][col] = 1;
 					var list = this.findDirectionAndLength(row, col);
@@ -465,6 +465,10 @@ var Player = (function (serverInterface) {
 					this.removeListenerFromOpponentCells();
 					break;
 
+			}
+			console.log("outcome "+ outcome);
+			for (var i = 0; i<10;i++){
+				console.log (opponentTable[i]);
 			}
 
 		},
