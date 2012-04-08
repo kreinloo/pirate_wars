@@ -233,24 +233,24 @@ var Player = (function (serverInterface) {
 			var rowCord = row; // row coordinate for start of the drawing
 			var colCord = col; // column coordinate for start of the drawing
 			if (row !== 0 && row !== 9 ) // check if we are horizontally on the edge.
-				horizontal = opponentTable[row+1][col] != 1 &&
-				opponentTable[row-1][col] != 1 ? true : false;
+				horizontal = opponentTable[row+1][col] != FIELD.SHIP_SHOT &&
+				opponentTable[row-1][col] != FIELD.SHIP_SHOT;
 			else if (row === 0)
-				horizontal = opponentTable[row+1][col]!=1 ? true:false;
+				horizontal = opponentTable[row+1][col]!=FIELD.SHIP_SHOT ? true:false;
 
 			else if (row == 9)
-				horizontal = opponentTable[row-1][col]!=1 ? true:false;
+				horizontal = opponentTable[row-1][col]!=FIELD.SHIP_SHOT ? true:false;
 
 			// by this point horizontal can be true only if a cell above or below pointed cell
 			// is 1.
 			if (col !== 0 && col !== 9 )
-				vertical = opponentTable[row][col+1] !=1 &&
-				opponentTable[row][col-1] !=1 ? true : false;
+				vertical = opponentTable[row][col+1] !=FIELD.SHIP_SHOT &&
+				opponentTable[row][col-1] !=FIELD.SHIP_SHOT ? true : false;
 			else if (col === 0)
-				vertical = opponentTable[row][col+1]!=1 ? true:false;
+				vertical = opponentTable[row][col+1]!=FIELD.SHIP_SHOT ? true:false;
 
 			else if (col == 9)
-				vertical = opponentTable[row][col-1]!=1 ? true:false;
+				vertical = opponentTable[row][col-1]!=FIELD.SHIP_SHOT ? true:false;
 			// by this point vertical can be true only if a cell to left or cell to right is 1.
 			// now we can start calculating the length of the ship.
 			var length = 1 ;// minimum length
@@ -260,8 +260,8 @@ var Player = (function (serverInterface) {
 			if (horizontal) {
 				// check Horizontally to the right
 				for (var i = 1; i<4;i++){
-					if (col+ i <9){
-						if (opponentTable[row][col+i] == 1)
+					if (col+ i <=9){
+						if (opponentTable[row][col+i] == FIELD.SHIP_SHOT)
 							length ++ ;
 						else break;
 					}
@@ -270,7 +270,7 @@ var Player = (function (serverInterface) {
 				// check Horizontally to the left
 				for (i = 1; i<4;i++) {
 					if (col - i >= 0){
-						if (opponentTable[row][col-i] == 1) {
+						if (opponentTable[row][col-i] == FIELD.SHIP_SHOT) {
 							length ++ ;
 							colCord-- ;
 						}
@@ -282,8 +282,8 @@ var Player = (function (serverInterface) {
 			if (vertical) {
 				// check vertivally to the downward
 				for (i = 1; i<4;i++) {
-					if (row + i < 9) {
-						if (opponentTable[row+1][col] == 1)
+					if (row + i <= 9) {
+						if (opponentTable[row+1][col] == FIELD.SHIP_SHOT)
 							length ++ ;
 						else break;
 					}
@@ -292,7 +292,7 @@ var Player = (function (serverInterface) {
 				// check vertically upward
 				for (i = 1; i<4;i++) {
 					if (row - i >= 0) {
-						if (opponentTable[row-1][col] == 1) {
+						if (opponentTable[row-1][col] == FIELD.SHIP_SHOT) {
 							length ++ ;
 							rowCord --;
 						}
@@ -302,7 +302,7 @@ var Player = (function (serverInterface) {
 				}
 			}
 			// By now we know the direction and the length of the ship ..
-			return [rowCord,colCord,length,vertical ? 1:0];
+			return [rowCord,colCord,length,horizontal ? 1:0];
 
 		},
 
@@ -360,24 +360,25 @@ var Player = (function (serverInterface) {
 			var col = data.params.col;
 
 			switch (outcome) {
-				case 10 :// reveal fog on that tile
-					removeFog(row,col);
+				case HIT.WATER :// reveal fog on that tile
+					//removeFog(row,col);
 					drawTile(false,row,col,TILE.SPLASH,false);
-					opponentTable[row][col] = 2;
+					opponentTable[row][col] = FIELD.WATER_SHOT;
 					break;
-				case 11 : //reveal fog on that tile
-					removeFog(row,col);
+				case HIT.SHIP : //reveal fog on that tile
+					//removeFog(row,col);
 					drawTile(false,row,col,TILE.FIRE,false);
-					opponentTable[row][col] = 1;
+					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					break;
-				case 12 : //reveal fog,
-					removeFog(row,col);
+				case HIT.WHOLE_SHIP : //reveal fog,
+					//removeFog(row,col);
 					drawTile(false,row,col,TILE.FIRE,false);
-					opponentTable[row][col] = 1;
+					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					var list = this.findDirectionAndLength(row, col);
 					console.log(list);
-					var Rotation = list[3]==1 ? false : true ;
-					switch (list[2]){ // case number represents the length of the ship.
+					var Rotation = list[3]==1 ;
+					var shipLength = list[2];
+					switch (shipLength){ // case number represents the length of the ship.
 						case 1:
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_1_horizontal,false);
@@ -419,11 +420,12 @@ var Player = (function (serverInterface) {
 					}
 					break;
 
-				case 13 :
-					opponentTable[row][col] = 1;
+				case HIT.GAME_OVER :
+					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					list = this.findDirectionAndLength(row, col);
-					var Rotation = list[3]==1 ? false : true ;
-					switch (list[2]){ // case number represents the length of the ship.
+					var Rotation = list[3]==1 ;
+					var shipLength = list[2];
+					switch (shipLength){ // case number represents the length of the ship.
 						case 1:
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_1_horizontal,false);
@@ -466,6 +468,10 @@ var Player = (function (serverInterface) {
 					this.removeListenerFromOpponentCells();
 					break;
 
+			}
+			console.log("DEBUG: outcome: "+ outcome);
+			for (var i = 0; i<10;i++){
+				console.log (opponentTable[i]);
 			}
 
 		},
