@@ -477,7 +477,6 @@ var Player = (function (serverInterface) {
 		},
 
 		confirmButtonClicked : function () {
-			/*
 			if (!this.confirmShipCount()) {
 				console.log("all ships have not been placed to table");
 				this.log("Please place all your ships to the table on the left.");
@@ -486,8 +485,6 @@ var Player = (function (serverInterface) {
 					"all ships have been placed, asking confirmation from the server");
 				this.confirmAlignment();
 			}
-			*/
-			this.confirmAlignment();
 		},
 
 		resetButtonClicked : function () {
