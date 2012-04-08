@@ -69,6 +69,7 @@ var Game = (function() {
 		$("#game-table-ships-confirm").off("click");
 		$("#game-table-ships-reset").off("click");
 		$("#game-chat-form").off("submit");
+		$("#game-chat-log").children().remove()
 	};
 
 });

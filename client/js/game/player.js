@@ -230,8 +230,8 @@ var Player = (function (serverInterface) {
 		findDirectionAndLength : function(row, col) {
 			var horizontal; // boolean , true if ship is horizontal
 			var vertical; // boolean, true id ship is vertical
-			var rowCord = row; // row coordinate for start of the drawing 
-			var colCord = col; // column coordinate for start of the drawing 
+			var rowCord = row; // row coordinate for start of the drawing
+			var colCord = col; // column coordinate for start of the drawing
 			if (row !== 0 && row !== 9 ) // check if we are horizontally on the edge.
 				horizontal = opponentTable[row+1][col] != 1 &&
 				opponentTable[row-1][col] != 1 ? true : false;
@@ -240,9 +240,9 @@ var Player = (function (serverInterface) {
 
 			else if (row == 9)
 				horizontal = opponentTable[row-1][col]!=1 ? true:false;
-				
+
 			// by this point horizontal can be true only if a cell above or below pointed cell
-			// is 1. 
+			// is 1.
 			if (col !== 0 && col !== 9 )
 				vertical = opponentTable[row][col+1] !=1 &&
 				opponentTable[row][col-1] !=1 ? true : false;
@@ -252,9 +252,9 @@ var Player = (function (serverInterface) {
 			else if (col == 9)
 				vertical = opponentTable[row][col-1]!=1 ? true:false;
 			// by this point vertical can be true only if a cell to left or cell to right is 1.
-			// now we can start calculating the length of the ship. 
+			// now we can start calculating the length of the ship.
 			var length = 1 ;// minimum length
-			if (vertical && horizontal) { 
+			if (vertical && horizontal) {
 				return [row,col,1,false];
 			}
 			if (horizontal) {
@@ -312,6 +312,7 @@ var Player = (function (serverInterface) {
 
 		lockShips : function () {
 			$(".game-table-ship").draggable("disable");
+			$(".game-table-ship").css("opacity", "100");
 			tableConfirmed = true;
 		},
 
@@ -374,7 +375,7 @@ var Player = (function (serverInterface) {
 					drawTile(false,row,col,TILE.FIRE,false);
 					opponentTable[row][col] = 1;
 					var list = this.findDirectionAndLength(row, col);
-					console.log(list); 
+					console.log(list);
 					var Rotation = list[3]==1 ? false : true ;
 					switch (list[2]){ // case number represents the length of the ship.
 						case 1:
@@ -469,14 +470,6 @@ var Player = (function (serverInterface) {
 
 		},
 
-		
-		
-		
-		
-		
-		
-		
-		
 		loadBattlePhase : function () {
 			this.addListenerToOpponentCells();
 			$("#game-table-ships").css("display", "none");
@@ -508,3 +501,35 @@ var Player = (function (serverInterface) {
 	};
 
 });
+
+var ERROR = {
+	// Dummy (probably not used)
+	NONE: 0,
+	// The move isn't legal (invalid coordinates for example)
+	INVALID_MOVE: 1,
+	// Player has already fired on that cell
+	REPEATED_MOVE: 2,
+	// It's not player's turn to fire
+	WRONG_TURN: 3,
+	// It's not possible to do that in current game phase
+	INVALID_PHASE: 4
+};
+
+// Represents result of firing
+var HIT = {
+	// Hit the water
+	WATER: 10,
+	// Hit tile of enemy ship
+	SHIP: 11,
+	// Hit tile of enemy ship that was also last part of it
+	WHOLE_SHIP: 12,
+	// Hit last tile of last ship - won
+	GAME_OVER: 13
+};
+
+var FIELD = {
+	WATER_NOT_SHOT : 0,
+	WATER_SHOT : 1,
+	SHIP_NOT_SHOT : 2,
+	SHIP_SHOT : 3
+};
