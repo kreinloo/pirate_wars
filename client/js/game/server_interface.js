@@ -30,15 +30,19 @@ var ServerInterface = (function (_client_, _data_) {
 
 	this.addVerticalShip = function (row, col, length) {
 		ships.push({
-			action : GAME.ACTION.ADD_VERTICAL_SHIP,
-			params : { row : row, col : col, len : length }
+			dir : "vertical",
+			row : row,
+			col : col,
+			len : length
 		});
 	};
 
 	this.addHorizontalShip = function (row, col, length) {
 		ships.push({
-			action : GAME.ACTION.ADD_HORIZONTAL_SHIP,
-			params : { row : row, col : col, len : length }
+			dir : "horizontal",
+			row : row,
+			col : col,
+			len : length
 		});
 	};
 
@@ -60,14 +64,10 @@ var ServerInterface = (function (_client_, _data_) {
 	};
 
 	this.confirmAlignment = function () {
-		var ship;
-		for (var i in ships) {
-			ship = ships[i];
-			this.sendEvent(ship);
-		}
+		console.log(ships);
 		this.sendEvent({
 			action : GAME.ACTION.CONFIRM_ALIGNMENT,
-			params : {}
+			params : ships
 		});
 	};
 
