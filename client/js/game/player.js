@@ -422,6 +422,7 @@ var Player = (function (serverInterface) {
 
 				case HIT.GAME_OVER :
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
+					drawTile(false,row,col,TILE.FIRE,false);
 					list = this.findDirectionAndLength(row, col);
 					var Rotation = list[3]==1 ;
 					var shipLength = list[2];
