@@ -4,13 +4,19 @@ Pirate Wars
 Current architecture
 --------------------
 <pre>
-Server ----------------------- Client ---------------------- UI
-   |                              |                           |
-   |                              |               ------------------------
-   |                              |               |         |            |
-GameServer                  ServerInterface      Game     Lobby     Scoreboard
-   |                              |
-   |                              |
-   |                              |
- Game                           Player
-</pre>
+                   +-----------------------------+
+                   |                             |
+                   |                             |
+                   +                             +
+    +----------+ Server +------+               Client +---------------+ UI
+    |              +           |                 +                      +
+    |              |           |                 |                      |
+    |              |           |                 |              +-------+--------+
+    +              |           +                 +              |       |        |
+ GameServer        |        Database       ServerInterface      +       +        +
+    +              +                             +            Lobby   Game   Scoreboard
+    |          Scoreboard                        |
+    |                                            |
+    +                                            +
+   Game                                       Player
+ </pre>

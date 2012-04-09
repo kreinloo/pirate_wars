@@ -96,7 +96,6 @@
 
 #game-chat-input-text {
 	width: 100%;
-	height: 20px;
 }
 
 #game-table-ships {
@@ -110,18 +109,14 @@
 	width: 205px;
 	position: absolute;
 	left: 70px;
-	top: 290px;
+	top: 305px;
 
 }
 
 .game-table-ships-button {
 	width: 100px;
-	height: 40px;
+	height: 25px;
 	font-family: 'Ubuntu', sans-serif;
-	font-size: 20px;
-	background-color: #6E5A47;
-	border: none;
-	border-radius: 15px;
-	color: white;
+	font-size: 15px;
+	color: black;
 }
-
