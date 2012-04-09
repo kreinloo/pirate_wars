@@ -135,6 +135,10 @@ var ServerInterface = (function (_client_, _data_) {
 		return player;
 	};
 
+	this.getOpponentName = function () {
+		return opponentName;
+	};
+
 	player = new Player (this);
 
 });

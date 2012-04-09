@@ -78,7 +78,7 @@ var Game = (function() {
 		$("#game-table-ships-confirm").off("click");
 		$("#game-table-ships-reset").off("click");
 		$("#game-chat-form").off("submit");
-		$("#game-chat-log").children().remove()
+		$("#game-chat-log").children().remove();
 	};
 
 	this.log = function (message, author) {
@@ -100,8 +100,8 @@ var Game = (function() {
 		$("#game-table-opponent").css("display", "block");
 		$(".game-table-opponent-cell").click(function () {
 			var id = $(this).attr("id").split("_");
-			var row = parseInt(id[1]);
-			var col = parseInt(id[2]);
+			var row = parseInt(id[1], 10);
+			var col = parseInt(id[2], 10);
 			player.makeMove(row, col);
 		});
 	};
@@ -123,21 +123,23 @@ var Game = (function() {
 
 function drawTile (isSelf, row, column, tileToDraw, rotate) {
 
-	if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH){
-		if (isSelf) var cellId = "#user_";
-		else var cellId = "#opponent_";
+	var cellId, tile, cell;
+
+	if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH) {
+		if (isSelf) cellId = "#user_";
+		else cellId = "#opponent_";
 		cellId += row + "_" + column;
 
-		var tile = $("<img>").attr("src", tileToDraw);
-		var cell = $(cellId).prepend(tile);
+		tile = $("<img>").attr("src", tileToDraw);
+		cell = $(cellId).prepend(tile);
 	}
 	else {
-		if (isSelf) var cellId = "#user_";
-		else var cellId = "#opponent_";
+		if (isSelf) cellId = "#user_";
+		else cellId = "#opponent_";
 		cellId += row + "_" + column;
 
-		var tile = $("<img>").attr("src", tileToDraw);
-		var cell = $(cellId).append(tile);
+		tile = $("<img>").attr("src", tileToDraw);
+		cell = $(cellId).append(tile);
 	}
 	if (rotate)
 		cell.addClass("rotate90");

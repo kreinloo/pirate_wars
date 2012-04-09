@@ -43,9 +43,6 @@ var Player = (function (serverInterface) {
 			var length = ship.getLength();
 			var direction = ship.getDirection();
 
-			console.log("addShip: row: " + row + " col: " + col + " length: " +
-				length + " direction: " + direction);
-
 			if (direction === "horizontal") {
 				if (col < 0 || col + length > 10 || row < 0 || row > 9)
 					return false;
@@ -102,8 +99,8 @@ var Player = (function (serverInterface) {
 		},
 
 		deleteShip : function (ship) {
-			var row = ship.getCoords()["row"];
-			var col = ship.getCoords()["col"];
+			var row = ship.getCoords().row;
+			var col = ship.getCoords().col;
 
 			for (var i = 0; i < ship.getLength(); i++) {
 				if (ship.getDirection() === "horizontal")
@@ -144,11 +141,12 @@ var Player = (function (serverInterface) {
 		// our game table
 		resetFieldConfirmed : function () {
 			// gameTable reset
+			var i, j;
 			gameTable = null;
 			gameTable = new Array(10);
-			for (var i = 0; i < 10; i++) {
+			for (i = 0; i < 10; i++) {
 				gameTable[i] = new Array(10);
-				for (var j = 0; j < 10; j++)
+				for (j = 0; j < 10; j++)
 					gameTable[i][j] = 0;
 			}
 			this.log("Double click on a ship rotates is 90 degrees.");
@@ -159,7 +157,7 @@ var Player = (function (serverInterface) {
 			var left = 360;
 			var top = 10;
 			var ship = null;
-			for (var i = 0; i < 4; i++) {
+			for (i = 0; i < 4; i++) {
 				ship = shipFactory.createShip(1, "horizontal", this);
 				ship.getElement().css("top", top);
 				ship.getElement().css("left", left);
@@ -208,16 +206,19 @@ var Player = (function (serverInterface) {
 		opponentsTurn : function (data) {
 			var result = data.params.result;
 			var row = data.params.row;
-			var col = data.params.col
+			var col = data.params.col;
 			switch (result) {
 				case 10 :
 					drawTile(true, row, col, TILE.SPLASH, false);
+					this.log(server.getOpponentName() + " missed ...");
 					break;
 				case 11 :
 					drawTile(true, row, col, TILE.FIRE, false);
+					this.log(server.getOpponentName() + " hit our ship!");
 					break;
 				case 12 :
 					drawTile(true, row, col, TILE.FIRE, false);
+					this.log(server.getOpponentName() + " sank our ship!");
 					break;
 				case 13 :
 					drawTile(true, row, col, TILE.FIRE, false);
@@ -232,6 +233,7 @@ var Player = (function (serverInterface) {
 			var vertical; // boolean, true id ship is vertical
 			var rowCord = row; // row coordinate for start of the drawing
 			var colCord = col; // column coordinate for start of the drawing
+			var i;
 			if (row !== 0 && row !== 9 ) // check if we are horizontally on the edge.
 				horizontal = opponentTable[row+1][col] != FIELD.SHIP_SHOT &&
 				opponentTable[row-1][col] != FIELD.SHIP_SHOT;
@@ -259,7 +261,7 @@ var Player = (function (serverInterface) {
 			}
 			if (horizontal) {
 				// check Horizontally to the right
-				for (var i = 1; i<4;i++){
+				for (i = 1; i<4;i++){
 					if (col+ i <=9){
 						if (opponentTable[row][col+i] == FIELD.SHIP_SHOT)
 							length ++ ;
@@ -341,14 +343,17 @@ var Player = (function (serverInterface) {
 			switch (outcome) {
 				case HIT.WATER :// reveal fog on that tile
 					drawTile(false,row,col,TILE.SPLASH,false);
+					this.log("You missed ...");
 					opponentTable[row][col] = FIELD.WATER_SHOT;
 					break;
 				case HIT.SHIP : //reveal fog on that tile
 					drawTile(false,row,col,TILE.FIRE,false);
+					this.log("You hit ship ...");
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					break;
 				case HIT.WHOLE_SHIP : //reveal fog,
 					drawTile(false,row,col,TILE.FIRE,false);
+					this.log("You sank " + server.getOpponentName() + "'s ship!");
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					var list = this.findDirectionAndLength(row, col);
 					console.log(list);
@@ -363,45 +368,43 @@ var Player = (function (serverInterface) {
 							if (Rotation){
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_2_horizontal,false);
-								break;
 							}
 							else {
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_2_vertical,false);
-								break;
 							}
+							break;
 						case 3:
 							if (Rotation){
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_3_horizontal,false);
-								break;
 							}
 							else {
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_3_vertical,false);
-								break;
 							}
+							break;
 						case 4:
 							if (Rotation){
 							console.log (Rotation);
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_4_horizontal,false);
-								break;
 							}
 							else {
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_4_vertical,false);
-								break;
 							}
+							break;
 					}
 					break;
 
 				case HIT.GAME_OVER :
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					drawTile(false,row,col,TILE.FIRE,false);
+					this.log("You sank " + server.getOpponentName() + "'s last ship");
 					list = this.findDirectionAndLength(row, col);
-					var Rotation = list[3]==1 ;
-					var shipLength = list[2];
+					Rotation = list[3] == 1;
+					shipLength = list[2];
 					switch (shipLength){ // case number represents the length of the ship.
 						case 1:
 							drawTile(false,list[0],list[1],
@@ -411,44 +414,37 @@ var Player = (function (serverInterface) {
 							if (Rotation){
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_2_horizontal,false);
-								break;
 							}
 							else {
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_2_vertical,false);
-								break;
 							}
+							break;
 						case 3:
 							if (Rotation){
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_3_horizontal,false);
-								break;
 							}
 							else {
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_3_vertical,false);
-								break;
 							}
+							break;
 						case 4:
 							if (Rotation){
 							console.log (Rotation);
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_4_horizontal,false);
-								break;
 							}
 							else {
 							drawTile(false,list[0],list[1],
 								SHIPS.SHIP_4_vertical,false);
-								break;
 							}
+							break;
 					}
 					this.removeListenerFromOpponentCells();
 					break;
 
-			}
-			console.log("DEBUG: outcome: "+ outcome);
-			for (var i = 0; i<10;i++){
-				console.log (opponentTable[i]);
 			}
 
 		},
