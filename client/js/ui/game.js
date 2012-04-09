@@ -81,6 +81,44 @@ var Game = (function() {
 		$("#game-chat-log").children().remove()
 	};
 
+	this.log = function (message, author) {
+		var date = new Date();
+		var timestamp = date.getHours() + ":" + date.getMinutes() + ":" +
+			date.getSeconds();
+		if (author !== undefined) {
+			message = author + ": " + message;
+		}
+		var div = $("<div>");
+		div.append("<b>" + timestamp + "</b> " + message);
+		$("#game-chat-log").append(div);
+		$("#game-chat-log").
+			scrollTop($("#game-chat-log").prop("scrollHeight"));
+	};
+
+	this.loadBattlePhase = function (player) {
+		$("#game-table-ships").css("display", "none");
+		$("#game-table-opponent").css("display", "block");
+		$(".game-table-opponent-cell").click(function () {
+			var id = $(this).attr("id").split("_");
+			var row = parseInt(id[1]);
+			var col = parseInt(id[2]);
+			player.makeMove(row, col);
+		});
+	};
+
+	this.lockShips = function () {
+		$(".game-table-ship").draggable("disable");
+		$(".game-table-ship").css("opacity", "100");
+	};
+
+	this.removeListenerFromOpponentCells = function () {
+		$(".game-table-opponent-cell").off("click");
+	};
+
+	this.removeShips = function () {
+		$(".game-table-ship").remove();
+	};
+
 });
 
 function drawTile (isSelf, row, column, tileToDraw, rotate) {

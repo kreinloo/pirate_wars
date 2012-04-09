@@ -113,22 +113,9 @@ var ServerInterface = (function (_client_, _data_) {
 		}
 
 		else if (data.action === GAME.ACTION.GAME_OVER) {
-			$("<div>").
-				append("<p>" + data.msg + "</p>").
-				dialog({
-					resizable : false,
-					height : 200,
-					modal : true,
-					buttons : {
-						"Return to lobby" : function () {
-							$(this).dialog("close");
-						}
-					},
-					title : "Game over",
-					close : function (event, ui) {
-						client.gameEndedHandler();
-					}
-				});
+			data.title = "Game over";
+			data.callback = client.gameEndedHandler;
+			ui.dialog("endgame", data);
 			return;
 		}
 
