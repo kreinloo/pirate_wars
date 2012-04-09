@@ -133,13 +133,13 @@ var UI = (function () {
 
 	this.loadScripts = function () {
 			this.loadScript("js/events.js");
-			this.loadScript("js/lobby.js");
-			this.loadScript("js/game/game.js");
+			this.loadScript("js/ui/lobby.js");
+			this.loadScript("js/ui/game.js");
 			this.loadScript("js/game/ship.js");
 			this.loadScript("js/game/player.js");
 			this.loadScript("js/game/server_interface.js");
 			this.loadScript("js/client.js");
-			this.loadScript("js/scoreboard.js");
+			this.loadScript("js/ui/scoreboard.js");
 			this.scriptsLoaded = true;
 			this.lobby = new Lobby();
 			this.game = new Game();
