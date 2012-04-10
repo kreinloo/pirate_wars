@@ -53,6 +53,8 @@ var UI = (function () {
 			$("#menu-item-scoreboard").off("click");
 			$("#menu-item-scoreboard").text("scoreboard").click(function() {
 				Client.requestScoreboard();
+				// Join namespace for live scoreboard updates
+				Client.joinScoreboard();
 				self.load("scoreboard");
 				return;
 			});
@@ -94,6 +96,8 @@ var UI = (function () {
 			});
 			$("#menu-item-scoreboard").off("click");
 			$("#menu-item-scoreboard").text("lobby").click(function() {
+				// Don't want to receive live updates anymore! :'(
+				Client.leaveScoreboard();
 				self.load("lobby");
 				return;
 			});
@@ -155,6 +159,7 @@ var UI = (function () {
 	};
 
 	this.loadScripts();
+	Client.initParams();
 
 });
 

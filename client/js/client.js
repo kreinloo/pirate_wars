@@ -14,32 +14,71 @@ var Client = (function () {
 	var id = null;
 	var name = null;
 	var socket = null;
+	var scoreboardSocket = null;
 	var serverInterface = null;
 	var gameStatus = GAME.STATUS.IDLE;
+	
+	// Server parameters
+	var options = null;
+	var params = null;
+
+	
+	/*
+		Initializes those parameters.
+	*/
+	
+	var initParams = function () {
+		this.params = {};
+		this.params.host = "localhost";
+		this.params.port = 8000;
+		// for deployment at heroku
+		//this.options = {};
+		//this.options["transports"] = ["xhr-polling"];
+	};
 
 	/*
 		Connects to the server.
 	*/
 	var connect = function (_id_, params) {
-		if (params === undefined) {
-			params = {};
-			params.host = "localhost";
-			params.port = 8001;
-		}
-
-		var options = {};
-		// for deployment at heroku
-		//options["transports"] = ["xhr-polling"];
-
 		id = _id_;
 		name = _id_;
-		socket = io.connect("http://" + params.host + ":" + params.port, options);
+		socket = io.connect("http://" + this.params.host + ":" + this.params.port, this.options);
 		addSocketListeners();
 
 		socket.emit(CLIENT.AUTH, { id : id, name : name }, function (data) {
 			id = data.id;
 			console.log(CLIENT.AUTH + " " + JSON.stringify({ id : id, name : name }));
 		});
+	};
+	
+	/*
+		Methods to join/leave scoreboard namespace.
+		Receives live score updates from server.
+	*/
+	
+	var joinScoreboard = function () {
+		console.log("Joining Scoreboard namespace!");
+		this.scoreboardSocket = io.connect(
+			"http://" + this.params.host + ":" + this.params.port + "/scoreboard",
+			this.options
+		);
+		// Bind it, bind it!
+		// Scoreboard data (broadcast)
+		this.scoreboardSocket.on(SCOREBOARD.DATA, function (data) {
+			console.log(SCOREBOARD.DATA + " (broadcast) " + JSON.stringify(data));
+			ui.scoreboard.refreshData(data);
+		});
+	};
+	
+	var leaveScoreboard = function () {
+		if (this.scoreboardSocket != null) {
+			console.log("Leaving Scoreboard namespace!");
+			this.scoreboardSocket.disconnect();
+			
+			// https://github.com/LearnBoost/socket.io-client/issues/251
+			delete io.sockets["http://" + this.params.host + ":" + this.params.port];
+			io.j = [];
+		}
 	};
 
 	/*
@@ -160,12 +199,12 @@ var Client = (function () {
 			}
 		});
 
-		// Scoreboard data
+		// Scoreboard data (answer for request)
 		socket.on(SCOREBOARD.DATA, function (data) {
-			console.log(SCOREBOARD.DATA + " " + JSON.stringify(data));
+			console.log(SCOREBOARD.DATA + " (individual) " + JSON.stringify(data));
 			ui.scoreboard.refreshData(data);
 		});
-
+		
 	};
 
 	/*
@@ -223,7 +262,10 @@ var Client = (function () {
 	};
 
 	return {
+		initParams : initParams,
 		connect : connect,
+		joinScoreboard : joinScoreboard,
+		leaveScoreboard : leaveScoreboard,
 		emit : emit,
 		setID : setID,
 		getID : getID,
