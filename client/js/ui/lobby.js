@@ -117,6 +117,8 @@ var Lobby = (function () {
 
 	var addListenersToButtons = function () {
 		$("#lobby-chat-input-form").submit(function () {
+			if ( $("#lobby-chat-input-text").val() === "" )
+				return false;
 			Client.sendPublicMessage( $("#lobby-chat-input-text").val() );
 			addPublicMessage({
 				author : Client.getName(),
