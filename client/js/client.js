@@ -139,6 +139,7 @@ var Client = (function () {
 			}
 			else {
 				id = data.id;
+				name = data.name;
 				ui.load("lobby");
 			}
 		});
