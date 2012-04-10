@@ -30,7 +30,7 @@ var Client = (function () {
 	var initParams = function () {
 		this.params = {};
 		this.params.host = "localhost";
-		this.params.port = 8000;
+		this.params.port = 8001;
 		// for deployment at heroku
 		//this.options = {};
 		//this.options["transports"] = ["xhr-polling"];
