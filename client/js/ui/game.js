@@ -25,6 +25,8 @@ var Game = (function() {
 		});
 
 		$("#game-chat-form").submit(function () {
+			if ( $("#game-chat-input-text").val() === "" )
+				return false;
 			player.chatFormSubmitted( $("#game-chat-input-text").val() );
 			$("#game-chat-input-text").val("");
 			return false;
