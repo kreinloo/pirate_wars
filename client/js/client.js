@@ -42,13 +42,12 @@ var Client = (function () {
 	var connect = function (_id_, params) {
 		id = _id_;
 		name = _id_;
-		socket = io.connect("http://" + this.params.host + ":" + this.params.port, this.options);
-		addSocketListeners();
+		if (socket == null) {
+			socket = io.connect("http://" + this.params.host + ":" + this.params.port, this.options);
+			addSocketListeners();
+		}
 
-		socket.emit(CLIENT.AUTH, { id : id, name : name }, function (data) {
-			id = data.id;
-			console.log(CLIENT.AUTH + " " + JSON.stringify({ id : id, name : name }));
-		});
+		socket.emit(CLIENT.AUTH, { id : id, name : name });
 	};
 	
 	/*
@@ -124,6 +123,24 @@ var Client = (function () {
 			if (typeof data === "undefined")
 				return;
 			console.log("server msg: " + data.msg);
+		});
+		
+		// client auth try
+		socket.on(CLIENT.AUTH, function (data) {
+			if (typeof data === "undefined")
+				return;
+			console.log(CLIENT.AUTH + " " + JSON.stringify(data));
+			
+			if (data.error == true) {
+				ui.dialog("custom", {
+					title : "Login",
+					msg: data.errorMsg
+				});
+			}
+			else {
+				id = data.id;
+				ui.load("lobby");
+			}
 		});
 
 		// server sends a public message

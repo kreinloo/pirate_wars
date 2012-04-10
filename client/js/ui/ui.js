@@ -27,7 +27,6 @@ var UI = (function () {
 					var id = $("#login-form-username").val();
 					console.log(id);
 					Client.connect(id);
-					self.load("lobby");
 				}
 				return false;
 			});
