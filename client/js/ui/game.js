@@ -82,14 +82,11 @@ var Game = (function() {
 	};
 
 	this.log = function (message, author) {
-		var date = new Date();
-		var timestamp = date.getHours() + ":" + date.getMinutes() + ":" +
-			date.getSeconds();
 		if (author !== undefined) {
 			message = author + ": " + message;
 		}
 		var div = $("<div>");
-		div.append("<b>" + timestamp + "</b> " + message);
+		div.append("<b>" + Client.getTimestamp() + "</b> " + message);
 		$("#game-chat-log").append(div);
 		$("#game-chat-log").
 			scrollTop($("#game-chat-log").prop("scrollHeight"));

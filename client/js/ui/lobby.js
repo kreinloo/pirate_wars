@@ -20,7 +20,7 @@ var Lobby = (function () {
 
 		$("#lobby-chat-log").append(
 			$("<div >").addClass("chat-message").
-				append("<i>" + timestamp + "</i> <b>" +
+				append("<i>" + Client.getTimestamp() + "</i> <b>" +
 					data.author + ":</b> " + data.msg)
 		);
 		$("#lobby-chat-log").scrollTop($("#lobby-chat-log").
