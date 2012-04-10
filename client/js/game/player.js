@@ -209,19 +209,19 @@ var Player = (function (serverInterface) {
 			var col = data.params.col;
 			switch (result) {
 				case 10 :
-					drawTile(true, row, col, TILE.SPLASH, false);
+					ui.game.drawTile(true, row, col, TILE.SPLASH, false);
 					this.log(server.getOpponentName() + " missed ...");
 					break;
 				case 11 :
-					drawTile(true, row, col, TILE.FIRE, false);
+					ui.game.drawTile(true, row, col, TILE.FIRE, false);
 					this.log(server.getOpponentName() + " hit our ship!");
 					break;
 				case 12 :
-					drawTile(true, row, col, TILE.FIRE, false);
+					ui.game.drawTile(true, row, col, TILE.FIRE, false);
 					this.log(server.getOpponentName() + " sank our ship!");
 					break;
 				case 13 :
-					drawTile(true, row, col, TILE.FIRE, false);
+					ui.game.drawTile(true, row, col, TILE.FIRE, false);
 					this.removeListenerFromOpponentCells();
 					this.log("SIRE! SIRE! We have no ships left. RETREAAAT!!");
 					break;
@@ -339,20 +339,20 @@ var Player = (function (serverInterface) {
 			var outcome = data.params.result;
 			var row = data.params.row;
 			var col = data.params.col;
-			removeFog(row,col);
+			ui.game.removeFog(row,col);
 			switch (outcome) {
 				case HIT.WATER :// reveal fog on that tile
-					drawTile(false,row,col,TILE.SPLASH,false);
+					ui.game.drawTile(false,row,col,TILE.SPLASH,false);
 					this.log("You missed ...");
 					opponentTable[row][col] = FIELD.WATER_SHOT;
 					break;
 				case HIT.SHIP : //reveal fog on that tile
-					drawTile(false,row,col,TILE.FIRE,false);
+					ui.game.drawTile(false,row,col,TILE.FIRE,false);
 					this.log("You hit ship ...");
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					break;
 				case HIT.WHOLE_SHIP : //reveal fog,
-					drawTile(false,row,col,TILE.FIRE,false);
+					ui.game.drawTile(false,row,col,TILE.FIRE,false);
 					this.log("You sank " + server.getOpponentName() + "'s ship!");
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					var list = this.findDirectionAndLength(row, col);
@@ -361,37 +361,37 @@ var Player = (function (serverInterface) {
 					var shipLength = list[2];
 					switch (shipLength){ // case number represents the length of the ship.
 						case 1:
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_1_horizontal,false);
 							break;
 						case 2:
 							if (Rotation){
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_2_horizontal,false);
 							}
 							else {
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_2_vertical,false);
 							}
 							break;
 						case 3:
 							if (Rotation){
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_3_horizontal,false);
 							}
 							else {
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_3_vertical,false);
 							}
 							break;
 						case 4:
 							if (Rotation){
 							console.log (Rotation);
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_4_horizontal,false);
 							}
 							else {
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_4_vertical,false);
 							}
 							break;
@@ -400,44 +400,44 @@ var Player = (function (serverInterface) {
 
 				case HIT.GAME_OVER :
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
-					drawTile(false,row,col,TILE.FIRE,false);
+					ui.game.drawTile(false,row,col,TILE.FIRE,false);
 					this.log("You sank " + server.getOpponentName() + "'s last ship");
 					list = this.findDirectionAndLength(row, col);
 					Rotation = list[3] == 1;
 					shipLength = list[2];
 					switch (shipLength){ // case number represents the length of the ship.
 						case 1:
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_1_horizontal,false);
 							break;
 						case 2:
 							if (Rotation){
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_2_horizontal,false);
 							}
 							else {
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_2_vertical,false);
 							}
 							break;
 						case 3:
 							if (Rotation){
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_3_horizontal,false);
 							}
 							else {
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_3_vertical,false);
 							}
 							break;
 						case 4:
 							if (Rotation){
 							console.log (Rotation);
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_4_horizontal,false);
 							}
 							else {
-							drawTile(false,list[0],list[1],
+							ui.game.drawTile(false,list[0],list[1],
 								SHIPS.SHIP_4_vertical,false);
 							}
 							break;

@@ -30,14 +30,16 @@ var Game = (function() {
 			return false;
 		});
 
+		$("#menu-item-scoreboard").off("click");
+
 		this.fillTables();
 		for (var i =0;i<10;i++){
 			for (var j = 0;j<10;j++){
-				drawTile(false,i,j,TILE.FOG_UP,false);
-				drawTile(false,i,j,TILE.FOG_BOTTOM,false);
-				drawTile(false,i,j,TILE.FOG_LEFT,false);
-				drawTile(false,i,j,TILE.FOG_RIGHT,false);
-				drawTile(false,i,j,TILE.FOG,false);
+				this.drawTile(false,i,j,TILE.FOG_UP,false);
+				this.drawTile(false,i,j,TILE.FOG_BOTTOM,false);
+				this.drawTile(false,i,j,TILE.FOG_LEFT,false);
+				this.drawTile(false,i,j,TILE.FOG_RIGHT,false);
+				this.drawTile(false,i,j,TILE.FOG,false);
 			}
 		}
 
@@ -116,50 +118,50 @@ var Game = (function() {
 		$(".game-table-ship").remove();
 	};
 
+	this.drawTile = function (isSelf, row, column, tileToDraw, rotate) {
+
+		var cellId, tile, cell;
+
+		if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH) {
+			if (isSelf) cellId = "#user_";
+			else cellId = "#opponent_";
+			cellId += row + "_" + column;
+
+			tile = $("<img>").attr("src", tileToDraw);
+			cell = $(cellId).prepend(tile);
+		}
+		else {
+			if (isSelf) cellId = "#user_";
+			else cellId = "#opponent_";
+			cellId += row + "_" + column;
+
+			tile = $("<img>").attr("src", tileToDraw);
+			cell = $(cellId).append(tile);
+		}
+		if (rotate)
+			cell.addClass("rotate90");
+
+	}
+
+	this.removeFog = function (row,col) {
+			var cellId = "#opponent_" + row + "_" + col;
+			this.removeTile(row,col, TILE.FOG);
+			$(cellId).removeClass("full-fog-cell");
+			if (row > 0){
+				this.removeTile(row - 1, col, TILE.FOG_BOTTOM);
+			}
+			if (row < 9){
+				this.removeTile(row + 1, col, TILE.FOG_UP);
+			}
+			if (col > 0){
+				this.removeTile(row, col - 1, TILE.FOG_RIGHT);
+			}
+			if (col < 9){
+				this.removeTile(row, col + 1, TILE.FOG_LEFT);
+			}
+	}
+	this.removeTile = function (row, col,tile){
+		$("#opponent_"+ row+"_"+ col).children("img[src='"+ tile +"']").remove();
+	}
+
 });
-
-function drawTile (isSelf, row, column, tileToDraw, rotate) {
-
-	var cellId, tile, cell;
-
-	if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH) {
-		if (isSelf) cellId = "#user_";
-		else cellId = "#opponent_";
-		cellId += row + "_" + column;
-
-		tile = $("<img>").attr("src", tileToDraw);
-		cell = $(cellId).prepend(tile);
-	}
-	else {
-		if (isSelf) cellId = "#user_";
-		else cellId = "#opponent_";
-		cellId += row + "_" + column;
-
-		tile = $("<img>").attr("src", tileToDraw);
-		cell = $(cellId).append(tile);
-	}
-	if (rotate)
-		cell.addClass("rotate90");
-
-}
-
-function removeFog(row,col) {
-		var cellId = "#opponent_" + row + "_" + col;
-		removeTile(row,col, TILE.FOG);
-		$(cellId).removeClass("full-fog-cell");
-		if (row > 0){
-			removeTile(row - 1, col, TILE.FOG_BOTTOM);
-		}
-		if (row < 9){
-			removeTile(row + 1, col, TILE.FOG_UP);
-		}
-		if (col > 0){
-			removeTile(row, col - 1, TILE.FOG_RIGHT);
-		}
-		if (col < 9){
-			removeTile(row, col + 1, TILE.FOG_LEFT);
-		}
-}
-function removeTile(row, col,tile){
-	$("#opponent_"+ row+"_"+ col).children("img[src='"+ tile +"']").remove();
-}

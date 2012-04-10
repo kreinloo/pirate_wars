@@ -20,9 +20,9 @@ var Scoreboard = (function () {
 				);
 		}
 	};
-	
+
 	return {
 		refreshData : refreshData
 	};
-	
+
 });
