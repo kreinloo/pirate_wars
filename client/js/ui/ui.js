@@ -51,17 +51,7 @@ var UI = (function () {
 					self.lobbyContent.show();
 				}
 			});
-			$("#menu-item-scoreboard").off("click");
-			$("#menu-item-scoreboard").text("scoreboard").click(function() {
-				Client.requestScoreboard();
-				// Join namespace for live scoreboard updates
-				Client.joinScoreboard();
-				self.load("scoreboard");
-				return;
-			});
-			$("#menu-item-replay").click(function() {
-				self.load("replay");
-			});
+			this.loadLobbyMenu();
 		}
 
 		else if (view === "game") {
@@ -98,12 +88,10 @@ var UI = (function () {
 					self.scoreboardContent.show();
 				}
 			});
-			$("#menu-item-scoreboard").off("click");
-			$("#menu-item-scoreboard").text("lobby").click(function() {
-				// Don't want to receive live updates anymore! :'(
+			Client.requestScoreboard();
+			Client.joinScoreboard();
+			this.loadBackToLobbyMenu(function () {
 				Client.leaveScoreboard();
-				self.load("lobby");
-				return;
 			});
 		}
 
@@ -123,7 +111,8 @@ var UI = (function () {
 					self.replayContent.show();
 				}
 			});
-			self.replay.populateTable(
+			this.loadBackToLobbyMenu();
+			this.replay.populateTable(
 				Client.getReplayManager().getGameEntries());
 		}
 
@@ -183,6 +172,43 @@ var UI = (function () {
 			dataType : "script",
 			async : false
 		});
+	};
+
+	this.loadLobbyMenu = function () {
+		$(".menu-items").children().remove();
+		$(".menu-items").append(
+			$("<a>").
+				attr("href", "#").
+				attr("id", "menu-item-scoreboard").
+				addClass("menu-item").
+				append("scoreboard").
+				click(function () { self.load("scoreboard"); return false; })
+		);
+		$(".menu-items").append(
+			$("<a>").
+				attr("href", "#").
+				attr("id", "menu-item-replay").
+				addClass("menu-item").
+				append("replay").
+				click(function () { self.load("replay"); return false; })
+		);
+	};
+
+	this.loadBackToLobbyMenu = function (callback) {
+		$(".menu-items").children().remove();
+		$(".menu-items").append(
+			$("<a>").
+				attr("href", "#").
+				attr("id", "menu-item-lobby").
+				addClass("menu-item").
+				append("back to lobby").
+				click(function () {
+					if (callback !== undefined && typeof callback === "function")
+						callback.call();
+					self.load("lobby");
+					return false;
+				})
+		);
 	};
 
 	this.loadScripts();
