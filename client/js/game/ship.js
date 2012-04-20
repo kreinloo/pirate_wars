@@ -46,8 +46,6 @@ function Ship (len, dir, plyr) {
 
 	element.draggable({
 
-		snap : ".game-table-cell",
-
 		snapMode: "inner",
 
 		containment: "#game-tablearea",
@@ -65,7 +63,8 @@ function Ship (len, dir, plyr) {
 		stop : function (event, ui) {
 			var top = parseInt($(this).css("top"), 10);
 			var left = parseInt($(this).css("left"), 10);
-			if ( $(this).data("obj").getDirection() === "horizontal" ) {
+			var direction = $(this).data("obj").getDirection();
+			if (direction === "horizontal") {
 				top -= 12;
 				left -= 10;
 			}
@@ -73,6 +72,28 @@ function Ship (len, dir, plyr) {
 				top -= 10;
 				left -= 12;
 			}
+
+			var fromTop = top % 32;
+			var fromLeft = left % 32;
+
+			if (fromTop >= 16)
+				top = top - fromTop + 32;
+			else
+				top = top - fromTop;
+
+			if (fromLeft >= 16)
+				left = left - fromLeft + 32;
+			else
+				left = left - fromLeft;
+
+			if (direction  === "horizontal") {
+				$(this).css("top", top + 12);
+				$(this).css("left", left + 10);
+			} else {
+				$(this).css("top", top + 10);
+				$(this).css("left", left + 12);
+			}
+
 			var res;
 			if (top < 0 || left < 0) {
 				res = false;

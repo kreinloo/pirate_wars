@@ -13,6 +13,8 @@ var UI = (function () {
 	this.gameContent = null;
 	this.scoreboard = null;
 	this.scoreboardContent = null;
+	this.replay = null;
+	this.replayContent = null;
 	var self = this;
 
 	this.load = function (view) {
@@ -56,6 +58,9 @@ var UI = (function () {
 				Client.joinScoreboard();
 				self.load("scoreboard");
 				return;
+			});
+			$("#menu-item-replay").click(function() {
+				self.load("replay");
 			});
 		}
 
@@ -102,6 +107,26 @@ var UI = (function () {
 			});
 		}
 
+		else if (view === "replay") {
+			console.log("ui: loading replay view");
+			$("#content").children().hide(0, function () {
+				if (self.replayContent === null) {
+					$.ajax ({
+						url : "replay.html",
+						cache : false,
+						async : false
+					}).done(function (html) {
+						$("#content").append(html);
+					});
+					self.replayContent = $("#replay");
+				} else {
+					self.replayContent.show();
+				}
+			});
+			self.replay.populateTable(
+				Client.getReplayManager().getGameEntries(Client.getID()));
+		}
+
 	};
 
 	this.dialog = function (dialog, data) {
@@ -141,12 +166,15 @@ var UI = (function () {
 			this.loadScript("js/game/ship.js");
 			this.loadScript("js/game/player.js");
 			this.loadScript("js/game/server_interface.js");
-			this.loadScript("js/client.js");
 			this.loadScript("js/ui/scoreboard.js");
+			this.loadScript("js/ui/replay.js");
+			this.loadScript("js/replay_manager.js");
+			this.loadScript("js/client.js");
 			this.scriptsLoaded = true;
 			this.lobby = new Lobby();
 			this.game = new Game();
 			this.scoreboard = new Scoreboard();
+			this.replay = new Replay();
 	};
 
 	this.loadScript = function (file) {
