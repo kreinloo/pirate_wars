@@ -16,18 +16,16 @@ var Client = (function () {
 	var socket = null;
 	var scoreboardSocket = null;
 	var serverInterface = null;
-	var replayManager = new ReplayManager();
+	var replayManager = null;
 	var gameStatus = GAME.STATUS.IDLE;
 
 	// Server parameters
 	var options = null;
 	var params = null;
 
-
 	/*
 		Initializes those parameters.
 	*/
-
 	var initParams = function () {
 		this.params = {};
 		this.params.host = "localhost";
@@ -142,6 +140,7 @@ var Client = (function () {
 				id = data.id;
 				name = data.name;
 				ui.load("lobby");
+				replayManager = new ReplayManager(id);
 			}
 		});
 

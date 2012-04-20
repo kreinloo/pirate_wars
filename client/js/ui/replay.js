@@ -11,7 +11,7 @@ var Replay = (function () {
 			row.append($("<td>").append(data[i].result));
 			btn = $("<button>").append("Replay");
 			btn.click(function () {
-				// play selected game
+				Client.getReplayManager().playGame(data[i].gid);
 			});
 			row.append(btn);
 			$("#replay-table").append(row);

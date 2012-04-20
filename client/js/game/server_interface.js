@@ -24,6 +24,7 @@ var ServerInterface = (function (_client_, _data_) {
 	gameHistory.pid = client.getID();
 	gameHistory.gid = gameID;
 	gameHistory.moves = [];
+	gameHistory.ships = [];
 	gameHistory.opponent = opponentName;
 
 	// FUNCTIONS WHICH PLAYER USES //
@@ -33,7 +34,6 @@ var ServerInterface = (function (_client_, _data_) {
 			action : GAME.ACTION.FIREAT,
 			params : { row : row, col : col }
 		});
-		gameHistory.moves.push({ player : "player", row : row, col : col });
 	};
 
 	this.addVerticalShip = function (row, col, length) {
@@ -103,12 +103,20 @@ var ServerInterface = (function (_client_, _data_) {
 			gameHistory.moves.push({
 				player : "opponent",
 				row : data.params.row,
-				col : data.params.col });
+				col : data.params.col,
+				result : data.params.result
+			});
 			player.opponentsTurn(data);
 			return;
 		}
 
 		else if (data.action === GAME.ACTION.FIREAT_RESPONSE) {
+			gameHistory.moves.push({
+				player : "player",
+				row : data.params.row,
+				col : data.params.col,
+				result : data.params.result
+			});
 			player.fireAtResponse(data);
 			return;
 		}
@@ -121,6 +129,7 @@ var ServerInterface = (function (_client_, _data_) {
 		else if (data.action === GAME.ACTION.CONFIRM_ALIGNMENT) {
 			player.lockShips();
 			tableLocked = true;
+			gameHistory.ships = ships;
 			return;
 		}
 

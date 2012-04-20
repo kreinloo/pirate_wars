@@ -124,7 +124,7 @@ var UI = (function () {
 				}
 			});
 			self.replay.populateTable(
-				Client.getReplayManager().getGameEntries(Client.getID()));
+				Client.getReplayManager().getGameEntries());
 		}
 
 	};
