@@ -13,6 +13,7 @@ var UI = (function () {
 	this.gameContent = null;
 	this.scoreboard = null;
 	this.scoreboardContent = null;
+	this.sound = null;
 	var self = this;
 
 	this.load = function (view) {
@@ -141,12 +142,14 @@ var UI = (function () {
 			this.loadScript("js/game/ship.js");
 			this.loadScript("js/game/player.js");
 			this.loadScript("js/game/server_interface.js");
+			this.loadScript("js/game/sound.js");
 			this.loadScript("js/client.js");
 			this.loadScript("js/ui/scoreboard.js");
 			this.scriptsLoaded = true;
 			this.lobby = new Lobby();
 			this.game = new Game();
 			this.scoreboard = new Scoreboard();
+			this.sound = new Sound();
 	};
 
 	this.loadScript = function (file) {

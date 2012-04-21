@@ -95,6 +95,7 @@ var Player = (function (serverInterface) {
 			else if (direction === "vertical"){
 				server.addVerticalShip(row,col,length);
 			}
+			ui.sound.playEffect("PLACE_SHIP");
 			return true;
 		},
 
@@ -209,18 +210,23 @@ var Player = (function (serverInterface) {
 			var col = data.params.col;
 			switch (result) {
 				case 10 :
+					ui.sound.playEffect("HIT_WATER");
 					ui.game.drawTile(true, row, col, TILE.SPLASH, false);
 					this.log(server.getOpponentName() + " missed ...");
 					break;
 				case 11 :
+					ui.sound.playEffect("HIT_SHIP");
 					ui.game.drawTile(true, row, col, TILE.FIRE, false);
 					this.log(server.getOpponentName() + " hit our ship!");
 					break;
 				case 12 :
+					ui.sound.playEffect("SHIP_SINK");
 					ui.game.drawTile(true, row, col, TILE.FIRE, false);
 					this.log(server.getOpponentName() + " sank our ship!");
 					break;
 				case 13 :
+					ui.sound.playEffect("SHIP_SINK");
+					ui.sound.playEffect("DEFEAT");
 					ui.game.drawTile(true, row, col, TILE.FIRE, false);
 					this.removeListenerFromOpponentCells();
 					this.log("SIRE! SIRE! We have no ships left. RETREAAAT!!");
@@ -342,16 +348,19 @@ var Player = (function (serverInterface) {
 			ui.game.removeFog(row,col);
 			switch (outcome) {
 				case HIT.WATER :// reveal fog on that tile
+					ui.sound.playEffect("HIT_WATER");
 					ui.game.drawTile(false,row,col,TILE.SPLASH,false);
 					this.log("You missed ...");
 					opponentTable[row][col] = FIELD.WATER_SHOT;
 					break;
 				case HIT.SHIP : //reveal fog on that tile
+					ui.sound.playEffect("HIT_SHIP");
 					ui.game.drawTile(false,row,col,TILE.FIRE,false);
 					this.log("You hit ship ...");
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					break;
 				case HIT.WHOLE_SHIP : //reveal fog,
+					ui.sound.playEffect("SHIP_SINK");
 					ui.game.drawTile(false,row,col,TILE.FIRE,false);
 					this.log("You sank " + server.getOpponentName() + "'s ship!");
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
@@ -399,6 +408,8 @@ var Player = (function (serverInterface) {
 					break;
 
 				case HIT.GAME_OVER :
+					ui.sound.playEffect("SHIP_SINK");
+					ui.sound.playEffect("VICTORY");
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					ui.game.drawTile(false,row,col,TILE.FIRE,false);
 					this.log("You sank " + server.getOpponentName() + "'s last ship");
@@ -450,6 +461,8 @@ var Player = (function (serverInterface) {
 		},
 
 		loadBattlePhase : function () {
+			ui.sound.playEffect("START_BATTLE");
+			ui.sound.playMusic("BATTLE");
 			ui.game.loadBattlePhase(this);
 		},
 

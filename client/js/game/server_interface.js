@@ -113,6 +113,7 @@ var ServerInterface = (function (_client_, _data_) {
 		}
 
 		else if (data.action === GAME.ACTION.GAME_OVER) {
+			ui.sound.stopMusic();
 			data.title = "Game over";
 			data.callback = client.gameEndedHandler;
 			ui.dialog("endgame", data);
