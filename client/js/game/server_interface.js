@@ -18,6 +18,14 @@ var ServerInterface = (function (_client_, _data_) {
 	var opponentName = _data_.opponentName;
 	var player; // initialized in the end of this function
 	var ships = [];
+	var tableLocked = false;
+	var gameHistory = {};
+
+	gameHistory.pid = client.getID();
+	gameHistory.gid = gameID;
+	gameHistory.moves = [];
+	gameHistory.ships = [];
+	gameHistory.opponent = opponentName;
 
 	// FUNCTIONS WHICH PLAYER USES //
 
@@ -58,6 +66,10 @@ var ServerInterface = (function (_client_, _data_) {
 	};
 
 	this.resetField = function () {
+		if (tableLocked) {
+			player.log("Cannot reset already confirmed table.");
+			return;
+		}
 		ships = [];
 		player.resetFieldConfirmed();
 		player.log("Your ships have been reset.");
@@ -88,11 +100,23 @@ var ServerInterface = (function (_client_, _data_) {
 		}
 
 		else if (data.action === GAME.ACTION.FIREAT) {
+			gameHistory.moves.push({
+				player : "opponent",
+				row : data.params.row,
+				col : data.params.col,
+				result : data.params.result
+			});
 			player.opponentsTurn(data);
 			return;
 		}
 
 		else if (data.action === GAME.ACTION.FIREAT_RESPONSE) {
+			gameHistory.moves.push({
+				player : "player",
+				row : data.params.row,
+				col : data.params.col,
+				result : data.params.result
+			});
 			player.fireAtResponse(data);
 			return;
 		}
@@ -104,6 +128,8 @@ var ServerInterface = (function (_client_, _data_) {
 
 		else if (data.action === GAME.ACTION.CONFIRM_ALIGNMENT) {
 			player.lockShips();
+			tableLocked = true;
+			gameHistory.ships = ships;
 			return;
 		}
 
@@ -114,6 +140,7 @@ var ServerInterface = (function (_client_, _data_) {
 
 		else if (data.action === GAME.ACTION.GAME_OVER) {
 			ui.sound.stopMusic();
+			client.getReplayManager().saveGame(gameHistory);
 			data.title = "Game over";
 			data.callback = client.gameEndedHandler;
 			ui.dialog("endgame", data);

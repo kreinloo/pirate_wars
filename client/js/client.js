@@ -16,17 +16,16 @@ var Client = (function () {
 	var socket = null;
 	var scoreboardSocket = null;
 	var serverInterface = null;
+	var replayManager = null;
 	var gameStatus = GAME.STATUS.IDLE;
-	
+
 	// Server parameters
 	var options = null;
 	var params = null;
 
-	
 	/*
 		Initializes those parameters.
 	*/
-	
 	var initParams = function () {
 		this.params = {};
 		this.params.host = "localhost";
@@ -49,12 +48,12 @@ var Client = (function () {
 
 		socket.emit(CLIENT.AUTH, { id : id, name : name });
 	};
-	
+
 	/*
 		Methods to join/leave scoreboard namespace.
 		Receives live score updates from server.
 	*/
-	
+
 	var joinScoreboard = function () {
 		console.log("Joining Scoreboard namespace!");
 		this.scoreboardSocket = io.connect(
@@ -68,12 +67,12 @@ var Client = (function () {
 			ui.scoreboard.refreshData(data);
 		});
 	};
-	
+
 	var leaveScoreboard = function () {
 		if (this.scoreboardSocket != null) {
 			console.log("Leaving Scoreboard namespace!");
 			this.scoreboardSocket.disconnect();
-			
+
 			// https://github.com/LearnBoost/socket.io-client/issues/251
 			delete io.sockets["http://" + this.params.host + ":" + this.params.port];
 			io.j = [];
@@ -124,13 +123,13 @@ var Client = (function () {
 				return;
 			console.log("server msg: " + data.msg);
 		});
-		
+
 		// client auth try
 		socket.on(CLIENT.AUTH, function (data) {
 			if (typeof data === "undefined")
 				return;
 			console.log(CLIENT.AUTH + " " + JSON.stringify(data));
-			
+
 			if (data.error == true) {
 				ui.dialog("custom", {
 					title : "Login",
@@ -141,6 +140,7 @@ var Client = (function () {
 				id = data.id;
 				name = data.name;
 				ui.load("lobby");
+				replayManager = new ReplayManager(id);
 			}
 		});
 
@@ -222,7 +222,7 @@ var Client = (function () {
 			console.log(SCOREBOARD.DATA + " (individual) " + JSON.stringify(data));
 			ui.scoreboard.refreshData(data);
 		});
-		
+
 	};
 
 	/*
@@ -278,18 +278,18 @@ var Client = (function () {
 		ui.load("lobby");
 		ui.game.finalize();
 	};
-	
+
 	var getTimestamp = function () {
 		var date = new Date();
-		
+
 		var hours = date.getHours();
 		var minutes = date.getMinutes();
 		var seconds = date.getSeconds();
-		
+
 		if (hours < 10) hours = "0" + hours;
 		if (minutes < 10) minutes = "0" + minutes;
 		if (seconds < 10) seconds = "0" + seconds;
-		
+
 		return (hours  + ":" + minutes  + ":" + seconds);
 	};
 
@@ -308,7 +308,8 @@ var Client = (function () {
 		joinGame : joinGame,
 		requestScoreboard : requestScoreboard,
 		gameEndedHandler : gameEndedHandler,
-		getTimestamp : getTimestamp
+		getTimestamp : getTimestamp,
+		getReplayManager : function () { return replayManager; }
 	};
 
 })();

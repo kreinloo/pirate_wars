@@ -14,6 +14,8 @@ var UI = (function () {
 	this.scoreboard = null;
 	this.scoreboardContent = null;
 	this.sound = null;
+	this.replay = null;
+	this.replayContent = null;
 	var self = this;
 
 	this.load = function (view) {
@@ -50,14 +52,7 @@ var UI = (function () {
 					self.lobbyContent.show();
 				}
 			});
-			$("#menu-item-scoreboard").off("click");
-			$("#menu-item-scoreboard").text("scoreboard").click(function() {
-				Client.requestScoreboard();
-				// Join namespace for live scoreboard updates
-				Client.joinScoreboard();
-				self.load("scoreboard");
-				return;
-			});
+			this.loadLobbyMenu();
 		}
 
 		else if (view === "game") {
@@ -94,13 +89,32 @@ var UI = (function () {
 					self.scoreboardContent.show();
 				}
 			});
-			$("#menu-item-scoreboard").off("click");
-			$("#menu-item-scoreboard").text("lobby").click(function() {
-				// Don't want to receive live updates anymore! :'(
+			Client.requestScoreboard();
+			Client.joinScoreboard();
+			this.loadBackToLobbyMenu(function () {
 				Client.leaveScoreboard();
-				self.load("lobby");
-				return;
 			});
+		}
+
+		else if (view === "replay") {
+			console.log("ui: loading replay view");
+			$("#content").children().hide(0, function () {
+				if (self.replayContent === null) {
+					$.ajax ({
+						url : "replay.html",
+						cache : false,
+						async : false
+					}).done(function (html) {
+						$("#content").append(html);
+					});
+					self.replayContent = $("#replay");
+				} else {
+					self.replayContent.show();
+				}
+			});
+			this.loadBackToLobbyMenu();
+			this.replay.populateTable(
+				Client.getReplayManager().getGameEntries());
 		}
 
 	};
@@ -145,11 +159,15 @@ var UI = (function () {
 			this.loadScript("js/game/sound.js");
 			this.loadScript("js/client.js");
 			this.loadScript("js/ui/scoreboard.js");
+			this.loadScript("js/ui/replay.js");
+			this.loadScript("js/replay_manager.js");
+			this.loadScript("js/client.js");
 			this.scriptsLoaded = true;
 			this.lobby = new Lobby();
 			this.game = new Game();
 			this.scoreboard = new Scoreboard();
 			this.sound = new Sound();
+			this.replay = new Replay();
 	};
 
 	this.loadScript = function (file) {
@@ -158,6 +176,43 @@ var UI = (function () {
 			dataType : "script",
 			async : false
 		});
+	};
+
+	this.loadLobbyMenu = function () {
+		$(".menu-items").children().remove();
+		$(".menu-items").append(
+			$("<a>").
+				attr("href", "#").
+				attr("id", "menu-item-scoreboard").
+				addClass("menu-item").
+				append("scoreboard").
+				click(function () { self.load("scoreboard"); return false; })
+		);
+		$(".menu-items").append(
+			$("<a>").
+				attr("href", "#").
+				attr("id", "menu-item-replay").
+				addClass("menu-item").
+				append("replay").
+				click(function () { self.load("replay"); return false; })
+		);
+	};
+
+	this.loadBackToLobbyMenu = function (callback) {
+		$(".menu-items").children().remove();
+		$(".menu-items").append(
+			$("<a>").
+				attr("href", "#").
+				attr("id", "menu-item-lobby").
+				addClass("menu-item").
+				append("back to lobby").
+				click(function () {
+					if (callback !== undefined && typeof callback === "function")
+						callback.call();
+					self.load("lobby");
+					return false;
+				})
+		);
 	};
 
 	this.loadScripts();
