@@ -18,7 +18,6 @@ var Sound = (function () {
 	var currentEffect = null;
 	
 	var music = {
-		LOBBY : null,
 		BATTLE : new Audio("sfx/BATTLE.ogg")
 	};
 	
@@ -27,16 +26,14 @@ var Sound = (function () {
 			new Audio("sfx/PLACE_SHIP.ogg")
 		],
 		ROTATE_SHIP : [
-		
-		],
-		BUTTON_CLICK : [
-		
+			new Audio("sfx/ROTATE_SHIP.ogg")
 		],
 		START_BATTLE : [
 			new Audio("sfx/START_BATTLE.ogg")
 		],
 		HIT_WATER	: [
-			new Audio("sfx/HIT_WATER.ogg")
+			new Audio("sfx/HIT_WATER.ogg"),
+			new Audio("sfx/HIT_WATER2.ogg")
 		],
 		HIT_SHIP	: [
 			new Audio("sfx/HIT_SHIP.ogg")

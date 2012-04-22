@@ -116,6 +116,7 @@ var Player = (function (serverInterface) {
 		rotateShip : function (ship) {
 			if (Object.keys(ship.getCoords()).length === 0) {
 				ship.flipDirection();
+				ui.sound.playEffect("ROTATE_SHIP");
 				return true;
 			}
 
@@ -126,6 +127,7 @@ var Player = (function (serverInterface) {
 			var res = this.addShip(ship, coords);
 
 			if (res) {
+				ui.sound.playEffect("ROTATE_SHIP");
 				return true;
 			} else {
 				ship.flipDirection();
