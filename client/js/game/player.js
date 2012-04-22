@@ -228,7 +228,6 @@ var Player = (function (serverInterface) {
 					break;
 				case 13 :
 					ui.sound.playEffect("SHIP_SINK");
-					ui.sound.playEffect("DEFEAT");
 					ui.game.drawTile(true, row, col, TILE.FIRE, false);
 					this.removeListenerFromOpponentCells();
 					this.log("SIRE! SIRE! We have no ships left. RETREAAAT!!");
@@ -411,7 +410,6 @@ var Player = (function (serverInterface) {
 
 				case HIT.GAME_OVER :
 					ui.sound.playEffect("SHIP_SINK");
-					ui.sound.playEffect("VICTORY");
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					ui.game.drawTile(false,row,col,TILE.FIRE,false);
 					this.log("You sank " + server.getOpponentName() + "'s last ship");

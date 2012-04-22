@@ -140,6 +140,9 @@ var ServerInterface = (function (_client_, _data_) {
 
 		else if (data.action === GAME.ACTION.GAME_OVER) {
 			ui.sound.stopMusic();
+			if (data.winner) ui.sound.playEffect("VICTORY");
+			else ui.sound.playEffect("DEFEAT");
+			
 			client.getReplayManager().saveGame(gameHistory);
 			data.title = "Game over";
 			data.callback = client.gameEndedHandler;
