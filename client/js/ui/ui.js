@@ -16,23 +16,34 @@ var UI = (function () {
 	this.sound = null;
 	this.replay = null;
 	this.replayContent = null;
+	this.creditsContent = null;
+	this.loginContent = null;
+	this.currentView = null;
 	var self = this;
 
 	this.load = function (view) {
 		if (view === "login") {
 			console.log("ui: loading login view");
-			$("#login-form").submit(function() {
-				if ($("#login-form-username").val().length < 3) {
-					self.dialog("custom", {
-						title : "Login",
-						msg: "Username must be longer than 2 characters."});
-				} else {
-					var id = $("#login-form-username").val();
-					console.log(id);
-					Client.connect(id);
-				}
-				return false;
-			});
+			if (self.loginContent === null) {
+				self.loginContent = $("#login");
+				
+				$("#login-form").submit(function() {
+					if ($("#login-form-username").val().length < 3) {
+						self.dialog("custom", {
+							title : "Login",
+							msg: "Username must be longer than 2 characters."});
+					} else {
+						var id = $("#login-form-username").val();
+						console.log(id);
+						Client.connect(id);
+					}
+					return false;
+				});
+			}
+			else {
+				$("#content").children().hide();
+				self.loginContent.show();
+			}
 		}
 
 		else if (view === "lobby") {
@@ -116,8 +127,29 @@ var UI = (function () {
 			this.replay.populateTable(
 				Client.getReplayManager().getGameEntries());
 		}
-
+		
+		else if (view === "credits") {
+			console.log("ui: loading credits view");
+			$("#content").children().hide(0, function () {
+				if (self.creditsContent === null) {
+					$.ajax ({
+						url : "credits.html",
+						cache : false,
+						async : false
+					}).done(function (html) {
+						$("#content").append(html);
+					});
+					self.creditsContent = $("#credits");
+				} else {
+					self.creditsContent.show();
+				}
+			});
+			this.loadBackFromCredits(this.currentView);
+		}
+		
+		this.currentView = view;
 	};
+	
 
 	this.dialog = function (dialog, data) {
 
@@ -214,6 +246,43 @@ var UI = (function () {
 				})
 		);
 	};
+	
+	this.loadFooter = function (callback) {
+		$("#footer").append(
+			$("<a>").
+				attr("href", "#").
+				attr("id", "footer-item-credits").
+				addClass("footer-item").
+				append("Those who sacrificed themselves for the cause.").
+				click(function () {
+					if (callback !== undefined && typeof callback === "function")
+						callback.call();
+					self.removeFooter();
+					self.load("credits");
+					return false;
+				})
+		);
+	};
+	
+	this.removeFooter = function () {
+		$("#footer").children().remove();
+	};
+	
+	this.loadBackFromCredits = function (destination) {
+		$(".menu-items").children().remove();
+		$(".menu-items").append(
+			$("<a>").
+				attr("href", "#").
+				addClass("menu-item").
+				append("return").
+				click(function () {
+					$(".menu-items").children().remove();
+					self.loadFooter();
+					self.load(destination);
+					return false;
+				})
+		);
+	};
 
 	this.loadScripts();
 	Client.initParams();
@@ -223,5 +292,6 @@ var UI = (function () {
 var ui = new UI();
 
 $(document).ready(function () {
+	ui.loadFooter();
 	ui.load("login");
 });
