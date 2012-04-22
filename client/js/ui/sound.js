@@ -112,6 +112,10 @@ var Sound = (function () {
 			else console.log("Unmuting music.");
 			
 			muteMusic = mute;
+			if (currentSong != null) {
+				if (mute) currentSong.pause();
+				else currentSong.play();
+			}
 	};
 	
 	this.setMuteEffects = function (mute) {
@@ -141,6 +145,7 @@ var Sound = (function () {
 		if (currentSong == null) return;
 		console.log("Music stopped: " + currentSong.src + ".");
 		currentSong.pause();
+		currentSong = null;
 	};
 
 	this.playEffect = function (effect) {
