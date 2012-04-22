@@ -19,6 +19,7 @@ var Sound = (function () {
 	
 	var music = {
 		LOBBY : new Audio("sfx/LOBBY.ogg"),
+		ALIGNMENT : new Audio("sfx/ALIGNMENT.ogg"),
 		BATTLE : new Audio("sfx/BATTLE.ogg")
 	};
 	
