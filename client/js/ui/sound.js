@@ -18,6 +18,7 @@ var Sound = (function () {
 	var currentEffect = null;
 	
 	var music = {
+		LOBBY : new Audio("sfx/LOBBY.ogg"),
 		BATTLE : new Audio("sfx/BATTLE.ogg")
 	};
 	
@@ -39,7 +40,8 @@ var Sound = (function () {
 			new Audio("sfx/HIT_SHIP.ogg")
 		],
 		SHIP_SINK	: [
-			new Audio("sfx/SHIP_SINK.ogg")
+			new Audio("sfx/SHIP_SINK.ogg"),
+			new Audio("sfx/SHIP_SINK2.ogg")
 		],
 		VICTORY : [
 			new Audio("sfx/VICTORY.ogg")

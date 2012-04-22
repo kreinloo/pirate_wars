@@ -275,6 +275,7 @@ var Client = (function () {
 	var gameEndedHandler = function () {
 		serverInterface = null;
 		gameStatus = GAME.STATUS.IDLE;
+		ui.sound.playMusic("LOBBY");
 		ui.load("lobby");
 		ui.game.finalize();
 	};

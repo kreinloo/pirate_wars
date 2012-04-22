@@ -50,6 +50,7 @@ var UI = (function () {
 			console.log("ui: loading lobby view");
 			$("#content").children().hide(0, function () {
 				if (self.lobbyContent === null) {
+					ui.sound.playMusic("LOBBY");
 					$.ajax({
 						url : "lobby.html",
 						cache : false,
