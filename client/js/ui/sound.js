@@ -137,6 +137,15 @@ var Sound = (function () {
 		currentSong = music[song];
 		currentSong.volume = musicVolume;
 		currentSong.loop = true;
+		/*
+			Oh gods.. loop not implemented in most browsers, of course!
+			Why do we always have to do it the hard way -.-
+		*/
+		currentSong.addEventListener('ended', function() {
+			this.currentTime = 0;
+			this.play();
+		}, false);
+
 		currentSong.play();
 	};
 	
