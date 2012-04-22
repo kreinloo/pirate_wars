@@ -204,6 +204,7 @@ var Client = (function () {
 			console.log(GAME.INFO + " " + JSON.stringify(data));
 			if (data.action === GAME.START) {
 				serverInterface = new ServerInterface(Client, data);
+				ui.sound.playMusic("ALIGNMENT");
 				ui.load("game");
 				ui.game.initialize(serverInterface.getPlayer());
 				ui.lobby.resetGameButton();
