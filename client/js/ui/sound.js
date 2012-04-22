@@ -8,7 +8,7 @@ var Sound = (function () {
 
 	"use strict";
 	
-	// You may call me constructor as I'm the one initiating variables. Ž
+	// You may call me constructor as I'm the one initiating variables.
 	
 	var muteEffects = false;
 	var muteMusic	= false;
@@ -54,7 +54,7 @@ var Sound = (function () {
 	/*
 		By default audio should be preloaded, but according to some sources
 		there are retarded browsers that refuse to do that! (haven't confirmed it myself)
-		So to be on safe side let's force it down their throats!
+		So to be on the safe side let's force it down their throats!
 	*/
 	for (var effects_cat in effects) {
 		for (var i = 0; i < effects[effects_cat].length; i++) {
@@ -68,7 +68,7 @@ var Sound = (function () {
 		music[song].load();
 	}
 		
-	// Methods be down there Ž, yes.
+	// Methods be down there, yes.
 		
 	/* 
 		Getters, setters to satisfy outsiders (UI?): maybe some heretics would dare to want
@@ -165,23 +165,9 @@ var Sound = (function () {
 		}
 		
 		/*
-			For some diabolic reason the gods hinder all my attemps to create multiple
-			layers of same sonic pleasurewaves! Blood and ashes, but I shall return!
-			
-			But for now let's just interrupt the ancient one if novel is called forth!
-			And who knows the will of gods anyway? Maybe it's better this way as it won't
-			get too noisy and we would avoid lawsuits born from bleeding ears.
+			If the same audio track is requested again before it ends,
+			the old one is just interrupted. It won't get too noisy this way.
 		*/
-		
-		/*
-		// Determine whether we have the same audio effect already playing
-		if ((currentEffect != null) && (currentEffect.src == effects[effect][index].src) && 
-				(currentEffect.currentTime != 0.0) && (currentEffect.currentTime != currentEffect.duration)) {
-			// If true, let's clone it to have a mixed sound
-			console.log("Cloning to create a layered/mixed sound of the same audio.");
-			currentEffect = currentEffect.cloneNode(true);
-		}
-		else currentEffect = effects[effect][index];*/
 		
 		currentEffect = effects[effect][index];
 		currentEffect.currentTime = 0.0;
