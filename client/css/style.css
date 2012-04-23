@@ -134,9 +134,7 @@ a {
 	border-radius: 10px;
 	text-align: center;
 }
-.footer-credit{
-	margin-bottom:100px;
-}
+
 .lobby-table {
 	text-align: center;
 	width: 100%;
@@ -186,11 +184,23 @@ a {
 }
 
 #footer {
+	position:relative;
 	font-family: 'Kaushan Script';
-	float: right;
 	padding: 2px;
 	margin: 15px 75px 0px 0px;
+	text-align: right;
+	line-height: 50px;
 }
+
+#footer > * {
+	float: right;
+}
+
+#footer-item-credits  {
+	margin-right: 20px;
+}
+
+
 
 
 

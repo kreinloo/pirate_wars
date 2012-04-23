@@ -255,20 +255,26 @@ var UI = (function () {
 	
 	this.loadFooter = function (callback) {
 		$("#footer").append(
-			$("<a>").
-				attr("href", "#").
-				attr("id", "footer-item-credits").
-				addClass("footer-item").
-				addClass("footer-credit").
-				append("Those who sacrificed themselves for the cause.").
-				click(function () {
-					if (callback !== undefined && typeof callback === "function")
-						callback.call();
-					self.removeFooter();
-					self.load("credits");
-					return false;
-				})
-		).append(
+				$("<img>").
+					//attr("type", "button").
+					attr("type", "img").
+					attr("id", "music-mute").
+					attr("value", "Mute music").
+					attr("src", BUTTONS.SOUND_MUSIC_ACTIVE).
+					addClass("footer-item").
+					click(function () { 
+
+						if (ui.sound.getMusicMute() == false){
+							ui.sound.setMuteMusic(true);
+							$("#music-mute").attr("src",BUTTONS.SOUND_MUSIC_MUTED);
+						}
+						else{
+							ui.sound.setMuteMusic(false);
+							$("#music-mute").attr("src",BUTTONS.SOUND_MUSIC_ACTIVE);
+						}
+					})
+		)
+		.append(
 			$("<img>").
 				//attr("type", "button").
 				attr("id", "effects-mute").
@@ -286,25 +292,20 @@ var UI = (function () {
 					}
 				})
 		)
-		.append(
-			$("<img>").
-				//attr("type", "button").
-				attr("type", "img").
-				attr("id", "music-mute").
-				attr("value", "Mute music").
-				attr("src", BUTTONS.SOUND_MUSIC_ACTIVE).
-				addClass("footer-item").
-				click(function () { 
-
-					if (ui.sound.getMusicMute() == false){
-						ui.sound.setMuteMusic(true);
-						$("#music-mute").attr("src",BUTTONS.SOUND_MUSIC_MUTED);
-					}
-					else{
-						ui.sound.setMuteMusic(false);
-						$("#music-mute").attr("src",BUTTONS.SOUND_MUSIC_ACTIVE);
-					}
-				})
+			.append(
+				$("<a>").
+					attr("href", "#").
+					attr("id", "footer-item-credits").
+					addClass("footer-item").
+					//addClass("footer-credit").
+					append("Those who sacrificed themselves for the cause.").
+					click(function () {
+						if (callback !== undefined && typeof callback === "function")
+							callback.call();
+						self.removeFooter();
+						self.load("credits");
+						return false;
+					})
 		);
 	};
 
