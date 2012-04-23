@@ -76,7 +76,6 @@ var ServerInterface = (function (_client_, _data_) {
 	};
 
 	this.confirmAlignment = function () {
-		console.log(ships);
 		this.sendEvent({
 			action : GAME.ACTION.CONFIRM_ALIGNMENT,
 			params : ships

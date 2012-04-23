@@ -213,6 +213,7 @@ var Client = (function () {
 					deleteGame();
 				}
 				this.gameStatus = GAME.STATUS.PLAYING;
+				serverInterface.resetField();
 				return;
 			} else {
 				serverInterface.call(data);
