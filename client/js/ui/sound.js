@@ -88,7 +88,7 @@ var Sound = (function () {
 		if ((volume >= 0.0) && (volume <= 1.0)) {
 			console.log("Adjusting music volume to " + volume + " (0.0 - 1.0).");
 			musicVolume = volume;
-			currentSong.volume = volume;
+			if (currentSong != null) currentSong.volume = volume;
 		}
 	};
 	
