@@ -7,22 +7,22 @@
 var Sound = (function () {
 
 	"use strict";
-	
+
 	// You may call me constructor as I'm the one initiating variables.
-	
+
 	var muteEffects = false;
 	var muteMusic	= false;
 	var effectsVolume = 0.9;
 	var musicVolume = 0.5;
 	var currentSong = null;
 	var currentEffect = null;
-	
+
 	var music = {
 		LOBBY : new Audio("sfx/LOBBY.ogg"),
 		ALIGNMENT : new Audio("sfx/ALIGNMENT.ogg"),
 		BATTLE : new Audio("sfx/BATTLE.ogg")
 	};
-	
+
 	var effects =  {
 		PLACE_SHIP : [
 			new Audio("sfx/PLACE_SHIP.ogg")
@@ -51,7 +51,7 @@ var Sound = (function () {
 			new Audio("sfx/DEFEAT.ogg")
 		]
 	};
-	
+
 	/*
 		By default audio should be preloaded, but according to some sources
 		there are retarded browsers that refuse to do that! (haven't confirmed it myself)
@@ -68,71 +68,71 @@ var Sound = (function () {
 		console.log("Preloading " + music[song].src + ".");
 		music[song].load();
 	}
-		
+
 	// Methods be down there, yes.
-		
-	/* 
+
+	/*
 		Getters, setters to satisfy outsiders (UI?): maybe some heretics would dare to want
 		to mute our waves of glory. Burn them all!
 	*/
-		
+
 	this.getMusicVolume = function () {
 		return musicVolume;
 	};
-	
+
 	this.getEffectsVolume = function () {
 		return effectsVolume;
 	};
-	
+
 	this.setMusicVolume = function (volume) {
 		if ((volume >= 0.0) && (volume <= 1.0)) {
 			console.log("Adjusting music volume to " + volume + " (0.0 - 1.0).");
 			musicVolume = volume;
 		}
 	};
-	
+
 	this.setEffectsVolume = function (volume) {
 		if ((volume >= 0.0) && (volume <= 1.0)) {
 			console.log("Adjusting effects volume to " + volume + " (0.0 - 1.0).");
 			effectsVolume = volume;
 		}
 	}
-	
+
 	this.getMusicMute = function () {
 		return muteMusic;
 	};
-	
+
 	this.getMuteEffects = function () {
 		return muteEffects;
 	};
-	
-	
+
+
 	this.setMuteMusic = function (mute) {
 			if (mute) console.log("Muting music.");
 			else console.log("Unmuting music.");
-			
+
 			muteMusic = mute;
 			if (currentSong != null) {
 				if (mute) currentSong.pause();
 				else currentSong.play();
 			}
 	};
-	
+
 	this.setMuteEffects = function (mute) {
 			if (mute) console.log("Muting effects.");
 			else console.log("Unmuting effects.");
-			
+
 			muteEffects = mute;
 	};
-	
+
 	/*
 		Actual magic to initiate the true pleasure for yar' ears!
 	*/
-	
+
 	this.playMusic = function (song) {
 		if (muteMusic) return;
 		if (typeof music[song] === undefined) return;
-		if ((currentSong != null) && (currentSong.currentTime != currentSong.duration)) 
+		if ((currentSong != null) && (currentSong.currentTime != currentSong.duration))
 			this.stopMusic();
 		console.log("Playing music: " + song + ".");
 		currentSong = music[song];
@@ -149,7 +149,7 @@ var Sound = (function () {
 
 		currentSong.play();
 	};
-	
+
 	this.stopMusic = function () {
 		if (currentSong == null) return;
 		console.log("Music stopped: " + currentSong.src + ".");
@@ -162,7 +162,7 @@ var Sound = (function () {
 		effect = effect.toUpperCase();
 		if (typeof effects[effect] === undefined) return;
 		console.log("Playing sound effect: " + effect + ".");
-		
+
 		var index = 0;
 		switch (effects[effect].length) {
 		case 0:
@@ -173,16 +173,16 @@ var Sound = (function () {
 			index = Math.floor(Math.random() * effects[effect].length);
 			break;
 		}
-		
+
 		/*
 			If the same audio track is requested again before it ends,
 			the old one is just interrupted. It won't get too noisy this way.
 		*/
-		
+
 		currentEffect = effects[effect][index];
 		currentEffect.currentTime = 0.0;
 		currentEffect.volume = effectsVolume;
 		currentEffect.play();
 	};
-	
+
 });

@@ -8,7 +8,10 @@ var Replay = (function () {
 			row.append($("<td>").append(data[i].gid));
 			row.append($("<td>").append(data[i].opponent));
 			row.append($("<td>").append(data[i].date));
-			row.append($("<td>").append(data[i].result));
+			if (data[i].winner)
+				row.append($("<td>").append("WIN"));
+			else
+				row.append($("<td>").append("LOSS"));
 			btn = $("<button>").append("Replay");
 			btn.click(function () {
 				Client.getReplayManager().playGame(data[i].gid);

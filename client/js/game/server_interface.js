@@ -140,10 +140,12 @@ var ServerInterface = (function (_client_, _data_) {
 
 		else if (data.action === GAME.ACTION.GAME_OVER) {
 			ui.sound.stopMusic();
-			if (data.winner) ui.sound.playEffect("VICTORY");
+			if (data.winner)ui.sound.playEffect("VICTORY");
 			else ui.sound.playEffect("DEFEAT");
-			
-			client.getReplayManager().saveGame(gameHistory);
+
+			gameHistory.winner = data.winner;
+			if (data.replay)
+				client.getReplayManager().saveGame(gameHistory);
 			data.title = "Game over";
 			data.callback = client.gameEndedHandler;
 			ui.dialog("endgame", data);
@@ -169,6 +171,14 @@ var ServerInterface = (function (_client_, _data_) {
 	this.getOpponentName = function () {
 		return opponentName;
 	};
+
+	this.quitGame = function () {
+		console.log("Sending quit event.");
+		this.sendEvent({
+			action : GAME.ACTION.QUIT,
+			params : {}
+		});
+	}
 
 	player = new Player (this);
 

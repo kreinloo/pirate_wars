@@ -140,6 +140,7 @@ var Client = (function () {
 				id = data.id;
 				name = data.name;
 				ui.load("lobby");
+				this.emit(CLIENT.INIT_INFO, {});
 				replayManager = new ReplayManager(id);
 			}
 		});
@@ -295,6 +296,13 @@ var Client = (function () {
 		return (hours  + ":" + minutes  + ":" + seconds);
 	};
 
+	var quitGame = function () {
+		if (!serverInterface)
+			return;
+		else
+			serverInterface.quitGame();
+	}
+
 	return {
 		initParams : initParams,
 		connect : connect,
@@ -311,7 +319,8 @@ var Client = (function () {
 		requestScoreboard : requestScoreboard,
 		gameEndedHandler : gameEndedHandler,
 		getTimestamp : getTimestamp,
-		getReplayManager : function () { return replayManager; }
+		getReplayManager : function () { return replayManager; },
+		quitGame : quitGame
 	};
 
 })();

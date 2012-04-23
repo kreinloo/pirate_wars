@@ -26,7 +26,7 @@ var UI = (function () {
 			console.log("ui: loading login view");
 			if (self.loginContent === null) {
 				self.loginContent = $("#login");
-				
+
 				$("#login-form").submit(function() {
 					if ($("#login-form-username").val().length < 3) {
 						self.dialog("custom", {
@@ -83,6 +83,9 @@ var UI = (function () {
 					self.gameContent.show();
 				}
 			});
+			this.loadBackToLobbyMenu(function () {
+				Client.quitGame();
+			});
 		}
 
 		else if (view === "scoreboard") {
@@ -128,7 +131,7 @@ var UI = (function () {
 			this.replay.populateTable(
 				Client.getReplayManager().getGameEntries());
 		}
-		
+
 		else if (view === "credits") {
 			console.log("ui: loading credits view");
 			$("#content").children().hide(0, function () {
@@ -147,10 +150,10 @@ var UI = (function () {
 			});
 			this.loadBackFromCredits(this.currentView);
 		}
-		
+
 		this.currentView = view;
 	};
-	
+
 
 	this.dialog = function (dialog, data) {
 
@@ -247,14 +250,14 @@ var UI = (function () {
 				})
 		);
 	};
-	
+
 	this.loadFooter = function (callback) {
 		$("#footer").append(
 			$("<input>").
 				attr("type", "button").
 				attr("id", "effects-mute").
 				attr("value", "Mute effect").
-				click(function () { 
+				click(function () {
 					if (ui.sound.getMuteEffects() == false){
 						ui.sound.setMuteEffects(true);
 					}
@@ -268,7 +271,7 @@ var UI = (function () {
 				attr("type", "button").
 				attr("id", "music-mute").
 				attr("value", "Mute music").
-				click(function () { 
+				click(function () {
 					if (ui.sound.getMusicMute() == false){
 						ui.sound.setMuteMusic(true);
 					}
@@ -291,11 +294,11 @@ var UI = (function () {
 				})
 		);
 	};
-	
+
 	this.removeFooter = function () {
 		$("#footer").children().remove();
 	};
-	
+
 	this.loadBackFromCredits = function (destination) {
 		$(".menu-items").children().remove();
 		$(".menu-items").append(
