@@ -132,7 +132,7 @@ var Sound = (function () {
 
 	this.playMusic = function (song) {
 		if (typeof music[song] === undefined) return;
-		if ((!muteMusic) && (currentSong != null) && (currentSong.currentTime != currentSong.duration))
+		if ((!muteMusic) && (currentSong != null))
 			this.stopMusic();
 
 		currentSong = music[song];
