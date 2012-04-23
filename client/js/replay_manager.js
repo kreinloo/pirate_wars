@@ -8,14 +8,14 @@ var ReplayManager = (function (clientID) {
 	this.saveGame = function (data) {
 		var gameHistory;
 		data.date = new Date();
-		if (localStorage.gameHistory === undefined) {
+		if (localStorage.gameHistory === undefined || localStorage.gameHistory === null) {
 			gameHistory = {};
 			gameHistory[data.pid] = [];
 			gameHistory[data.pid].push(data);
 			localStorage.gameHistory = JSON.stringify(gameHistory);
 		} else {
 			gameHistory = JSON.parse(localStorage.gameHistory);
-			if (gameHistory[data.pid] === undefined)
+			if (gameHistory[data.pid] === undefined || gameHistory[data.pid] === null)
 				gameHistory[data.pid] = [];
 			gameHistory[data.pid].push(data);
 			localStorage.gameHistory = JSON.stringify(gameHistory);
@@ -25,10 +25,10 @@ var ReplayManager = (function (clientID) {
 
 	this.playGame = function (gid) {
 		console.log("playing game: " + gid);
-		if (localStorage.gameHistory === undefined)
+		if (localStorage.gameHistory === undefined || localStorage.gameHistory === null)
 			return;
 		var gameHistory = JSON.parse(localStorage.gameHistory);
-		if (gameHistory[this.pid] === undefined)
+		if (gameHistory[this.pid] === undefined || localStorage.gameHistory[this.pid] === null)
 			return;
 
 		var games = gameHistory[this.pid];
@@ -97,11 +97,11 @@ var ReplayManager = (function (clientID) {
 	};
 
 	this.getGameEntries = function () {
-		if (localStorage.gameHistory === undefined)
+		if (localStorage.gameHistory === undefined || localStorage.gameHistory === null)
 			return [];
 
 		var gameHistory = JSON.parse(localStorage.gameHistory);
-		if (gameHistory[this.pid] === undefined)
+		if (gameHistory[this.pid] === undefined || localStorage.gameHistory[this.pid] === null)
 			return [];
 
 		var games = gameHistory[this.pid];

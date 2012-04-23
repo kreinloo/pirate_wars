@@ -193,7 +193,6 @@ var UI = (function () {
 			this.loadScript("js/game/player.js");
 			this.loadScript("js/game/server_interface.js");
 			this.loadScript("js/ui/sound.js");
-			this.loadScript("js/client.js");
 			this.loadScript("js/ui/scoreboard.js");
 			this.loadScript("js/ui/replay.js");
 			this.loadScript("js/replay_manager.js");
