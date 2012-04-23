@@ -88,6 +88,7 @@ var Sound = (function () {
 		if ((volume >= 0.0) && (volume <= 1.0)) {
 			console.log("Adjusting music volume to " + volume + " (0.0 - 1.0).");
 			musicVolume = volume;
+			if (currentSong != null) currentSong.volume = volume;
 		}
 	};
 
@@ -130,11 +131,10 @@ var Sound = (function () {
 	*/
 
 	this.playMusic = function (song) {
-		if (muteMusic) return;
 		if (typeof music[song] === undefined) return;
-		if ((currentSong != null) && (currentSong.currentTime != currentSong.duration))
+		if ((!muteMusic) && (currentSong != null) && (currentSong.currentTime != currentSong.duration))
 			this.stopMusic();
-		console.log("Playing music: " + song + ".");
+
 		currentSong = music[song];
 		currentSong.volume = musicVolume;
 		currentSong.loop = true;
@@ -147,6 +147,8 @@ var Sound = (function () {
 			this.play();
 		}, false);
 
+		if (muteMusic) return;
+		console.log("Playing music: " + song + ".");
 		currentSong.play();
 	};
 
