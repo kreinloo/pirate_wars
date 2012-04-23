@@ -250,6 +250,33 @@ var UI = (function () {
 	
 	this.loadFooter = function (callback) {
 		$("#footer").append(
+			$("<input>").
+				attr("type", "button").
+				attr("id", "effects-mute").
+				attr("value", "Mute effect").
+				click(function () { 
+					if (ui.sound.getMuteEffects() == false){
+						ui.sound.setMuteEffects(true);
+					}
+					else {
+						ui.sound.setMuteEffects(false);
+					}
+				})
+		)
+		.append(
+			$("<input>").
+				attr("type", "button").
+				attr("id", "music-mute").
+				attr("value", "Mute music").
+				click(function () { 
+					if (ui.sound.getMusicMute() == false){
+						ui.sound.setMuteMusic(true);
+					}
+					else {
+						ui.sound.setMuteMusic(false);
+					}
+				})
+		).append(
 			$("<a>").
 				attr("href", "#").
 				attr("id", "footer-item-credits").
