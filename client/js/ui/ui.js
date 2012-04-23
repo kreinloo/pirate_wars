@@ -251,39 +251,15 @@ var UI = (function () {
 		);
 	};
 
+
+	
 	this.loadFooter = function (callback) {
 		$("#footer").append(
-			$("<input>").
-				attr("type", "button").
-				attr("id", "effects-mute").
-				attr("value", "Mute effect").
-				click(function () {
-					if (ui.sound.getMuteEffects() == false){
-						ui.sound.setMuteEffects(true);
-					}
-					else {
-						ui.sound.setMuteEffects(false);
-					}
-				})
-		)
-		.append(
-			$("<input>").
-				attr("type", "button").
-				attr("id", "music-mute").
-				attr("value", "Mute music").
-				click(function () {
-					if (ui.sound.getMusicMute() == false){
-						ui.sound.setMuteMusic(true);
-					}
-					else {
-						ui.sound.setMuteMusic(false);
-					}
-				})
-		).append(
 			$("<a>").
 				attr("href", "#").
 				attr("id", "footer-item-credits").
 				addClass("footer-item").
+				addClass("footer-credit").
 				append("Those who sacrificed themselves for the cause.").
 				click(function () {
 					if (callback !== undefined && typeof callback === "function")
@@ -291,6 +267,43 @@ var UI = (function () {
 					self.removeFooter();
 					self.load("credits");
 					return false;
+				})
+		).append(
+			$("<img>").
+				//attr("type", "button").
+				attr("id", "effects-mute").
+				attr("value", "Mute effect").
+				attr("src", "gfx/SoundFXActive.png").
+				addClass("footer-item").
+				click(function () { 
+					if (ui.sound.getMuteEffects() == false){
+						ui.sound.setMuteEffects(true);
+						$("#effects-mute").attr("src","gfx/SoundFXActive.png");
+					}
+					else {
+						ui.sound.setMuteEffects(false);
+						$("#effects-mute").attr("src","gfx/SoundFXMuted.png");
+					}
+				})
+		)
+		.append(
+			$("<img>").
+				//attr("type", "button").
+				attr("type", "img").
+				attr("id", "music-mute").
+				attr("value", "Mute music").
+				attr("src", "gfx/MusicBtnActive.png").
+				addClass("footer-item").
+				click(function () { 
+
+					if (ui.sound.getMusicMute() == false){
+						ui.sound.setMuteMusic(true);
+						$("#music-mute").attr("src","gfx/MusicBtnMuted.png");
+					}
+					else {
+						ui.sound.setMuteMusic(false);
+						$("#music-mute").attr("src","gfx/MusicBtnActive.png");
+					}
 				})
 		);
 	};
