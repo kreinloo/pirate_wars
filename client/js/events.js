@@ -80,6 +80,14 @@ TILE = {
 	SPLASH: "gfx/WaterSplash.png"
 };
 
+BUTTONS = {
+	SOUND_FX_ACTIVE: "gfx/SoundFXActive.png",
+	SOUND_FX_MUTED: "gfx/SoundFXMuted.png",
+	SOUND_MUSIC_ACTIVE: "gfx/MusicBtnActive.png",
+	SOUND_MUSIC_MUTED: "gfx/MusicBtnMuted.png"
+
+};
+
 SHIPS = {
 	SHIP_1_horizontal : "gfx/SHIP_1_horizontal.png",
 	SHIP_1_vertical : "gfx/SHIP_1_vertical.png",

@@ -273,16 +273,16 @@ var UI = (function () {
 				//attr("type", "button").
 				attr("id", "effects-mute").
 				attr("value", "Mute effect").
-				attr("src", "gfx/SoundFXActive.png").
+				attr("src", BUTTONS.SOUND_FX_ACTIVE).
 				addClass("footer-item").
 				click(function () { 
 					if (ui.sound.getMuteEffects() == false){
 						ui.sound.setMuteEffects(true);
-						$("#effects-mute").attr("src","gfx/SoundFXActive.png");
+						$("#effects-mute").attr("src",BUTTONS.SOUND_FX_MUTED);
 					}
 					else {
 						ui.sound.setMuteEffects(false);
-						$("#effects-mute").attr("src","gfx/SoundFXMuted.png");
+						$("#effects-mute").attr("src",BUTTONS.SOUND_FX_ACTIVE);
 					}
 				})
 		)
@@ -292,17 +292,17 @@ var UI = (function () {
 				attr("type", "img").
 				attr("id", "music-mute").
 				attr("value", "Mute music").
-				attr("src", "gfx/MusicBtnActive.png").
+				attr("src", BUTTONS.SOUND_MUSIC_ACTIVE).
 				addClass("footer-item").
 				click(function () { 
 
 					if (ui.sound.getMusicMute() == false){
 						ui.sound.setMuteMusic(true);
-						$("#music-mute").attr("src","gfx/MusicBtnMuted.png");
+						$("#music-mute").attr("src",BUTTONS.SOUND_MUSIC_MUTED);
 					}
-					else {
+					else{
 						ui.sound.setMuteMusic(false);
-						$("#music-mute").attr("src","gfx/MusicBtnActive.png");
+						$("#music-mute").attr("src",BUTTONS.SOUND_MUSIC_ACTIVE);
 					}
 				})
 		);
