@@ -182,7 +182,7 @@ var Sound = (function () {
 		*/
 
 		currentEffect = effects[effect][index];
-		//currentEffect.currentTime = 0.0;
+		currentEffect.currentTime = 0.0;
 		currentEffect.volume = effectsVolume;
 		currentEffect.play();
 	};

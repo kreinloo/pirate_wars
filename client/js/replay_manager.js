@@ -92,7 +92,7 @@ var ReplayManager = (function (clientID) {
 					});
 				}());
 			}
-		}, 400);
+		}, 750);
 
 	};
 
