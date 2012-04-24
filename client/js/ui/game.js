@@ -124,7 +124,7 @@ var Game = (function() {
 
 		var cellId, tile, cell;
 
-		if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH) {
+		if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH && tileToDraw != TILE.FOG) {
 			if (isSelf) cellId = "#user_";
 			else cellId = "#opponent_";
 			cellId += row + "_" + column;

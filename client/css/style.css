@@ -241,3 +241,7 @@ input[type="button"] {
 .inactive {
 	color: #5A5A52;
 }
+
+.credits-div {
+	height: 500px;
+}
