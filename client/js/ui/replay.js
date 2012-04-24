@@ -12,9 +12,11 @@ var Replay = (function () {
 				row.append($("<td>").append("WIN"));
 			else
 				row.append($("<td>").append("LOSS"));
-			btn = $("<button>").append("Replay");
+			btn = $("<button>")
+				.attr("gid", data[i].gid)
+				.append("Replay");
 			btn.click(function () {
-				Client.getReplayManager().playGame(data[i].gid);
+				Client.getReplayManager().playGame($(this).attr("gid"));
 			});
 			row.append(btn);
 			$("#replay-table").append(row);
