@@ -77,7 +77,7 @@ TILE = {
 	FOG_LEFT: "gfx/FogLeft.png",
 	FOG_RIGHT: "gfx/FogRight.png",
 	FIRE: "gfx/Fire3.gif",
-	SPLASH: "gfx/WaterSplash.png"
+	SPLASH: "gfx/WaterSplash.gif"
 };
 
 BUTTONS = {
