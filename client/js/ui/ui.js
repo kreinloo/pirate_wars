@@ -26,19 +26,6 @@ var UI = (function () {
 			console.log("ui: loading login view");
 			if (self.loginContent === null) {
 				self.loginContent = $("#login");
-
-				$("#login-form").submit(function() {
-					if ($("#login-form-username").val().length < 3) {
-						self.dialog("custom", {
-							title : "Login",
-							msg: "Username must be longer than 2 characters."});
-					} else {
-						var id = $("#login-form-username").val();
-						console.log(id);
-						Client.connect(id);
-					}
-					return false;
-				});
 			}
 			else {
 				$("#content").children().hide();
@@ -250,8 +237,6 @@ var UI = (function () {
 		);
 	};
 
-
-	
 	this.loadFooter = function (callback) {
 		$("#footer").append(
 				$("<img>").
@@ -261,7 +246,7 @@ var UI = (function () {
 					attr("value", "Mute music").
 					attr("src", BUTTONS.SOUND_MUSIC_ACTIVE).
 					addClass("footer-item").
-					click(function () { 
+					click(function () {
 
 						if (ui.sound.getMusicMute() == false){
 							ui.sound.setMuteMusic(true);
@@ -280,7 +265,7 @@ var UI = (function () {
 				attr("value", "Mute effect").
 				attr("src", BUTTONS.SOUND_FX_ACTIVE).
 				addClass("footer-item").
-				click(function () { 
+				click(function () {
 					if (ui.sound.getMuteEffects() == false){
 						ui.sound.setMuteEffects(true);
 						$("#effects-mute").attr("src",BUTTONS.SOUND_FX_MUTED);
@@ -338,4 +323,5 @@ var ui = new UI();
 $(document).ready(function () {
 	ui.loadFooter();
 	ui.load("login");
+
 });

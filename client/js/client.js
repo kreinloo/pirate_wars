@@ -30,22 +30,18 @@ var Client = (function () {
 		this.params = {};
 		this.params.host = "localhost";
 		this.params.port = 8001;
-		// for deployment at heroku
-		//this.options = {};
-		//this.options["transports"] = ["xhr-polling"];
 	};
 
 	/*
 		Connects to the server.
 	*/
-	var connect = function (_id_, params) {
-		id = _id_;
-		name = _id_;
+	var connect = function (params) {
+		id = params.id;
+		name = params.name;
 		if (socket == null) {
 			socket = io.connect("http://" + this.params.host + ":" + this.params.port, this.options);
 			addSocketListeners();
 		}
-
 		socket.emit(CLIENT.AUTH, { id : id, name : name });
 	};
 

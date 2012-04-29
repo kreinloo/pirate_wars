@@ -5,7 +5,7 @@
 <head>
 	<title>Pirate Wars</title>
 
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<link rel="stylesheet" type="text/css" href="css/style.css"/>
 	<link rel="stylesheet" type="text/css" href="css/game.css"/>
 
@@ -17,6 +17,40 @@
 	<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/pepper-grinder/jquery-ui.css'
 		rel='stylesheet' type='text/css'/>
 
+	<script>
+	  window.fbAsyncInit = function() {
+	    FB.init({
+	      appId      : '304040883005114', // App ID
+	      channelUrl : 'http://piraadid.ahju.eu/channel.html', // Channel File
+	      status     : true, // check login status
+	      cookie     : true, // enable cookies to allow the server to access the session
+	      xfbml      : true  // parse XFBML
+	    });
+
+		function login (response) {
+			if (response.status === "connected") {
+				FB.api("/me", function (response) {
+					if (response.name !== undefined) {
+						Client.connect({ id : FB.getUserID(), name : response.name });
+					}
+				});
+			}
+		}
+		FB.Event.subscribe("auth.statusChange", login);
+
+	    // Additional initialization code here
+	  };
+
+	  // Load the SDK Asynchronously
+	  (function(d){
+	     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement('script'); js.id = id; js.async = true;
+	     js.src = "https://connect.facebook.net/en_US/all.js";
+	     ref.parentNode.insertBefore(js, ref);
+	   }(document));
+	</script>
+
 	<script type="text/javascript" src="js/lib/jquery-1.7.1.js"></script>
 	<script type="text/javascript" src="js/lib/jquery-ui-1.8.18.custom.min.js"></script>
 	<script type="text/javascript" src="js/lib/socket.io.js"></script>
@@ -25,6 +59,8 @@
 </head>
 
 <body>
+
+<div id="fb-root"></div>
 
 <div id="wrapper">
 
@@ -35,11 +71,6 @@
 	<div id="menu">
 
 		<div class="menu-items">
-			<!--
-			<a href="#" id="menu-item-scoreboard" class="menu-item">scoreboard</a>
-			<a href="#" id="menu-item-replay" class="menu-item">replay</a>
-			<a href="#" id="menu-item-logout" class="menu-item inactive">log out</a>
-			-->
 		</div>
 
 	</div><!-- menu -->
@@ -49,11 +80,7 @@
 		<div id="login">
 			<div id="login-head"></div>
 			<div id="login-body">
-				<form id="login-form">
-					<label>username:</label><br/>
-					<input type="text" id="login-form-username" /><br/>
-					<input type="submit" id="login-form-button" value="login" />
-				</form>
+				<div class="fb-login-button">Login with Facebook</div>
 			</div>
 		</div>
 
