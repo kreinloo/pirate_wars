@@ -426,38 +426,38 @@ var Player = (function (serverInterface) {
 					shipLength = list[2];
 					switch (shipLength){ // case number represents the length of the ship.
 						case 1:
-							ui.game.drawTile(false,list[0],list[1],
-								SHIPS.SHIP_1_horizontal,false);
+							setTimeout( function () {ui.game.drawTile(false,list[0],list[1],
+								SHIPS.SHIP_1_horizontal,false);}, 1400);
 							break;
 						case 2:
 							if (Rotation){
-							ui.game.drawTile(false,list[0],list[1],
-								SHIPS.SHIP_2_horizontal,false);
+							setTimeout( function () {ui.game.drawTile(false,list[0],list[1],
+								SHIPS.SHIP_2_horizontal,false);}, 1400);
 							}
 							else {
-							ui.game.drawTile(false,list[0],list[1],
-								SHIPS.SHIP_2_vertical,false);
+							setTimeout( function () {ui.game.drawTile(false,list[0],list[1],
+								SHIPS.SHIP_2_vertical,false);}, 1400);
 							}
 							break;
 						case 3:
 							if (Rotation){
-							ui.game.drawTile(false,list[0],list[1],
-								SHIPS.SHIP_3_horizontal,false);
+							setTimeout( function () {ui.game.drawTile(false,list[0],list[1],
+								SHIPS.SHIP_3_horizontal,false);}, 1400);
 							}
 							else {
-							ui.game.drawTile(false,list[0],list[1],
-								SHIPS.SHIP_3_vertical,false);
+							setTimeout( function () {ui.game.drawTile(false,list[0],list[1],
+								SHIPS.SHIP_3_vertical,false);}, 1400);
 							}
 							break;
 						case 4:
 							if (Rotation){
 							console.log (Rotation);
-							ui.game.drawTile(false,list[0],list[1],
-								SHIPS.SHIP_4_horizontal,false);
+							setTimeout( function () {ui.game.drawTile(false,list[0],list[1],
+								SHIPS.SHIP_4_horizontal,false);}, 1400);
 							}
 							else {
-							ui.game.drawTile(false,list[0],list[1],
-								SHIPS.SHIP_4_vertical,false);
+							setTimeout( function () {ui.game.drawTile(false,list[0],list[1],
+								SHIPS.SHIP_4_vertical,false);}, 1400);
 							}
 							break;
 					}
