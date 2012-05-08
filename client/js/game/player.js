@@ -213,22 +213,26 @@ var Player = (function (serverInterface) {
 			switch (result) {
 				case 10 :
 					ui.sound.playEffect("HIT_WATER");
-					ui.game.drawTile(true, row, col, TILE.SPLASH, false);
+					setTimeout( function () { ui.game.placeExplosion(true,row,col,TILE.WATER_EXPLOSION); },700);
+					setTimeout( function () {ui.game.drawTile(true,row,col,TILE.SPLASH,false) ;}, 1700);
 					this.log(server.getOpponentName() + " missed ...");
 					break;
 				case 11 :
 					ui.sound.playEffect("HIT_SHIP");
-					ui.game.drawTile(true, row, col, TILE.FIRE, false);
+					setTimeout( function () { ui.game.placeExplosion(true,row,col,TILE.EXPLOSION); }, 400);
+					setTimeout( function () {ui.game.drawTile(true,row,col,TILE.FIRE,false) ;}, 1400);
 					this.log(server.getOpponentName() + " hit our ship!");
 					break;
 				case 12 :
 					ui.sound.playEffect("SHIP_SINK");
-					ui.game.drawTile(true, row, col, TILE.FIRE, false);
+					setTimeout( function () { ui.game.placeExplosion(true,row,col,TILE.EXPLOSION); }, 400);
+					setTimeout( function () {ui.game.drawTile(true,row,col,TILE.FIRE,false) ;}, 1400);
 					this.log(server.getOpponentName() + " sank our ship!");
 					break;
 				case 13 :
 					ui.sound.playEffect("SHIP_SINK");
-					ui.game.drawTile(true, row, col, TILE.FIRE, false);
+					setTimeout( function () { ui.game.placeExplosion(true,row,col,TILE.EXPLOSION); }, 400);
+					setTimeout( function () {ui.game.drawTile(true,row,col,TILE.FIRE,false) ;}, 1400);
 					this.removeListenerFromOpponentCells();
 					this.log("SIRE! SIRE! We have no ships left. RETREAAAT!!");
 					break;
@@ -350,19 +354,22 @@ var Player = (function (serverInterface) {
 			switch (outcome) {
 				case HIT.WATER :// reveal fog on that tile
 					ui.sound.playEffect("HIT_WATER");
-					ui.game.drawTile(false,row,col,TILE.SPLASH,false);
+					setTimeout( function () { ui.game.placeExplosion(false,row,col,TILE.WATER_EXPLOSION); }, 700);
+					setTimeout( function () { ui.game.drawTile(false,row,col,TILE.SPLASH,false); },1700);
 					this.log("You missed ...");
 					opponentTable[row][col] = FIELD.WATER_SHOT;
 					break;
 				case HIT.SHIP : //reveal fog on that tile
 					ui.sound.playEffect("HIT_SHIP");
-					ui.game.drawTile(false,row,col,TILE.FIRE,false);
+					setTimeout( function () { ui.game.placeExplosion(false,row,col,TILE.EXPLOSION); }, 400);
+					setTimeout( function () {ui.game.drawTile(false,row,col,TILE.FIRE,false) ;}, 1400);
 					this.log("You hit ship ...");
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					break;
 				case HIT.WHOLE_SHIP : //reveal fog,
 					ui.sound.playEffect("SHIP_SINK");
-					ui.game.drawTile(false,row,col,TILE.FIRE,false);
+					setTimeout( function () { ui.game.placeExplosion(false,row,col,TILE.EXPLOSION); }, 400);
+					setTimeout( function () {ui.game.drawTile(false,row,col,TILE.FIRE,false) ;}, 1400);
 					this.log("You sank " + server.getOpponentName() + "'s ship!");
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
 					var list = this.findDirectionAndLength(row, col);
@@ -411,7 +418,8 @@ var Player = (function (serverInterface) {
 				case HIT.GAME_OVER :
 					ui.sound.playEffect("SHIP_SINK");
 					opponentTable[row][col] = FIELD.SHIP_SHOT;
-					ui.game.drawTile(false,row,col,TILE.FIRE,false);
+					setTimeout( function () { ui.game.placeExplosion(false,row,col,TILE.EXPLOSION); }, 400);
+					setTimeout( function () {ui.game.drawTile(false,row,col,TILE.FIRE,false) ;}, 1400);
 					this.log("You sank " + server.getOpponentName() + "'s last ship");
 					list = this.findDirectionAndLength(row, col);
 					Rotation = list[3] == 1;

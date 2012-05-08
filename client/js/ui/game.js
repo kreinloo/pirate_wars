@@ -37,11 +37,11 @@ var Game = (function() {
 		this.fillTables();
 		for (var i =0;i<10;i++){
 			for (var j = 0;j<10;j++){
+				this.drawFog(i,j);
 				this.drawTile(false,i,j,TILE.FOG_UP,false);
 				this.drawTile(false,i,j,TILE.FOG_BOTTOM,false);
 				this.drawTile(false,i,j,TILE.FOG_LEFT,false);
 				this.drawTile(false,i,j,TILE.FOG_RIGHT,false);
-				this.drawTile(false,i,j,TILE.FOG,false);
 			}
 		}
 
@@ -124,7 +124,7 @@ var Game = (function() {
 
 		var cellId, tile, cell;
 
-		if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH && tileToDraw != TILE.FOG) {
+		if (tileToDraw != TILE.FIRE && tileToDraw != TILE.SPLASH) {
 			if (isSelf) cellId = "#user_";
 			else cellId = "#opponent_";
 			cellId += row + "_" + column;
@@ -144,10 +144,32 @@ var Game = (function() {
 			cell.addClass("rotate90");
 
 	}
+	this.drawFog = function (row, col) {
+		var cellId, cell, tile;
+		var selection = Math.floor((Math.random()*3)+1); 
+		var drawTile ;
+		switch (selection){
+			case 1 :
+				drawTile = TILE.FOG1;
+				break;
+			case 2 :
+				drawTile = TILE.FOG2;
+				break;
+			case 3 :
+				drawTile = TILE.FOG3;
+				break
+		}
+		cellId = "#opponent_";
+		cellId += row + "_" + col;
+		tile = $("<img>").attr("src", drawTile);
+		tile.attr("id","fog_"+ row + "_" + col);
+		cell = $(cellId).append(tile);
+	}
 
 	this.removeFog = function (row,col) {
 			var cellId = "#opponent_" + row + "_" + col;
-			this.removeTile(row,col, TILE.FOG);
+			this.removeTileById(row, col ,"fog");
+			//this.removeTile(row,col, TILE.FOG);
 			$(cellId).removeClass("full-fog-cell");
 			if (row > 0){
 				this.removeTile(row - 1, col, TILE.FOG_BOTTOM);
@@ -164,6 +186,23 @@ var Game = (function() {
 	}
 	this.removeTile = function (row, col,tile){
 		$("#opponent_"+ row+"_"+ col).children("img[src='"+ tile +"']").remove();
+	}
+	this.removeTileById = function (row, col,id){
+		var cellId = "#";
+		cellId += id + "_"+ row + "_" + col; 
+		console.log(cellId)
+		$("#opponent_"+ row+"_"+ col).children(cellId).remove();
+	}
+	this.placeExplosion = function (isSelf,row,col,tileToDraw){
+			var cellId, cell, tile;
+			if (isSelf) cellId = "#user_";
+			else cellId = "#opponent_";
+			cellId += row + "_" + col;
+			tile = $("<img>").attr("src", tileToDraw);
+			tile.addClass("explosion");
+			cell = $(cellId).append(tile);
+			setTimeout(function(){$(cellId).children(".explosion").remove();},1000);
+			
 	}
 
 });

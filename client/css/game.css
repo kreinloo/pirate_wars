@@ -76,6 +76,13 @@
 	z-index:1;
 }
 
+.explosion{
+	display: block;
+	position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #game-chat {
 	width: 688px;
 	margin: 8px 35px auto 35px;

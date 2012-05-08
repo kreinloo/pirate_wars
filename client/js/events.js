@@ -71,13 +71,18 @@ TILE = {
 	SHIP_TAIL: "gfx/ShipTail.png",
 	SHIP_SINGLE1: "gfx/SingleShip1.png",
 	SHIP_SINGLE2: "gfx/SingleShip2.png",
-	FOG: "gfx/FogTexture3.png",
+	FOG1: "gfx/FogTexture1.png",
+	FOG2: "gfx/FogTexture2.png",
+	FOG3: "gfx/FogTexture3.png",
 	FOG_UP: "gfx/FogUp.png",
 	FOG_BOTTOM: "gfx/FogBottom.png",
 	FOG_LEFT: "gfx/FogLeft.png",
 	FOG_RIGHT: "gfx/FogRight.png",
 	FIRE: "gfx/Fire3.gif",
-	SPLASH: "gfx/WaterSplash.gif"
+	SPLASH: "gfx/WaterWave.gif",
+	EXPLOSION: "gfx/Explosion.gif",
+	WATER_EXPLOSION: "gfx/Water_explosion.gif"
+	
 };
 
 BUTTONS = {
