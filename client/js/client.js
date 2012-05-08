@@ -36,13 +36,11 @@ var Client = (function () {
 		Connects to the server.
 	*/
 	var connect = function (params) {
-		id = params.id;
-		name = params.name;
 		if (socket == null) {
 			socket = io.connect("http://" + this.params.host + ":" + this.params.port, this.options);
 			addSocketListeners();
 		}
-		socket.emit(CLIENT.AUTH, { id : id, name : name });
+		socket.emit(CLIENT.AUTH, params);
 	};
 
 	/*
